@@ -1,4 +1,8 @@
-MusicCloud
+Obon
 ==========
 
-A Symfony project created on November 23, 2016, 5:15 pm.
+### Installation
+    php composer.phar install
+    php app/console assets:install
+    php app/console doctrine:fixtures:load
+    php app/console server:run
