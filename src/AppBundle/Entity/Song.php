@@ -24,6 +24,13 @@ class Song
     /**
      * @var string
      *
+     * @ORM\Column(name="artist", type="string", length=255)
+     */
+    private $artist;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
@@ -49,6 +56,67 @@ class Song
      */
     private $url;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="path", type="string", length=255, nullable=true)
+     */
+    private $path;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User", cascade={"persist"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="singer_id", referencedColumnName="id" )
+     * })
+     */
+    private $singer;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="download_able", type="boolean", nullable=true)
+     */
+    private $downloadable;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="count_download", type="integer", nullable=true)
+     */
+    private $countDownload;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="count_play", type="integer", nullable=true)
+     */
+    private $countPlay;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="likes", type="integer", nullable=true)
+     */
+    private $likes;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lyrics", type="text", nullable=true)
+     */
+    private $lyrics;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="upload_date", type="datetime", nullable=true)
+     */
+    private $uploadDate;
+
+    public function __construct()
+    {
+        $this->downloadable = false;
+    }
 
     /**
      * Get id
@@ -151,4 +219,149 @@ class Song
     {
         return $this->url;
     }
+
+    /**
+     * @return string
+     */
+    public function getArtist()
+    {
+        return $this->artist;
+    }
+
+    /**
+     * @param string $artist
+     */
+    public function setArtist($artist)
+    {
+        $this->artist = $artist;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSinger()
+    {
+        return $this->singer;
+    }
+
+    /**
+     * @param mixed $singer
+     */
+    public function setSinger($singer)
+    {
+        $this->singer = $singer;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDownloadable()
+    {
+        return $this->downloadable;
+    }
+
+    /**
+     * @param boolean $downloadable
+     */
+    public function setDownloadable($downloadable)
+    {
+        $this->downloadable = $downloadable;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountDownload()
+    {
+        return $this->countDownload;
+    }
+
+    /**
+     * @param int $countDownload
+     */
+    public function setCountDownload($countDownload)
+    {
+        $this->countDownload = $countDownload;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCountPlay()
+    {
+        return $this->countPlay;
+    }
+
+    /**
+     * @param int $countPlay
+     */
+    public function setCountPlay($countPlay)
+    {
+        $this->countPlay = $countPlay;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @param int $likes
+     */
+    public function setLikes($likes)
+    {
+        $this->likes = $likes;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLyrics()
+    {
+        return $this->lyrics;
+    }
+
+    /**
+     * @param string $lyrics
+     */
+    public function setLyrics($lyrics)
+    {
+        $this->lyrics = $lyrics;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUploadDate()
+    {
+        return $this->uploadDate;
+    }
+
+    /**
+     * @param \DateTime $uploadDate
+     */
+    public function setUploadDate($uploadDate)
+    {
+        $this->uploadDate = $uploadDate;
+    }
+
 }

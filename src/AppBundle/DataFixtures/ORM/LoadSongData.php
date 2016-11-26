@@ -71138,11 +71138,13 @@ class LoadSongData implements FixtureInterface, OrderedFixtureInterface
         $urls = [];
         for ($i = 0,$size=sizeof($this->songs); $i < $size; $i++) {
             if (!array_key_exists($this->songs[$i]["url"], $urls)) {
-
+                $duration = str_replace('=>', ':', $this->songs[$i]["duration"]);
+                $url = str_replace('=>', ':', $this->songs[$i]["url"]);
                 $song = new Song();
+                $song->setArtist($this->songs[$i]["artist"]);
                 $song->setTitle($this->songs[$i]["title"]);
-                $song->setUrl($this->songs[$i]["url"]);
-                $song->setDuration($this->songs[$i]["duration"]);
+                $song->setUrl($url);
+                $song->setDuration($duration);
                 $manager->persist($song);
                 $urls[$this->songs[$i]["url"]] = 1;
             }

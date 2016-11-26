@@ -28,6 +28,7 @@ class LoadUserData implements FixtureInterface, OrderedFixtureInterface
         $userAdmin = new User();
         $userAdmin->setUsername('admin');
         $userAdmin->setSuperAdmin(true);
+        $userAdmin->setEnabled(true);
         $userAdmin->setEmail('nursultan2010@gmail.com');
         $userAdmin->setPassword('admin');
 
