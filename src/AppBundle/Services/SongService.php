@@ -50,7 +50,6 @@ class SongService
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
-
         return $entity;
     }
 
