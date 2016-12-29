@@ -47,9 +47,9 @@ class SongController extends Controller
             throw new Exception("Invalid token credentials", 400);
         }
         $entity = $this->container->get('app.song')->getSong($id);
-        $fileurl = $entity['path'];
+        $fileurl = $entity->getPath();
         header("Content-type:audio/mpeg");
-        header('Content-Disposition: attachment; filename='.$entity['artist']. ' - '.$entity['title'].'.mp3');
+        header('Content-Disposition: attachment; filename=' . $entity->getArtist() . ' - ' . $entity->getTitle() . '.mp3');
         header('Content-Transfer-Encoding: binary');
         readfile($fileurl);
         return new Response();

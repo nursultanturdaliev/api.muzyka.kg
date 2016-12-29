@@ -44,12 +44,17 @@ class SongService
     {
         $entity = $this->em->getRepository('AppBundle:Song')
             ->createQueryBuilder('s')
-            ->select('s.artist', 's.title', 's.path')
+//            ->select('s.artist', 's.title', 's.path')
             ->where('s.path IS NOT NULL')
             ->andWhere('s.id =:id')
             ->setParameter('id', $id)
             ->getQuery()
             ->getOneOrNullResult();
+        if($entity) {
+            $entity->setCountDownload($entity->getCountDownload()+1);
+            $this->em->persist($entity);
+            $this->em->flush($entity);
+        }
         return $entity;
     }
 
