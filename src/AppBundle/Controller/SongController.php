@@ -30,7 +30,7 @@ class SongController extends Controller
      */
     public function jsonAction()
     {
-        $entities = $this->container->get('app.song')->getAllSongs();
+        $entities = $this->container->get('app.song')->getSongs();
         $json = json_encode($entities, JSON_UNESCAPED_UNICODE);
         header("Content-type:application/json");
         header('Content-Disposition: attachment; filename= song.json');

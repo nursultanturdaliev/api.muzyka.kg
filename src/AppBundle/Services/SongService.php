@@ -28,6 +28,18 @@ class SongService
             ->getResult();
         return $entities;
     }
+
+    public function getSongs()
+    {
+        $entities = $this->em->getRepository('AppBundle:Song')
+            ->createQueryBuilder('s')
+            ->select('s.id', 's.artist', 's.title', 's.duration')
+            ->where('s.path IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+        return $entities;
+    }
+
     public function getSong($id)
     {
         $entity = $this->em->getRepository('AppBundle:Song')
