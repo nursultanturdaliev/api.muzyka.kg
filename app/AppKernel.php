@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
             new Sonata\AdminBundle\SonataAdminBundle(),
             new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
 
             new FOS\UserBundle\FOSUserBundle(),
             new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
