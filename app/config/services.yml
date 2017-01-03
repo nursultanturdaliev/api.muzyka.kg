@@ -9,7 +9,3 @@ services:
         arguments: [~, AppBundle\Entity\Song, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: Song }
-
-    app.song:
-        class: AppBundle\Services\SongService
-        arguments: ["@doctrine.orm.entity_manager"]

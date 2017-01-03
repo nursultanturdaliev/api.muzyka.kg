@@ -1,0 +1,16 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Songs{% endblock %}
+
+{% block body %}
+    <ul>
+        {% for song in pagination %}
+            <li>
+                <audio src="/{{ song.path }}" loop controls style="width: 100%; background-color: #085196">{{ song.artist }} - {{ song.title }}</audio>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="pagination">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

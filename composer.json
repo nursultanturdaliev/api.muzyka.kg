@@ -26,7 +26,8 @@
         "sonata-project/user-bundle": "^3.1",
         "friendsofsymfony/rest-bundle": "^1.8",
         "nelmio/api-doc-bundle": "^2.13",
-        "knplabs/knp-paginator-bundle": "^2.5"
+        "knplabs/knp-paginator-bundle": "^2.5",
+        "ramsey/uuid-doctrine": "^1.2"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",
@@ -50,10 +51,7 @@
         ]
     },
     "config": {
-        "bin-dir": "bin",
-        "platform": {
-            "php": "5.3.9"
-        }
+        "bin-dir": "bin"
     },
     "extra": {
         "symfony-app-dir": "app",

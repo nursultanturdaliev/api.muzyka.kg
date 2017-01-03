@@ -12,4 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class SongRepository extends EntityRepository
 {
+    public function findAllQuery()
+    {
+        return $this->createQueryBuilder('s');
+    }
 }
