@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/api/song")
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class SongController extends Controller
 {
     /**
-     * @Route("/{id}/stream")
+     * @Route("/{id}/stream",name="app_api_song_stream")
      * @ParamConverter("song", class="AppBundle:Song", options={"id"="id"})
      * @Method("GET")
      * @param Song $song
@@ -36,5 +37,14 @@ class SongController extends Controller
         $response->headers->set('connection', 'keep-alive');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $song->getArtist() . ' - ' . $song->getTitle() . '.mp3');
         return $response;
+    }
+
+    /**
+     * @Route("/all",name="app_api_song_all")
+     */
+    public function jsonAction()
+    {
+        $songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
+        return new JsonResponse($songsAsArray);
     }
 }
