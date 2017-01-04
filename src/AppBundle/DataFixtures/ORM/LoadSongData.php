@@ -71136,7 +71136,7 @@ class LoadSongData implements FixtureInterface, OrderedFixtureInterface
     public function load(ObjectManager $manager)
     {
         $urls = [];
-        for ($i = 0,$size=sizeof($this->songs); $i < $size; $i++) {
+        for ($i = 0, $size = sizeof($this->songs); $i < $size; $i++) {
             if (!array_key_exists($this->songs[$i]["url"], $urls)) {
                 $duration = str_replace('=>', ':', $this->songs[$i]["duration"]);
                 $url = str_replace('=>', ':', $this->songs[$i]["url"]);

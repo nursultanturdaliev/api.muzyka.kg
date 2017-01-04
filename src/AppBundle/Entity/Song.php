@@ -13,13 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Song
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="uuid", type="uuid")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
+     * @ORM\Id()
      */
-    private $id;
+    private $uuid;
 
     /**
      * @var string
@@ -119,16 +118,6 @@ class Song
     }
 
     /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * Set title
      *
      * @param string $title
@@ -144,7 +133,7 @@ class Song
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -167,7 +156,7 @@ class Song
     /**
      * Get duration
      *
-     * @return string 
+     * @return string
      */
     public function getDuration()
     {
@@ -190,7 +179,7 @@ class Song
     /**
      * Get publishedAt
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getPublishedAt()
     {
@@ -213,7 +202,7 @@ class Song
     /**
      * Get url
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -362,6 +351,22 @@ class Song
     public function setUploadDate($uploadDate)
     {
         $this->uploadDate = $uploadDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param int $uuid
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
     }
 
 }

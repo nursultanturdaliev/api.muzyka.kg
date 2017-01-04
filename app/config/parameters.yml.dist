@@ -18,3 +18,4 @@ parameters:
     # A secret key that's used to generate certain security-related tokens
     secret:            Utd5GLKjtfgskfjw89trfgw9osfjmc
     access_token:      sdjfw7tezrnoi&TF34UKgdfKJMKukshfd
+    music_path:        /Users/nursultan/PhpstormProjects/obon/data/music
