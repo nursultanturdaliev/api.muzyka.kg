@@ -1,0 +1,21 @@
+services:
+    admin.song:
+        class: AppBundle\Admin\SongAdmin
+        arguments: [~, AppBundle\Entity\Song, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Song }
+    admin.artist:
+        class: AppBundle\Admin\ArtistAdmin
+        arguments: [~, AppBundle\Entity\Artist, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Artist }
+    admin.genre:
+        class: AppBundle\Admin\GenreAdmin
+        arguments: [~, AppBundle\Entity\Genre, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Genre }
+    admin.playlist:
+        class: AppBundle\Admin\PlaylistAdmin
+        arguments: [~, AppBundle\Entity\Playlist, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: Playlist }

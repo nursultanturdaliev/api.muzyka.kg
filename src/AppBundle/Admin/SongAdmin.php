@@ -18,11 +18,25 @@ class SongAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form)
     {
         $form->add('title','text');
+        $form->add('artist','sonata_type_model',array(
+            'class'=>'AppBundle\Entity\Artist'
+        ));
+        $form->add('published');
+        $form->add('duration');
+        $form->add('oldUrl');
+        $form->add('lyrics');
     }
 
     protected function configureListFields(ListMapper $list)
     {
         $list->addIdentifier('title');
+        $list->add('artist');
+        $list->add('published');
+        $list->add('duration');
+        $list->add('createdAt');
+        $list->add('updatedAt');
+        $list->add('likes');
+        $list->add('countDownload');
     }
 
 

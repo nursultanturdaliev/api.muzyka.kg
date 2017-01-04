@@ -2,30 +2,33 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Song
  *
- * @ORM\Table(name="song")
+ * @ORM\Table(name="app_songs")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SongRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Song
 {
     /**
      * @ORM\Column(name="uuid", type="uuid")
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class="Ramsey\Uuid\Doctrine\UuidGenerator")
-     * @ORM\Id()
      */
     private $uuid;
 
+
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="artist", type="string", length=255)
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $artist;
+    private $id;
 
     /**
      * @var string
@@ -42,61 +45,51 @@ class Song
     private $duration;
 
     /**
+     * @ORM\Column(name="published", type="boolean")
+     */
+    private $published = true;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="publishedAt", type="datetime", nullable=true)
+     * @ORM\Column(name="published_at", type="datetime", nullable=true)
      */
     private $publishedAt;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255, unique=true)
+     * @ORM\Column(name="old_url", type="string", length=255, unique=true)
      */
-    private $url;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="path", type="string", length=255, nullable=true)
-     */
-    private $path;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="singer_id", referencedColumnName="id" )
-     * })
-     */
-    private $singer;
+    private $oldUrl;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="download_able", type="boolean", nullable=true)
      */
-    private $downloadable;
+    private $downloadable = true;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="count_download", type="integer", nullable=true)
      */
-    private $countDownload;
+    private $countDownload = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="count_play", type="integer", nullable=true)
      */
-    private $countPlay;
+    private $countPlay = 0;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="likes", type="integer", nullable=true)
      */
-    private $likes;
+    private $likes = 0;
 
     /**
      * @var string
@@ -108,14 +101,31 @@ class Song
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="upload_date", type="datetime", nullable=true)
+     * @ORM\Column(name="createdAt", type="datetime")
      */
-    private $uploadDate;
+    private $createdAt;
 
-    public function __construct()
-    {
-        $this->downloadable = false;
-    }
+    /**
+     * @ORM\Column(name="updated_at", type="datetime",nullable=true)
+     */
+    private $updatedAt;
+
+    /**
+     * @var string
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Artist",inversedBy="songs")
+     */
+    private $artist;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre",inversedBy="songs")
+     */
+    private $genres;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Playlist", mappedBy="songs")
+     */
+    private $playlists;
 
     /**
      * Set title
@@ -189,12 +199,12 @@ class Song
     /**
      * Set url
      *
-     * @param string $url
+     * @param $oldUrl
      * @return Song
      */
-    public function setUrl($url)
+    public function setOldUrl($oldUrl)
     {
-        $this->url = $url;
+        $this->oldUrl = $oldUrl;
 
         return $this;
     }
@@ -204,9 +214,9 @@ class Song
      *
      * @return string
      */
-    public function getUrl()
+    public function getOldUrl()
     {
-        return $this->url;
+        return $this->oldUrl;
     }
 
     /**
@@ -223,38 +233,6 @@ class Song
     public function setArtist($artist)
     {
         $this->artist = $artist;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * @param string $path
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSinger()
-    {
-        return $this->singer;
-    }
-
-    /**
-     * @param mixed $singer
-     */
-    public function setSinger($singer)
-    {
-        $this->singer = $singer;
     }
 
     /**
@@ -337,21 +315,6 @@ class Song
         $this->lyrics = $lyrics;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getUploadDate()
-    {
-        return $this->uploadDate;
-    }
-
-    /**
-     * @param \DateTime $uploadDate
-     */
-    public function setUploadDate($uploadDate)
-    {
-        $this->uploadDate = $uploadDate;
-    }
 
     /**
      * @return int
@@ -369,4 +332,190 @@ class Song
         $this->uuid = $uuid;
     }
 
+
+    /**
+     * Get downloadable
+     *
+     * @return boolean
+     */
+    public function getDownloadable()
+    {
+        return $this->downloadable;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->genres = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->uuid = Uuid::uuid4();
+    }
+
+    /**
+     * Add genre
+     *
+     * @param Genre $genre
+     *
+     * @return Song
+     */
+    public function addGenre(Genre $genre)
+    {
+        $this->genres[] = $genre;
+
+        return $this;
+    }
+
+    /**
+     * Remove genre
+     *
+     * @param Genre $genre
+     */
+    public function removeGenre(Genre $genre)
+    {
+        $this->genres->removeElement($genre);
+    }
+
+    /**
+     * Get genres
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGenres()
+    {
+        return $this->genres;
+    }
+
+    /**
+     * Add playlist
+     *
+     * @param Playlist $playlist
+     *
+     * @return Song
+     */
+    public function addPlaylist(Playlist $playlist)
+    {
+        $this->playlists[] = $playlist;
+
+        return $this;
+    }
+
+    /**
+     * Remove playlist
+     *
+     * @param Playlist $playlist
+     */
+    public function removePlaylist(Playlist $playlist)
+    {
+        $this->playlists->removeElement($playlist);
+    }
+
+    /**
+     * Get playlists
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPlaylists()
+    {
+        return $this->playlists;
+    }
+
+    /**
+     * Set published
+     *
+     * @param boolean $published
+     *
+     * @return Song
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return boolean
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     *
+     * @return Song
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return Song
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

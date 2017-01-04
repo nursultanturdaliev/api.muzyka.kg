@@ -30,7 +30,7 @@ class LoadUserData implements FixtureInterface, OrderedFixtureInterface
         $userAdmin->setSuperAdmin(true);
         $userAdmin->setEnabled(true);
         $userAdmin->setEmail('nursultan2010@gmail.com');
-        $userAdmin->setPassword('admin');
+        $userAdmin->setPlainPassword('admin');
 
         $manager->persist($userAdmin);
         $manager->flush();
@@ -45,4 +45,6 @@ class LoadUserData implements FixtureInterface, OrderedFixtureInterface
     {
         return 0;
     }
+
+
 }
