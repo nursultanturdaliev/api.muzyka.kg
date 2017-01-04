@@ -40,9 +40,9 @@ class SongController extends Controller
     }
 
     /**
-     * @Route("/all",name="app_api_song_all")
+     * @Route("/",name="app_api_song_index")
      */
-    public function jsonAction()
+    public function indexAction()
     {
         $songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
         return new JsonResponse($songsAsArray);
