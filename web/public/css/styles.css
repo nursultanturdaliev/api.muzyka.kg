@@ -40,3 +40,9 @@
 .song-list .list-group-item:hover{
     cursor: pointer;
 }
+.song-filter-form{
+    margin: 16px 16px 16px 0px;
+}
+.song-filter-search{
+    padding-right:0;
+}
