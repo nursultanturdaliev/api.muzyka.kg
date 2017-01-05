@@ -5,13 +5,15 @@
 .song-index {
     float: left;
     font-weight: 700;
-    width: 30px;
-    margin-top: 5px;
+    width: 20px;
+    margin-top: 10px;
+    margin-right: 5px;
 }
 
 .song-thumb {
     float: left;
     margin-right: 10px;
+    margin-top: 5px;
 }
 
 .song-artist-name {
