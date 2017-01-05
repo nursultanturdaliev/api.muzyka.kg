@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SongController extends Controller
 {
     /**
-     * @Route("/")
+     * @Route("/", name="app_song_index")
      * @Template()
      * @param Request $request
      * @return Response
