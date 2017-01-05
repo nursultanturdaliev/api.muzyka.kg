@@ -26,6 +26,10 @@ class SongAdmin extends AbstractAdmin
         $form->add('duration');
         $form->add('oldUrl');
         $form->add('lyrics');
+        $form->add('genres','sonata_type_model',array(
+            'property'=>'name',
+            'multiple'=>true
+        ));
     }
 
     protected function configureListFields(ListMapper $list)

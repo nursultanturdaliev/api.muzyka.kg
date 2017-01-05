@@ -5,7 +5,7 @@
 .song-index {
     float: left;
     font-weight: 700;
-    width: 20px;
+    min-width: 20px;
     margin-top: 10px;
     margin-right: 5px;
 }
@@ -21,6 +21,9 @@
 }
 
 .song-title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     font-weight: 600;
 }
 
