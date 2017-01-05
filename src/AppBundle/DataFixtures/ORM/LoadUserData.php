@@ -8,8 +8,6 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-
-use AppBundle\Entity\Song;
 use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

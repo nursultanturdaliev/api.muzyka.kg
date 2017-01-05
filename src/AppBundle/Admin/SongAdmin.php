@@ -10,6 +10,7 @@ namespace AppBundle\Admin;
 
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
@@ -37,6 +38,14 @@ class SongAdmin extends AbstractAdmin
         $list->add('updatedAt');
         $list->add('likes');
         $list->add('countDownload');
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+        $filter->add('title');
+        $filter->add('artist','doctrine_orm_model_autocomplete',array(),null,array(
+            'property'=>'name'
+        ));
     }
 
 

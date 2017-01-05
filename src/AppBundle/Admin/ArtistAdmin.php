@@ -10,6 +10,7 @@ namespace AppBundle\Admin;
 
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 
@@ -19,9 +20,12 @@ class ArtistAdmin extends AbstractAdmin
     {
         $form->add('name');
         $form->add('lastname');
-        $form->add('birthday');
-        $form->add('gender','choice',array(
-            'choices'=>array('M'=>'Male','F'=>'Female')
+        $form->add('birthday', 'date', array(
+            'years' => range(1800, 2016),
+            'empty_data' => new \DateTime('1990-01-01')
+        ));
+        $form->add('gender', 'choice', array(
+            'choices' => array('M' => 'Male', 'F' => 'Female')
         ));
     }
 
@@ -33,5 +37,11 @@ class ArtistAdmin extends AbstractAdmin
         $list->add('birthday');
         $list->add('gender');
     }
+
+    protected function configureDatagridFilters(DatagridMapper $filter)
+    {
+        $filter->add('name');
+    }
+
 
 }
