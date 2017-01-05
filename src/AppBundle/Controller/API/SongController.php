@@ -61,4 +61,22 @@ class SongController extends Controller
         $songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
         return new JsonResponse($songsAsArray);
     }
+
+    /**
+     * @Route("/top/{offset}", name="app_api_song_top", options={"expose"=true}, requirements={"offset"="\d+"})
+     * @param $offset
+     * @return JsonResponse
+     */
+    public function topAction($offset)
+    {
+        $songs = $this->getDoctrine()->getRepository('AppBundle:Song')->createQueryBuilder('song')
+            ->setMaxResults(50)
+            ->setFirstResult($offset)
+            ->orderBy('song.countPlay')
+            ->getQuery()
+            ->execute();
+        return new Response($this->get('jms_serializer')->serialize($songs, 'json'), 200, array(
+            'Content-Type' => 'application/json;  charset=UTF-8'
+        ));
+    }
 }

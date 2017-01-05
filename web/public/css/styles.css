@@ -1,3 +1,42 @@
 .content {
     margin-top: 60px;
 }
+
+.song-index {
+    float: left;
+    font-weight: 700;
+    width: 30px;
+    margin-top: 5px;
+}
+
+.song-thumb {
+    float: left;
+    margin-right: 10px;
+}
+
+.song-artist-name {
+    color: grey;
+}
+
+.song-title {
+    font-weight: 600;
+}
+
+.list-group.hover > .list-group-item:hover {
+    background-color: #e7e7e7;
+}
+
+.fa-1-5x {
+    font-size: 1.5em;
+}
+
+.song-control {
+    margin-top: 10px;
+}
+
+.list-group.hover > .list-group-item:hover .hide {
+    display: block !important;
+}
+.song-list .list-group-item:hover{
+    cursor: pointer;
+}

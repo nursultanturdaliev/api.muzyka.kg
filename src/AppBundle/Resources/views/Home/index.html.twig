@@ -1,3 +1,95 @@
 {% extends '::base.html.twig' %}
 {% block body %}
+    <div id="home-index">
+        {% verbatim %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8">
+                <ul class="list-group hover song-list">
+                  <li class="list-group-item" v-for="(song,index) in songs" @click="play(song)">
+                    <div class="row">
+
+                  <div class="col-sm-10 song-content">
+                    <span class="song-index">
+                        {{index + 1}}
+                    </span>
+                    <img src="http://placehold.it/30x30" class="song-thumb">
+                        <div class="song-artist-name">{{song.artist.name}}</div>
+                        <div class="song-title">{{song.title}}</div>
+                    </div>
+                    <div class="col-sm-2 song-control">
+                        <i class="fa fa-1-5x hide" v-bind:class="{'fa-pause': song.playing,'fa-play': !song.playing}"></i>
+                    </div>
+                    </div>
+                  </li>
+                  <li class="list-group-item text-center" v-if="loadingTopSongs">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                  </li>
+                </ul>
+            </div>
+            <div class="col-ms-4">
+
+            </div>
+        </div>
+    </div>
+
+{% endverbatim %}
+        {{ include('AppBundle:Home:_player.html.twig') }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        var homeIndex = new Vue({
+            el: '#home-index',
+            data: {
+                offset: 0,
+                songs: [],
+                song: {},
+                loadingTopSongs: true,
+                audio: new Audio()
+            },
+            created: function () {
+                this.getTopSongs()
+            },
+            mounted: function () {
+                this.configureToLoadWhenReachedBottom();
+            },
+            watch: {
+                offset: function () {
+                    this.loadingTopSongs = false;
+                }
+            },
+            methods: {
+                getTopSongs: function () {
+                    var self = this;
+                    self.loadingTopSongs = true;
+                    axios.get(Routing.generate('app_api_song_top', {'offset': self.offset}))
+                            .then(function (response) {
+                                response.data.forEach(function (song) {
+                                    self.songs.push(song);
+                                    self.offset = self.songs.length;
+                                })
+                            });
+                },
+                configureToLoadWhenReachedBottom: function () {
+                    var self = this;
+                    $(window).scroll(function () {
+                        if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                            if (!self.loadingTopSongs) {
+                                self.getTopSongs();
+                            }
+                        }
+                    });
+                },
+                play: function (song) {
+                    this.song = song;
+                    this.song.playing = !this.song.playing;
+                    this.audio.src = song.old_url;
+                    this.audio.play();
+                }
+            }
+        });
+    </script>
 {% endblock %}

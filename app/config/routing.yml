@@ -35,3 +35,5 @@ sonata_user_admin_security:
 sonata_user_admin_resetting:
     resource: '@SonataUserBundle/Resources/config/routing/admin_resetting.xml'
     prefix: /admin/resetting
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
