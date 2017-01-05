@@ -4,6 +4,11 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Accessor;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Annotation\Type;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -12,11 +17,13 @@ use Ramsey\Uuid\Uuid;
  * @ORM\Table(name="app_songs")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SongRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @ExclusionPolicy("None")
  */
 class Song
 {
     /**
      * @ORM\Column(name="uuid", type="uuid")
+     * @Type("string")
      */
     private $uuid;
 
@@ -113,7 +120,7 @@ class Song
     /**
      * @var string
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Artist",inversedBy="songs")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Artist", inversedBy="songs")
      */
     private $artist;
 
@@ -124,6 +131,7 @@ class Song
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Playlist", mappedBy="songs")
+     * @Exclude()
      */
     private $playlists;
 

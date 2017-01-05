@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @Route("/api/song")
@@ -37,6 +38,19 @@ class SongController extends Controller
         $response->headers->set('connection', 'keep-alive');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $song->getArtist() . ' - ' . $song->getTitle() . '.mp3');
         return $response;
+    }
+
+    /**
+     * @Route("/{uuid}", name="app_api_song_get")
+     * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
+     * @param Song $song
+     * @return JsonResponse
+     */
+    public function getAction(Song $song)
+    {
+        return new Response($this->get('jms_serializer')->serialize($song, 'json'), 200, array(
+            'Content-Type' => 'application/json;  charset=UTF-8'
+        ));
     }
 
     /**

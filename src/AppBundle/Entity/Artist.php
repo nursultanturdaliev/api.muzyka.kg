@@ -4,12 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
  * Artist
  *
  * @ORM\Table(name="app_artists")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtistRepository")
+ * @ExclusionPolicy("None")
  */
 class Artist
 {
@@ -72,7 +76,8 @@ class Artist
     private $biography;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Artist",mappedBy="artist")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Song", mappedBy="artist", cascade={"persist"}, fetch="EAGER")
+     *
      */
     private $songs;
 
@@ -266,11 +271,11 @@ class Artist
     /**
      * Add song
      *
-     * @param \AppBundle\Entity\Artist $song
+     * @param Artist $song
      *
      * @return Artist
      */
-    public function addSong(\AppBundle\Entity\Artist $song)
+    public function addSong(Artist $song)
     {
         $this->songs[] = $song;
 
@@ -280,9 +285,9 @@ class Artist
     /**
      * Remove song
      *
-     * @param \AppBundle\Entity\Artist $song
+     * @param Artist $song
      */
-    public function removeSong(\AppBundle\Entity\Artist $song)
+    public function removeSong(Artist $song)
     {
         $this->songs->removeElement($song);
     }
