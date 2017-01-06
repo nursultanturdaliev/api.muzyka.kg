@@ -18,6 +18,9 @@
 
 .song-artist-name {
     color: grey;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .song-title {
