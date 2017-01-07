@@ -7137,7 +7137,7 @@ class MusicCommand extends ContainerAwareCommand
     {
         $this->setName('app:music:rename')
             ->setDescription('Renames and moves files')
-            ->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Directory from')
+            ->addOption('directory', null, InputOption::VALUE_REQUIRED, 'Directory from');
 
     }
 
@@ -7160,7 +7160,7 @@ class MusicCommand extends ContainerAwareCommand
                 } else {
                     $counter++;
                     if (file_exists($directory . '/' . $oldFileName)) {
-                        rename($directory . '/' . $oldFileName, $directory . '/' . $newFileName)
+                        rename($directory . '/' . $oldFileName, $directory . '/' . $newFileName);
                     }
                 }
             }
