@@ -9,6 +9,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Song;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -23,9 +24,30 @@ use Symfony\Component\HttpFoundation\Response;
 class SongController extends Controller
 {
     /**
-     * @Route("/{id}/stream",name="app_api_song_stream")
-     * @ParamConverter("song", class="AppBundle:Song", options={"id"="id"})
+     * @Route("/",name="app_api_song_index")
      * @Method("GET")
+     * @ApiDoc(
+     *     section="Song",
+     *     resource=true,
+     *     description="Get all songs"
+     * )
+     */
+    public function indexAction()
+    {
+        $songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
+        return new JsonResponse($songsAsArray);
+    }
+
+    /**
+     * @Route("/{uuid}/stream",name="app_api_song_stream")
+     * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
+     * @Method("GET")
+     * @ApiDoc(
+     *     resource=true,
+     *     section="Song",
+     *     description="Stream song by uuid",
+     *     requirements={{"name"="uuid", "dataType"="string", "requirement"="\w+", "description"="Universal unique id of a song"}}
+     * )
      * @param Song $song
      * @return BinaryFileResponse
      * @throws \Exception
@@ -42,9 +64,18 @@ class SongController extends Controller
 
     /**
      * @Route("/{uuid}", name="app_api_song_get")
+     * @Method("GET")
      * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
      * @param Song $song
      * @return JsonResponse
+     * @ApiDoc(
+     *     section="Song",
+     *     resource=true,
+     *     description="Get song by uuid",
+     *     requirements={
+     *          {"name"="uuid", "dataType"="string", "requirement"="\w+", "required"=true, "description"="Universal unique identity"}
+     *     }
+     * )
      */
     public function getAction(Song $song)
     {
@@ -54,16 +85,14 @@ class SongController extends Controller
     }
 
     /**
-     * @Route("/",name="app_api_song_index")
-     */
-    public function indexAction()
-    {
-        $songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
-        return new JsonResponse($songsAsArray);
-    }
-
-    /**
      * @Route("/top/{offset}", name="app_api_song_top", options={"expose"=true}, requirements={"offset"="\d+"})
+     * @Method("GET")
+     * @ApiDoc(
+     *     resource=true,
+     *     section="Song",
+     *     description="Get songs by ranking, using offset",
+     *     requirements={{"name"="offset", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Offset"}}
+     * )
      * @param $offset
      * @return JsonResponse
      */

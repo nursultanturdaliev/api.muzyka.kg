@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * Genre
  *
  * @ORM\Table(name="app_genres")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\GenreRepository")
+ * @ExclusionPolicy("None")
  */
 class Genre
 {
@@ -30,6 +33,7 @@ class Genre
 
     /**
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Song", mappedBy="genres")
+     * @Exclude()
      */
     private $songs;
 
@@ -66,6 +70,7 @@ class Genre
     {
         return $this->name;
     }
+
     /**
      * Constructor
      */
