@@ -71128,7 +71128,7 @@ class LoadSongData implements FixtureInterface, OrderedFixtureInterface
             "title" => "Упадёшь не раз",
             "url" => "http://176.126.167.164/track/download/5263"
         ]];
-        private $artistsHash = [];
+    private $artistsHash = [];
     /**
      * Load data fixtures with the passed EntityManager
      *
