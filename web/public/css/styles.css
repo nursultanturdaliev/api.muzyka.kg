@@ -42,15 +42,26 @@
     margin-top: 10px;
 }
 
+.song-control .fa {
+    position: absolute;
+    right: 60px;
+}
+.song-active{
+    background-color: #d9edf7 !important;
+}
+
 .list-group.hover > .list-group-item:hover .hide {
     display: block !important;
 }
-.song-list .list-group-item:hover{
+
+.song-list .list-group-item:hover {
     cursor: pointer;
 }
-.song-filter-form{
+
+.song-filter-form {
     margin: 16px 16px 16px 0px;
 }
-.song-filter-search{
-    padding-right:0;
+
+.song-filter-search {
+    padding-right: 0;
 }

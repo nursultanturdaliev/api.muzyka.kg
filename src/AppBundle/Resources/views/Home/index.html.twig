@@ -20,22 +20,23 @@
                     </div>
                 </div>
                 <ul class="list-group hover song-list">
-                  <li class="list-group-item" v-for="(song,index) in songs" @click="play(song)">
+                  <li class="list-group-item" v-for="(song,index) in songs" @click="playPause(song)" :class="{'song-active':song.playing}">
                     <div class="row">
-
-                  <div class="col-xs-10 song-content">
-                    <span class="song-index">
-                        {{index + 1}}
-                    </span>
-                    <img src="http://placehold.it/30x30" class="song-thumb">
-                        <div class="">
-                        <div class="song-artist-name">{{song.artist.name}}</div>
-                        <div class="song-title">{{song.title}}</div>
-                    </div>
-                    </div>
-                    <div class="col-xs-2 song-control">
-                        <i class="fa fa-1-5x hide" v-bind:class="{'fa-pause': song.playing,'fa-play': !song.playing}"></i>
-                    </div>
+                      <div class="col-xs-10 song-content">
+                        <span class="song-index">
+                            {{index + 1}}
+                        </span>
+                        <img src="http://placehold.it/30x30" class="song-thumb">
+                            <div class="">
+                            <div class="song-artist-name">{{song.artist.name}}</div>
+                            <div class="song-title">{{song.title}}</div>
+                        </div>
+                        </div>
+                        <div class="col-xs-2 song-control">
+                            <i class="fa fa-1-5x hide fa-play" v-if="song.paused"></i>
+                            <i class="fa fa-1-5x hide fa-pause" v-if="song.playing"></i>
+                            <span class="pull-right">{{song.duration}}</span>
+                        </div>
                     </div>
                   </li>
                   <li class="list-group-item text-center" v-if="loadingTopSongs">
@@ -63,11 +64,15 @@
                 song: {},
                 loadingTopSongs: true,
                 audio: new Audio(),
+                interval: null,
                 searchForm: {
                     orderBy: null
                 },
                 search: {
                     orderBy: [{title: 'Топ 50'}, {title: 'Жаңы ырлар'}]
+                },
+                player: {
+                    progress: 0,
                 }
             },
             created: function () {
@@ -88,9 +93,14 @@
                     axios.get(Routing.generate('app_api_song_top', {'offset': self.offset}))
                             .then(function (response) {
                                 response.data.forEach(function (song) {
+                                    song.paused = true;
+                                    song.playing = false;
                                     self.songs.push(song);
                                     self.offset = self.songs.length;
-                                })
+                                });
+                                if (!self.song.old_url) {
+                                    self.song = self.songs[0];
+                                }
                             });
                 },
                 configureToLoadWhenReachedBottom: function () {
@@ -103,11 +113,68 @@
                         }
                     });
                 },
-                play: function (song) {
+                playPause: function (song) {
+                    if (this.song !== song) {
+                        this.resetLastSongControls();
+                    }
                     this.song = song;
+                    this.toggleControls();
+
+                    if (this.song.playing) {
+                        this.audio.src = song.old_url;
+                        this.audio.play();
+                        this.configureInterval();
+                    } else {
+                        this.audio.pause();
+                        window.clearInterval(this.interval);
+                    }
+                },
+                configureInterval: function () {
+                    this.interval = window.setInterval(this.intervalCallBack, 500);
+                },
+                intervalCallBack: function () {
+                    this.updateProgress();
+                    this.playNextIfEnded();
+
+                },
+                updateProgress: function () {
+                    var maxLength = $('.playbackTimeline__progressWrapper')[0].offsetWidth;
+                    this.player.progress = this.audio.currentTime * maxLength / this.audio.duration;
+                },
+                playNextIfEnded: function () {
+                    if (this.audio.ended) {
+                        this.playPause(this.getNextSong());
+                    }
+                },
+                getNextSong: function () {
+                    var currentSongIndex = this.songs.indexOf(this.song);
+                    currentSongIndex = (++currentSongIndex) % this.songs.length;
+                    return this.songs[currentSongIndex];
+                },
+                getPreviousSong: function () {
+                    var currentSongIndex = this.songs.indexOf(this.song);
+                    currentSongIndex = (--currentSongIndex) % this.songs.length;
+                    if (currentSongIndex < 0) {
+                        currentSongIndex = this.songs.length - 1;
+                    }
+                    return this.songs[currentSongIndex];
+                },
+                playNextSong: function () {
+                    this.playPause(this.getNextSong());
+                },
+                playPreviousSong: function () {
+                    this.playPause(this.getPreviousSong());
+                },
+                toggleControls: function () {
                     this.song.playing = !this.song.playing;
-                    this.audio.src = song.old_url;
-                    this.audio.play();
+                    this.song.paused = !this.song.paused;
+                },
+                resetLastSongControls: function () {
+                    this.song.paused = true;
+                    this.song.playing = false;
+                },
+                pause: function () {
+                    this.audio.pause();
                 }
             }
         });

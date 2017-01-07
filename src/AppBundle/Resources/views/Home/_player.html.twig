@@ -4,12 +4,12 @@
         <div class="playControls__wrapper l-container l-fullwidth">
             <div class="playControls__bg"></div>
             <div class="playControls__elements">
-                <button class="skipControl sc-ir playControls__icon playControls__prev skipControl__previous">
+                <button class="skipControl sc-ir playControls__icon playControls__prev skipControl__previous" @click="playPreviousSong()">
                 </button>
                 <button class="playControl sc-ir playControls__icon playControls__play playing" tabindex=""
-                        title="Pause current">
+                        title="Pause current" @click="pause()">
                 </button>
-                <button class="skipControl sc-ir playControls__icon playControls__next skipControl__next" tabindex="">
+                <button class="skipControl sc-ir playControls__icon playControls__next skipControl__next" tabindex="" @click="playNextSong()">
                     Skip to next
                 </button>
 
@@ -24,8 +24,8 @@
                         <div class="playbackTimeline__progressWrapper" role="progressbar" aria-valuemax="199802"
                              aria-valuenow="47008.26" aria-valuetext="47 seconds">
                             <div class="playbackTimeline__progressBackground"></div>
-                            <div class="playbackTimeline__progressBar" style="width: 112px;"></div>
-                            <div class="playbackTimeline__progressHandle sc-ir" style="left: 112px;"></div>
+                            <div class="playbackTimeline__progressBar" :style="{width: player.progress + 'px'}"></div>
+                            <div class="playbackTimeline__progressHandle sc-ir" :style="{width: player.progress + 'px'}"></div>
                         </div>
                         <div class="playbackTimeline__duration">
                             <span aria-hidden="true"></span>
