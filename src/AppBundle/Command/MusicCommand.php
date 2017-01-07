@@ -7147,7 +7147,7 @@ class MusicCommand extends ContainerAwareCommand
         $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
         $musics = $manager->getRepository('AppBundle:Song')->findAll();
         $hash = $this->getMusicsAsHash();
-        $counter++;
+        $counter = 0;
         foreach ($musics as $music) {
             $key = $music->getArtist()->getName() . '-' . $music->getTitle();
             if (array_key_exists($key, $hash)) {
@@ -7165,6 +7165,7 @@ class MusicCommand extends ContainerAwareCommand
                 }
             }
         }
+        $output->writeln("Number of files renamed:" . $counter);
     }
 
     private function getMusicsAsHash()
