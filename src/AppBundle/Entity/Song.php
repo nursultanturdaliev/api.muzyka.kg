@@ -7,8 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Accessor;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\MaxDepth;
 use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\VirtualProperty;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -17,7 +19,7 @@ use Ramsey\Uuid\Uuid;
  * @ORM\Table(name="app_songs")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SongRepository")
  * @ORM\HasLifecycleCallbacks()
- * @ExclusionPolicy("None")
+ * @ExclusionPolicy("All")
  */
 class Song
 {
@@ -34,6 +36,7 @@ class Song
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose()
      */
     private $id;
 
@@ -41,6 +44,7 @@ class Song
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Expose()
      */
     private $title;
 
@@ -48,6 +52,7 @@ class Song
      * @var string
      *
      * @ORM\Column(name="duration", type="string", length=255)
+     * @Expose()
      */
     private $duration;
 
@@ -118,7 +123,7 @@ class Song
     private $updatedAt;
 
     /**
-     * @var string
+     * @var Artist
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Artist", inversedBy="songs")
      */
@@ -134,6 +139,16 @@ class Song
      * @Exclude()
      */
     private $playlists;
+
+    /**
+     * @VirtualProperty()
+     * @Type("integer")
+     * @return int
+     */
+    public function getArtistId()
+    {
+        return $this->artist->getId();
+    }
 
     /**
      * Set title

@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api/artist")
  */
-class ArtistController extends Controller
+class ArtistController extends ApiController
 {
     /**
      * @Route("/", name="app_api_artist_index")
@@ -34,11 +34,7 @@ class ArtistController extends Controller
     public function indexAction()
     {
         $artists = $this->getDoctrine()->getRepository('AppBundle:Artist')->findAll();
-        return new Response(
-            $this->get('jms_serializer')->serialize($artists,'json', 200, array(
-                'ContentType'=>'application/json; charset=UTF-8'
-            ))
-        );
+        return $this->prepareJsonResponse($artists);
     }
 
     /**
@@ -49,15 +45,31 @@ class ArtistController extends Controller
      *     resource=true,
      *     section="Artist",
      *     description="Get artist by id",
-     *     requirements={{"name"="id", "requirement"="\d+", "description"="Artist ID","required"="true", "dataType"="integer"}}
+     *     requirements={{"name"="id", "requirement"="\d+", "description"="Artist ID","required"=true, "dataType"="integer"}}
      * )
      * @param Artist $artist
      * @return JsonResponse
      */
     public function getAction(Artist $artist)
     {
-        return new Response($this->get('jms_serializer')->serialize($artist, 'json'), 200, array(
-            'Content-Type' => 'application/json;  charset=UTF-8'
-        ));
+        return $this->prepareJsonResponse($artist);
+    }
+
+    /**
+     * @Route("/{id}/songs", name="app_api_artist_songs", requirements={"id"="\d+"}, options={"expose"=true})
+     * @ParamConverter("artist", class="AppBundle:Artist")
+     * @Method("GET")
+     * @ApiDoc(
+     *     resource=true,
+     *     section="Artist",
+     *     description="Get Songs of an artist",
+     *     requirements={{"name"="id", "requirement"="\d+", "description"="Artist ID","required"=true, "dataType"="integer"}}
+     * )
+     * @param Artist $artist
+     * @return Response
+     */
+    public function artistSongsAction(Artist $artist)
+    {
+        return $this->prepareJsonResponse($artist->getSongs());
     }
 }

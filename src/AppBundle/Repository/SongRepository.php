@@ -16,4 +16,14 @@ class SongRepository extends EntityRepository
     {
         return $this->createQueryBuilder('s');
     }
+
+    public function getInfo()
+    {
+        return array(
+            'count' => $this->createQueryBuilder('song')
+                ->select('count(song.id)')
+                ->getQuery()
+                ->getSingleScalarResult()
+        );
+    }
 }

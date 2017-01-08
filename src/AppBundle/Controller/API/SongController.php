@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api/song")
  */
-class SongController extends Controller
+class SongController extends ApiController
 {
     /**
      * @Route("/",name="app_api_song_index")
@@ -32,10 +32,47 @@ class SongController extends Controller
      *     description="Get all songs"
      * )
      */
-    public function indexAction()
+    public function allAction()
     {
         $songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
         return new JsonResponse($songsAsArray);
+    }
+
+    /**
+     * @Route("/info", name="app_api_song_info")
+     * @Method("GET")
+     * @ApiDoc(
+     *     resource=true,
+     *     section="Song",
+     *     description="Statistical information about songs"
+     * )
+     */
+    public function infoAction()
+    {
+        $info = $this->getDoctrine()->getRepository('AppBundle:Song')->getInfo();
+        return new JsonResponse($info);
+    }
+
+    /**
+     * @Route("/{offset}/{limit}", name="app_api_song_all_by_offset", requirements={"offset"="\d+", "limit"="\d+"})
+     * @Method("GET")
+     * @ApiDoc(
+     *     section="Song",
+     *     resource=true,
+     *     description="Gets songs by {offset} and {limit}",
+     *     requirements={
+     *          {"name"="offset", "dataType"="integer", "requirement"="\d+", "description"="Offset"},
+     *          {"name"="limit", "dataType"="integer", "requirement"="\d+", "description"="Limit"}
+     *     }
+     * )
+     * @param $offset
+     * @param $limit
+     * @return Response
+     */
+    public function allByOffsetAction($offset, $limit)
+    {
+        $songs = $this->getDoctrine()->getRepository('AppBundle:Song')->findBy(array(), null, $limit, $offset);
+        return $this->prepareJsonResponse($songs);
     }
 
     /**
@@ -56,7 +93,7 @@ class SongController extends Controller
     {
         $file = $this->getParameter('music_path') . '/' . $song->getUuid();
         $response = new BinaryFileResponse($file, 200);
-        $response->headers->set('Content-type', 'application/octet-stream');
+        $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('connection', 'keep-alive');
         $response->headers->set('Content-Disposition', 'attachment; filename=' . $song->getArtist() . ' - ' . $song->getTitle() . '.mp3');
         return $response;
@@ -79,9 +116,7 @@ class SongController extends Controller
      */
     public function getAction(Song $song)
     {
-        return new Response($this->get('jms_serializer')->serialize($song, 'json'), 200, array(
-            'Content-Type' => 'application/json;  charset=UTF-8'
-        ));
+        return $this->prepareJsonResponse($song);
     }
 
     /**
@@ -104,8 +139,6 @@ class SongController extends Controller
             ->orderBy('song.countPlay')
             ->getQuery()
             ->execute();
-        return new Response($this->get('jms_serializer')->serialize($songs, 'json'), 200, array(
-            'Content-Type' => 'application/json;  charset=UTF-8'
-        ));
+        return $this->prepareJsonResponse($songs);
     }
 }

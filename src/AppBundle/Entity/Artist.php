@@ -13,7 +13,7 @@ use JMS\Serializer\Annotation\Expose;
  *
  * @ORM\Table(name="app_artists")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtistRepository")
- * @ExclusionPolicy("None")
+ * @ExclusionPolicy("All")
  */
 class Artist
 {
@@ -23,6 +23,7 @@ class Artist
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Expose()
      */
     private $id;
 
@@ -30,6 +31,7 @@ class Artist
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100)
+     * @Expose()
      */
     private $name;
 
@@ -37,6 +39,7 @@ class Artist
      * @var string
      *
      * @ORM\Column(name="lastname", type="string", length=100, nullable=true)
+     * @Expose()
      */
     private $lastname;
 
@@ -51,6 +54,7 @@ class Artist
      * @var string
      *
      * @ORM\Column(name="gender", type="string", length=1, nullable=true)
+     * @Expose()
      */
     private $gender;
 
@@ -76,7 +80,7 @@ class Artist
     private $biography;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Song", mappedBy="artist", cascade={"persist"}, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Song", mappedBy="artist", cascade={"persist"}, fetch="LAZY")
      *
      */
     private $songs;

@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @Route("/api/genre")
  */
-class GenreController extends Controller
+class GenreController extends ApiController
 {
     /**
      * @Route("/", name="app_api_genre_index")
@@ -34,9 +34,7 @@ class GenreController extends Controller
     public function indexAction()
     {
         $genres = $this->getDoctrine()->getRepository('AppBundle:Genre')->findAll();
-        return new Response($this->get('jms_serializer')->serialize($genres, 'json'), 200, array(
-            'Content-Type' => 'application/json;  charset=UTF-8'
-        ));
+        return $this->prepareJsonResponse($genres);
     }
 
     /**
@@ -47,7 +45,7 @@ class GenreController extends Controller
      *     section="Genre",
      *     resource=true,
      *     description="Get songs by genres",
-     *     requirements={{"name"="id", "dataType"="integer", "requirement"="\d+", "required"=true, "description"="Genre ID"}}
+     *     requirements={{"name"="id","description"="Genre ID", "requirement"="\d+", "required"=true, "dataType"="integer"}}
      * )
      * @param Genre $genre
      * @return Response
@@ -55,8 +53,6 @@ class GenreController extends Controller
     public function genreSongsAction(Genre $genre)
     {
         $songs = $genre->getSongs();
-        return new Response($this->get('jms_serializer')->serialize($songs, 'json'), 200, array(
-            'Content-Type' => 'application/json; charset=UTF-8'
-        ));
+        return $this->prepareJsonResponse($songs);
     }
 }
