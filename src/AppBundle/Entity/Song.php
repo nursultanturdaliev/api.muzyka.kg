@@ -26,6 +26,7 @@ class Song
     /**
      * @ORM\Column(name="uuid", type="uuid")
      * @Type("string")
+     * @Expose()
      */
     private $uuid;
 
