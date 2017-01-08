@@ -38,6 +38,44 @@ class ArtistController extends ApiController
     }
 
     /**
+     * @Route("/info", name="app_api_artist_info")
+     * @Method("GET")
+     * @ApiDoc(
+     *     resource=true,
+     *     section="Artist",
+     *     description="Statistical information about artists"
+     * )
+     */
+    public function infoAction()
+    {
+        $info = $this->getDoctrine()->getRepository('AppBundle:Artist')->getInfo();
+        return new JsonResponse($info);
+    }
+
+    /**
+     * @Route("/{offset}/{limit}", name="app_api_artist_by_offset", requirements={"offset"="\d+", "limit"="\d+"})
+     * @Method("GET")
+     * @ApiDoc(
+     *     section="Song",
+     *     resource=true,
+     *     description="Gets artists by {offset} and {limit}",
+     *     requirements={
+     *          {"name"="offset", "dataType"="integer", "requirement"="\d+", "description"="Offset"},
+     *          {"name"="limit", "dataType"="integer", "requirement"="\d+", "description"="Limit"}
+     *     }
+     * )
+     * @param $offset
+     * @param $limit
+     * @return Response
+     */
+    public function byOffsetAction($offset, $limit)
+    {
+        $artists = $this->getDoctrine()->getRepository('AppBundle:Artist')->findBy(array(), null, $limit, $offset);
+        return $this->prepareJsonResponse($artists);
+    }
+
+
+    /**
      * @Route("/{id}", name="app_api_artist_get", requirements={"id"="\d+"}, options={"expose"=true})
      * @ParamConverter("artist", class="AppBundle:Artist")
      * @Method("GET")
