@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\ExclusionPolicy;
@@ -76,17 +77,17 @@ class Genre
      */
     public function __construct()
     {
-        $this->songs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->songs = new ArrayCollection();
     }
 
     /**
      * Add song
      *
-     * @param \AppBundle\Entity\Song $song
+     * @param Song $song
      *
      * @return Genre
      */
-    public function addSong(\AppBundle\Entity\Song $song)
+    public function addSong(Song $song)
     {
         $this->songs[] = $song;
 
@@ -96,9 +97,9 @@ class Genre
     /**
      * Remove song
      *
-     * @param \AppBundle\Entity\Song $song
+     * @param Song $song
      */
-    public function removeSong(\AppBundle\Entity\Song $song)
+    public function removeSong(Song $song)
     {
         $this->songs->removeElement($song);
     }

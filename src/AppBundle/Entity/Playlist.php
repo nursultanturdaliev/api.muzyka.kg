@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Application\Sonata\UserBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -122,11 +123,11 @@ class Playlist
     /**
      * Add song
      *
-     * @param \AppBundle\Entity\Song $song
+     * @param Song $song
      *
      * @return Playlist
      */
-    public function addSong(\AppBundle\Entity\Song $song)
+    public function addSong(Song $song)
     {
         $this->songs[] = $song;
         $song->addPlaylist($this);
@@ -137,9 +138,9 @@ class Playlist
     /**
      * Remove song
      *
-     * @param \AppBundle\Entity\Song $song
+     * @param Song $song
      */
-    public function removeSong(\AppBundle\Entity\Song $song)
+    public function removeSong(Song $song)
     {
         $this->songs->removeElement($song);
     }
@@ -197,11 +198,11 @@ class Playlist
     /**
      * Set user
      *
-     * @param \Application\Sonata\UserBundle\Entity\User $user
+     * @param User $user
      *
      * @return Playlist
      */
-    public function setUser(\Application\Sonata\UserBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -211,7 +212,7 @@ class Playlist
     /**
      * Get user
      *
-     * @return \Application\Sonata\UserBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
