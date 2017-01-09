@@ -8,34 +8,20 @@
 
 namespace AppBundle\Tests\Api\Controller;
 
-
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class GenreControllerTest extends WebTestCase
+class GenreControllerTest extends AbstractBaseTestCase
 {
     public function testIndexAction()
     {
         $client = static::createClient();
         $client->request('GET', '/api/genre/');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $this->checkJSONResponse($client);
     }
-
     public function testArtistSongsAction()
     {
         $client = static::createClient();
         $client->request('GET', '/api/genre/5/songs');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $this->checkJSONResponse($client);
     }
 }

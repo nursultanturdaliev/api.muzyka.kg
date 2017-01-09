@@ -8,22 +8,14 @@
 
 namespace AppBundle\Tests\Api\Controller;
 
-
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class ArtistControllerTest extends WebTestCase
+class ArtistControllerTest extends AbstractBaseTestCase
 {
     public function testIndexAction()
     {
         $client = static::createClient();
         $client->request('GET', '/api/artist/');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $this->checkJSONResponse($client);
     }
 
     public function testInfoAction()
@@ -31,12 +23,7 @@ class ArtistControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/api/artist/info');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $this->checkJSONResponse($client);
 
     }
 
@@ -44,35 +31,20 @@ class ArtistControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request('GET', '/api/artist/0/100');
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $this->checkJSONResponse($client);
     }
 
     public function testGetAction()
     {
         $client = static::createClient();
-        $client->request('GET','/api/artist/2360');
-        $this->assertSame(200,$client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $client->request('GET', '/api/artist/2360');
+        $this->checkJSONResponse($client);
     }
 
     public function testArtistSongsAction()
     {
         $client = static::createClient();
-        $client->request('GET','/api/artist/2360/songs');
-        $this->assertSame(200,$client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $client->request('GET', '/api/artist/2360/songs');
+        $this->checkJSONResponse($client);
     }
 }

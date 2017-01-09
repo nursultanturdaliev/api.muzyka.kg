@@ -8,22 +8,14 @@
 
 namespace AppBundle\Tests\Api\Controller;
 
-
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
-class SongControllerTest extends WebTestCase
+class SongControllerTest extends AbstractBaseTestCase
 {
     public function testIndexAction()
     {
         $client = static::createClient();
         $client->request('GET', '/api/song/');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $this->checkJSONResponse($client);
     }
 
     public function testInfoAction()
@@ -31,12 +23,7 @@ class SongControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/api/song/info');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $this->checkJSONResponse($client);
     }
 
     public function testAllByOffsetAction()
@@ -44,12 +31,7 @@ class SongControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/api/song/100/100');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
-        $this->assertNotEmpty($client->getResponse()->getContent());
+        $this->checkJSONResponse($client);
     }
 
     public function testStreamAction()
@@ -69,11 +51,7 @@ class SongControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/api/song/d2d852bc-939b-4dfa-86c2-d8232a0dae62');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
+        $this->checkJSONResponse($client);
     }
 
     public function testTopAction()
@@ -81,10 +59,6 @@ class SongControllerTest extends WebTestCase
         $client = static::createClient();
         $client->request('GET', '/api/song/top/10');
 
-        $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains(
-            'Content-Type',
-            'application/json'
-        ));
+        $this->checkJSONResponse($client);
     }
 }
