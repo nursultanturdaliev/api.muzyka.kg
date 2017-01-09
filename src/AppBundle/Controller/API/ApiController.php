@@ -17,7 +17,7 @@ class ApiController extends Controller
     protected function prepareJsonResponse($object)
     {
         return new Response($this->get('jms_serializer')->serialize($object, 'json'), 200, array(
-            'Content-Type' => 'application/json;  charset=UTF-8'
+            'Content-Type' => 'application/json'
         ));
     }
 }

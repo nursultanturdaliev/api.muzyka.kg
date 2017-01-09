@@ -31,7 +31,7 @@ class SongController extends ApiController
      *     description="Get all songs"
      * )
      */
-    public function allAction()
+    public function indexAction()
     {
         $songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
         return new JsonResponse($songsAsArray);

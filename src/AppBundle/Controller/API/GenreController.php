@@ -51,7 +51,6 @@ class GenreController extends ApiController
      */
     public function genreSongsAction(Genre $genre)
     {
-        $songs = $genre->getSongs();
-        return $this->prepareJsonResponse($songs);
+        return $this->prepareJsonResponse($genre->getSongs());
     }
 }
