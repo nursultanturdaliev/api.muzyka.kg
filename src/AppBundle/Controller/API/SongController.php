@@ -9,6 +9,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Song;
+use Doctrine\ORM\AbstractQuery;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -70,7 +71,18 @@ class SongController extends ApiController
      */
     public function allByOffsetAction($offset, $limit)
     {
-        $songs = $this->getDoctrine()->getRepository('AppBundle:Song')->findBy(array(), null, $limit, $offset);
+        $songs = $this->getDoctrine()->getRepository('AppBundle:Song')
+            ->createQueryBuilder('song')
+            ->select('song.id')
+            ->addSelect('song.title')
+            ->addSelect('song.uuid')
+            ->addSelect('song.duration')
+            ->join('song.artist', 'artist')
+            ->addSelect('artist.id artist_id')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->execute(null, AbstractQuery::HYDRATE_SCALAR);;
         return $this->prepareJsonResponse($songs);
     }
 

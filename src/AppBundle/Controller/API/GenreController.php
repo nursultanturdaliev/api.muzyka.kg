@@ -10,6 +10,7 @@ namespace AppBundle\Controller\API;
 
 
 use AppBundle\Entity\Genre;
+use Doctrine\ORM\AbstractQuery;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -32,7 +33,12 @@ class GenreController extends ApiController
      */
     public function indexAction()
     {
-        $genres = $this->getDoctrine()->getRepository('AppBundle:Genre')->findAll();
+        $genres = $this->getDoctrine()->getRepository('AppBundle:Genre')
+        ->createQueryBuilder('genre')
+            ->select('genre.id')
+            ->addSelect('genre.name')
+        ->getQuery()
+        ->execute(null,AbstractQuery::HYDRATE_SCALAR);
         return $this->prepareJsonResponse($genres);
     }
 

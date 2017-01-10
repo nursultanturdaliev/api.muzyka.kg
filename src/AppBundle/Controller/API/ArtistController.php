@@ -9,6 +9,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Artist;
+use Doctrine\ORM\AbstractQuery;
 use FOS\RestBundle\Controller\Annotations\Route;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -69,7 +70,14 @@ class ArtistController extends ApiController
      */
     public function byOffsetAction($offset, $limit)
     {
-        $artists = $this->getDoctrine()->getRepository('AppBundle:Artist')->findBy(array(), null, $limit, $offset);
+        $artists = $this->getDoctrine()->getRepository('AppBundle:Artist')
+            ->createQueryBuilder('artist')
+            ->select('artist.id')
+            ->addSelect('artist.name')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->execute(null, AbstractQuery::HYDRATE_SCALAR);
         return $this->prepareJsonResponse($artists);
     }
 
