@@ -77,6 +77,7 @@ class SongController extends ApiController
             ->addSelect('song.title')
             ->addSelect('song.uuid')
             ->addSelect('song.duration')
+            ->addSelect('song.oldUrl as old_url')
             ->join('song.artist', 'artist')
             ->addSelect('artist.id artist_id')
             ->setFirstResult($offset)

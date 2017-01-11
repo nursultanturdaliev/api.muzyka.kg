@@ -71,6 +71,7 @@ class Song
      * @var string
      *
      * @ORM\Column(name="old_url", type="string", length=255, unique=true)
+     * @Expose()
      */
     private $oldUrl;
 
