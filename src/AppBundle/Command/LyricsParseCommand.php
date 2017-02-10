@@ -97,7 +97,7 @@ class LyricsParseCommand extends ContainerAwareCommand
         $content = htmlspecialchars_decode($content);
         $content = str_replace('<div id="nativeroll_video_cont" style="display:none;"></div>', '', $content);
         $content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $content);
-        $content = preg_replace('<p>Скачать эту песню(.*?)<\p>', '', $content);
+        $content = preg_replace('/<p>Скачать эту песню(.*?)<\/p>/is', '', $content);
         return trim($content);
     }
 
