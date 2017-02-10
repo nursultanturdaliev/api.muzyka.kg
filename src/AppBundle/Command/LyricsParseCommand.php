@@ -6,6 +6,7 @@ use LyricsBundle\Entity\Artist;
 use LyricsBundle\Entity\Song;
 use Sunra\PhpSimple\HtmlDomParser;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -20,6 +21,8 @@ class LyricsParseCommand extends ContainerAwareCommand
     {
         $this
             ->setName('app:lyrics_parse')
+            ->addArgument('from', InputArgument::REQUIRED, 'Page from')
+            ->addArgument('to', InputArgument::REQUIRED, 'Page to')
             ->setDescription('Parses Lyrics from http://texti-pesen.ucoz.ru/');
     }
 
@@ -30,7 +33,9 @@ class LyricsParseCommand extends ContainerAwareCommand
     {
 
         $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        for ($index = 2; $index < 215; $index++) {
+        $from = (int)$input->getArgument('from');
+        $to = (int)$input->getArgument('to');
+        for ($index = $from; $index < $to; $index++) {
             $url = self::BASE_URL . '/publ/pesni_na_kyrgyzskom/1-' . $index;
             $dom = HtmlDomParser::file_get_html($url);
             $output->writeln($url);
