@@ -112,3 +112,7 @@ fos_http_cache:
                     cache_control: { public: true, max_age: 86400, s_maxage: 86400 }
                     etag: true
                     vary: [Accept-Encoding, Accept-Language]
+jms_serializer:
+    visitors:
+        json:
+            options: JSON_UNESCAPED_UNICODE
