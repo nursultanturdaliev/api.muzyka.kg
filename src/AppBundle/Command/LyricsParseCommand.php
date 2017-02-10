@@ -30,7 +30,7 @@ class LyricsParseCommand extends ContainerAwareCommand
     {
 
         $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
-        for ($index = 2; $index < 3; $index++) {
+        for ($index = 2; $index < 215; $index++) {
             $url = self::BASE_URL . '/publ/pesni_na_kyrgyzskom/1-' . $index;
             $dom = HtmlDomParser::file_get_html($url);
             $output->writeln($url);
