@@ -12,7 +12,7 @@ use JMS\Serializer\Annotation\MaxDepth;
  * Artist
  *
  * @ORM\Table(name="app_artist",schema="lyrics")
- * @ORM\Entity(repositoryClass="LyricsBundle\Repository\SongRepository")
+ * @ORM\Entity(repositoryClass="LyricsBundle\Repository\ArtistRepository")
  * @ORM\HasLifecycleCallbacks()
  * @ExclusionPolicy("All")
  */
