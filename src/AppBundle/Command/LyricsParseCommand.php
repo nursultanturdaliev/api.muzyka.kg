@@ -45,13 +45,14 @@ class LyricsParseCommand extends ContainerAwareCommand
                     $output->writeln($title);
 
                     $artist = $this->getArtist($artistName);
-
-                    $song = new Song();
-                    $song->setArtist($artist);
-                    $song->setName($name);
-                    $song->setContent($content);
-                    $manager->persist($song);
-                    $manager->flush();
+                    if (!$this->songAlreadyExists($artist, $name)) {
+                        $song = new Song();
+                        $song->setArtist($artist);
+                        $song->setName($name);
+                        $song->setContent($content);
+                        $manager->persist($song);
+                        $manager->flush();
+                    }
                 }
             }
         }
@@ -95,6 +96,7 @@ class LyricsParseCommand extends ContainerAwareCommand
     {
         $content = htmlspecialchars_decode($content);
         $content = str_replace('<div id="nativeroll_video_cont" style="display:none;"></div>', '', $content);
+        $content = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $content);
         return $content;
     }
 
@@ -117,5 +119,13 @@ class LyricsParseCommand extends ContainerAwareCommand
 
         return $artist;
 
+    }
+
+    private function songAlreadyExists($artist, $name)
+    {
+        $manager = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $song = $manager->getRepository('LyricsBundle:Song')
+            ->findOneBy(array('artist' => $artist, 'name' => $name));
+        return $song instanceof Song;
     }
 }

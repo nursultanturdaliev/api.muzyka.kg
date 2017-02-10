@@ -29,7 +29,7 @@ class Song
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="text")
+     * @ORM\Column(name="name", type="text",unique=true)
      * @Expose()
      */
     private $name;
