@@ -146,7 +146,7 @@ class Artist
     /**
      * Set birthday
      *
-     * @param string $birthday
+     * @param \DateTime $birthday
      *
      * @return Artist
      */
@@ -274,13 +274,13 @@ class Artist
     /**
      * Add song
      *
-     * @param Artist $song
+     * @param Song $song
      *
      * @return Artist
      */
-    public function addSong(Artist $song)
+    public function addSong(Song $song)
     {
-        $this->songs[] = $song;
+        $this->songs->add($song);
 
         return $this;
     }
@@ -288,9 +288,9 @@ class Artist
     /**
      * Remove song
      *
-     * @param Artist $song
+     * @param Song $song
      */
-    public function removeSong(Artist $song)
+    public function removeSong(Song $song)
     {
         $this->songs->removeElement($song);
     }
@@ -307,6 +307,11 @@ class Artist
 
     function __toString()
     {
-        return $this->name .' ' . $this->lastname;
+        return $this->name . ' ' . $this->lastname;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

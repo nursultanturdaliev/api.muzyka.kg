@@ -61,6 +61,9 @@ class Artist
     private $songs;
 
     /**
+     *
+     * @codeCoverageIgnore
+     *
      * Get id
      *
      * @return int
@@ -81,13 +84,13 @@ class Artist
     /**
      * Add song
      *
-     * @param Artist $song
+     * @param Song $song
      *
      * @return Artist
      */
-    public function addSong(Artist $song)
+    public function addSong(Song $song)
     {
-        $this->songs[] = $song;
+        $this->songs->add($song);
 
         return $this;
     }
@@ -95,9 +98,9 @@ class Artist
     /**
      * Remove song
      *
-     * @param Artist $song
+     * @param Song $song
      */
-    public function removeSong(Artist $song)
+    public function removeSong(Song $song)
     {
         $this->songs->removeElement($song);
     }
@@ -127,7 +130,7 @@ class Artist
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -164,6 +167,8 @@ class Artist
 
 
     /**
+     * @codeCoverageIgnore
+     *
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -172,6 +177,9 @@ class Artist
     }
 
     /**
+     *
+     * @codeCoverageIgnore
+     *
      * @ORM\PreUpdate
      */
     public function preUpdate()
@@ -190,7 +198,7 @@ class Artist
     }
 
     /**
-     * @return mixed
+     * @return ArrayCollection
      */
     public function getSongs()
     {

@@ -6,10 +6,18 @@
  * Time: 2:13 AM
  */
 
-namespace AppBundle\Tests\Api\Controller;
+namespace AppBundle\Tests\Controller\API;
+
+use AppBundle\Test\AbstractBaseTestCase;
 
 class ArtistControllerTest extends AbstractBaseTestCase
 {
+    public static function setUpBeforeClass()
+    {
+        self::resetDb();
+    }
+
+
     public function testIndexAction()
     {
         $client = static::createClient();
@@ -37,14 +45,14 @@ class ArtistControllerTest extends AbstractBaseTestCase
     public function testGetAction()
     {
         $client = static::createClient();
-        $client->request('GET', '/api/artist/2360');
+        $client->request('GET', '/api/artist/1');
         $this->checkJSONResponse($client);
     }
 
     public function testArtistSongsAction()
     {
         $client = static::createClient();
-        $client->request('GET', '/api/artist/2360/songs');
+        $client->request('GET', '/api/artist/1/songs');
         $this->checkJSONResponse($client);
     }
 }

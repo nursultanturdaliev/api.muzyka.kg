@@ -129,4 +129,24 @@ class SongController extends ApiController
             ->execute();
         return $this->prepareJsonResponse($songs);
     }
+
+    /**
+     * @Route("/{id}/increase_count_play", name="app_api_song_increase", options={"expose"=true}, requirements={"id"="\d+"})
+     * @ApiDoc(
+     *     resource=true,
+     *     section="Song",
+     *     description="Increase song play count",
+     *     requirements={{"name"="id", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Song Id"}}
+     * )
+     * @param Song $song
+     * @return Response
+     */
+    public function increasePlayCount(Song $song)
+    {
+        $song->setCountPlay($song->getCountPlay() + 1);
+        $em = $this->get('doctrine.orm.default_entity_manager');
+        $em->persist($song);
+        $em->flush();
+        return $this->prepareJsonResponse($song);
+    }
 }

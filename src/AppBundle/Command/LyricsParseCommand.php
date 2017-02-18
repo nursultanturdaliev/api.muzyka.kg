@@ -10,6 +10,12 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @codeCoverageIgnore
+ *
+ * Class LyricsParseCommand
+ * @package AppBundle\Command
+ */
 class LyricsParseCommand extends ContainerAwareCommand
 {
     const BASE_URL = 'http://texti-pesen.ucoz.ru';

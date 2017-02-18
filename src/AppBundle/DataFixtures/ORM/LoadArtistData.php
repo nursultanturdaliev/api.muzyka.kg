@@ -2,13 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: nursultan
- * Date: 11/25/16
- * Time: 2:28 AM
+ * Date: 2/17/17
+ * Time: 9:12 PM
  */
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Application\Sonata\UserBundle\Entity\User;
+
+use AppBundle\Entity\Artist;
+use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,10 +18,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 /**
  * @codeCoverageIgnore
  *
- * Class LoadUserData
+ * Class LoadArtistData
  * @package AppBundle\DataFixtures\ORM
  */
-class LoadUserData implements FixtureInterface, OrderedFixtureInterface
+class LoadArtistData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface
 {
 
     /**
@@ -29,15 +31,17 @@ class LoadUserData implements FixtureInterface, OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $userAdmin = new User();
-        $userAdmin->setUsername('admin');
-        $userAdmin->setSuperAdmin(true);
-        $userAdmin->setEnabled(true);
-        $userAdmin->setEmail('nursultan2010@gmail.com');
-        $userAdmin->setPlainPassword('admin');
+        $artist = new Artist();
+        $artist->setId(1);
+        $artist->setName('Nursultan');
+        $artist->setLastname('Turdaliev');
+        $artist->setBirthday(new \DateTime('11-11-1992'));
+        $artist->setDebut(new \DateTime('01-01-2016'));
 
-        $manager->persist($userAdmin);
+        $manager->persist($artist);
         $manager->flush();
+
+        $this->addReference('nursultan', $artist);
     }
 
     /**
@@ -49,6 +53,4 @@ class LoadUserData implements FixtureInterface, OrderedFixtureInterface
     {
         return 0;
     }
-
-
 }

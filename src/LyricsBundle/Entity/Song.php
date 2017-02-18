@@ -64,6 +64,9 @@ class Song
     private $artist;
 
     /**
+     *
+     * @codeCoverageIgnore
+     *
      * Get id
      *
      * @return int
@@ -122,6 +125,9 @@ class Song
     }
 
     /**
+     *
+     * @codeCoverageIgnore
+     *
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -130,6 +136,9 @@ class Song
     }
 
     /**
+     *
+     * @codeCoverageIgnore
+     *
      * @ORM\PreUpdate
      */
     public function preUpdate()
@@ -153,6 +162,42 @@ class Song
     public function getArtist()
     {
         return $this->artist;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     * @return Song
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param mixed $updatedAt
+     * @return Song
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
     }
 }
 

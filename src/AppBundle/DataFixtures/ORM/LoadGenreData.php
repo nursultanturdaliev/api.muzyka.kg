@@ -14,6 +14,12 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * @codeCoverageIgnore
+ *
+ * Class LoadGenreData
+ * @package AppBundle\DataFixtures\ORM
+ */
 class LoadGenreData implements FixtureInterface, OrderedFixtureInterface
 {
     private $genres = array(

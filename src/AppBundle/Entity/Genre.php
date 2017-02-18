@@ -39,6 +39,8 @@ class Genre
     private $songs;
 
     /**
+     * @codeCoverageIgnore
+     *
      * Get id
      *
      * @return int
@@ -89,7 +91,7 @@ class Genre
      */
     public function addSong(Song $song)
     {
-        $this->songs[] = $song;
+        $this->songs->add($song);
 
         return $this;
     }

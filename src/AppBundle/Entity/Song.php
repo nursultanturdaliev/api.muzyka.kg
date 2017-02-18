@@ -93,6 +93,7 @@ class Song
      * @var integer
      *
      * @ORM\Column(name="count_play", type="integer", nullable=true)
+     * @Expose()
      */
     private $countPlay = 0;
 
@@ -252,10 +253,12 @@ class Song
 
     /**
      * @param string $artist
+     * @return $this
      */
     public function setArtist($artist)
     {
         $this->artist = $artist;
+        return $this;
     }
 
     /**
@@ -268,10 +271,12 @@ class Song
 
     /**
      * @param boolean $downloadable
+     * @return $this
      */
     public function setDownloadable($downloadable)
     {
         $this->downloadable = $downloadable;
+        return $this;
     }
 
     /**
@@ -284,10 +289,12 @@ class Song
 
     /**
      * @param int $countDownload
+     * @return $this
      */
     public function setCountDownload($countDownload)
     {
         $this->countDownload = $countDownload;
+        return $this;
     }
 
     /**
@@ -300,10 +307,12 @@ class Song
 
     /**
      * @param int $countPlay
+     * @return $this
      */
     public function setCountPlay($countPlay)
     {
         $this->countPlay = $countPlay;
+        return $this;
     }
 
     /**
@@ -316,10 +325,12 @@ class Song
 
     /**
      * @param int $likes
+     * @return $this
      */
     public function setLikes($likes)
     {
         $this->likes = $likes;
+        return $this;
     }
 
     /**
@@ -332,10 +343,12 @@ class Song
 
     /**
      * @param string $lyrics
+     * @return $this
      */
     public function setLyrics($lyrics)
     {
         $this->lyrics = $lyrics;
+        return $this;
     }
 
 
@@ -349,10 +362,12 @@ class Song
 
     /**
      * @param int $uuid
+     * @return $this
      */
     public function setUuid($uuid)
     {
         $this->uuid = $uuid;
+        return $this;
     }
 
 
@@ -385,8 +400,7 @@ class Song
      */
     public function addGenre(Genre $genre)
     {
-        $this->genres[] = $genre;
-
+        $this->genres->add($genre);
         return $this;
     }
 
@@ -517,6 +531,9 @@ class Song
     }
 
     /**
+     *
+     * @codeCoverageIgnore
+     *
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -525,6 +542,9 @@ class Song
     }
 
     /**
+     *
+     * @codeCoverageIgnore
+     *
      * @ORM\PreUpdate
      */
     public function preUpdate()
@@ -533,6 +553,8 @@ class Song
     }
 
     /**
+     * @@codeCoverageIgnore
+     *
      * Get id
      *
      * @return integer

@@ -57,6 +57,8 @@ class Playlist
     /**
      * Get id
      *
+     * @codeCoverageIgnore
+     *
      * @return int
      */
     public function getId()
@@ -129,7 +131,7 @@ class Playlist
      */
     public function addSong(Song $song)
     {
-        $this->songs[] = $song;
+        $this->songs->add($song);
         $song->addPlaylist($this);
 
         return $this;
@@ -156,6 +158,8 @@ class Playlist
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @ORM\PrePersist
      */
     public function prePersist()
@@ -164,6 +168,8 @@ class Playlist
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @ORM\PreUpdate()
      */
     public function preUpdate()

@@ -15,6 +15,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @codeCoverageIgnore
+ *
+ * Class MusicCommand
+ * @package AppBundle\Command
+ */
 class MusicCommand extends ContainerAwareCommand
 {
     private $musics = [['Абдыманап Төрөбеков', 'Апакем', '20_RBHwp'],

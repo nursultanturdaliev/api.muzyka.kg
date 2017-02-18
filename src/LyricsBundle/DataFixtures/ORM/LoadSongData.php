@@ -1,29 +1,30 @@
 <?php
 /**
  * Created by PhpStorm.
- * User nursultan
- * Date 11/25/16
- * Time 2:31 AM
+ * User: nursultan
+ * Date: 2/18/17
+ * Time: 12:53 AM
  */
 
-namespace AppBundle\DataFixtures\ORM;
+namespace LyricsBundle\DataFixtures\ORM;
 
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use AppBundle\Entity\Song;
-use AppBundle\Entity\Artist;
+use LyricsBundle\Entity\Song;
 
 /**
+ *
  * @codeCoverageIgnore
  *
  * Class LoadSongData
- * @package AppBundle\DataFixtures\ORM
+ * @package LyricsBundle\DataFixtures\ORM
  */
-class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface
+class LoadSongData extends AbstractFixture implements OrderedFixtureInterface, FixtureInterface
 {
+
     /**
      * Load data fixtures with the passed EntityManager
      *
@@ -32,20 +33,14 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
     public function load(ObjectManager $manager)
     {
         $song = new Song();
-        $song->setArtist($this->getReference('nursultan'))
-            ->setTitle('Kyrgyzstan')
-            ->setDuration('04:00')
-            ->setCountPlay(1000)
-            ->setLikes(1000)
-            ->setLyrics('Lyrics')
-            ->setDownloadable(true)
-            ->setOldUrl('')
-            ->setPublished(true)
-            ->setUuid('c25a07b8-15e2-481b-a9be-8aa962d811e4');
+        $song->setName('Kyrgyzstan');
+        $song->setArtist($this->getReference('a-nursultan'));
+        $song->setContent('Content');
+
         $manager->persist($song);
         $manager->flush();
-    }
 
+    }
 
     /**
      * Get the order of this fixture
@@ -54,7 +49,6 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
      */
     public function getOrder()
     {
-
-        return 2;
+        return 1;
     }
 }

@@ -6,10 +6,18 @@
  * Time: 3:16 AM
  */
 
-namespace AppBundle\Tests\Api\Controller;
+namespace AppBundle\Tests\Controller\API;
+
+use AppBundle\Test\AbstractBaseTestCase;
 
 class GenreControllerTest extends AbstractBaseTestCase
 {
+    public static function setUpBeforeClass()
+    {
+        self::resetDb();
+    }
+
+
     public function testIndexAction()
     {
         $client = static::createClient();
@@ -17,6 +25,7 @@ class GenreControllerTest extends AbstractBaseTestCase
 
         $this->checkJSONResponse($client);
     }
+
     public function testArtistSongsAction()
     {
         $client = static::createClient();
