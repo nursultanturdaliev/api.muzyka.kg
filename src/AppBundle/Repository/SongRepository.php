@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use LyricsBundle\Entity\Song as LyricsSong;
 
 /**
  * SongRepository
@@ -25,5 +26,21 @@ class SongRepository extends EntityRepository
                 ->getQuery()
                 ->getSingleScalarResult()
         );
+    }
+
+    /**
+     * @param LyricsSong $song
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findBySongAndArtist(LyricsSong $song)
+    {
+        return $this->createQueryBuilder('song')
+            ->join('song.artist', 'artist')
+            ->where('song.title = :title')
+            ->andWhere('artist.name = :artistName')
+            ->setParameter('title', $song->getName())
+            ->setParameter('artistName', $song->getArtist()->getName())
+            ->getQuery()
+            ->execute();
     }
 }
