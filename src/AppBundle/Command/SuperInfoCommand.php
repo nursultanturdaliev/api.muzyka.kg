@@ -43,12 +43,14 @@ class SuperInfoCommand extends ContainerAwareCommand
              /** @var Crawler $element */
              $fileName = $element->attr('data-file');
              $title = $element->filter('.audio-item-title a')->attr('title');
+             $duration = $element->filter('.info-item.length')->text();
+             $duration = substr($duration,3,5);
 
-            $output->writeln($this->saveFile($fileName,$title));
+            $output->writeln($this->saveFile($fileName,$title,$duration));
          });
     }
 
-    private function saveFile($fileName, $musicAndTitle)
+    private function saveFile($fileName, $musicAndTitle,$duration)
     {
 
         $fs = new Filesystem();
@@ -64,12 +66,15 @@ class SuperInfoCommand extends ContainerAwareCommand
             $song = new Song();
             $song->setTitle($songTitle);
             $song->setArtist($artist);
-            $song->setDuration('0:00');
+            $song->setDuration($duration);
             $song->setOldUrl($oldUrl);
             $this->save($song);
             $fs->copy($oldUrl, $this->getBaseMusicDir() . '/' . $song->getUuid());
-
-            return $song->getTitle() . ' ' . $song->getArtist()->getName();
+            if($song->getArtist() instanceof Artist){
+                return $song->getTitle() . ' ' . $song->getArtist()->getName();
+            }else{
+                return $song->getTitle();
+            }
         }else{
             return 'Already Exists: '. $songTitle;
         }
@@ -97,7 +102,7 @@ class SuperInfoCommand extends ContainerAwareCommand
         }else{
             $artist = new Artist();
             $artist->setName($artistName);
-            $this->save($artist);
+            return $this->save($artist);
         }
     }
 
@@ -107,6 +112,7 @@ class SuperInfoCommand extends ContainerAwareCommand
         $manager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $manager->persist($entity);
         $manager->flush();
+        return $entity;
     }
 
     private function getBaseMusicDir()
