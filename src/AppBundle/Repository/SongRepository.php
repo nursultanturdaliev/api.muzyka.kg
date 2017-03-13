@@ -29,17 +29,18 @@ class SongRepository extends EntityRepository
     }
 
     /**
-     * @param LyricsSong $song
+     * @param $songTitle
+     * @param $artistName
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function findBySongAndArtist(LyricsSong $song)
+    public function findBySongAndArtist($songTitle, $artistName)
     {
         return $this->createQueryBuilder('song')
             ->join('song.artist', 'artist')
             ->where('song.title = :title')
             ->andWhere('artist.name = :artistName')
-            ->setParameter('title', $song->getName())
-            ->setParameter('artistName', $song->getArtist()->getName())
+            ->setParameter('title', $songTitle)
+            ->setParameter('artistName', $artistName)
             ->getQuery()
             ->execute();
     }

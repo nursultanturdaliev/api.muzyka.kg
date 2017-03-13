@@ -20,4 +20,16 @@ class ArtistRepository extends EntityRepository
                 ->getSingleScalarResult()
         );
     }
+
+    public function songAlreadyExists($artistName, $title)
+    {
+        $data = $this->createQueryBuilder('artist')
+            ->where('artist.name = :name')
+            ->andWhere('artist.songs.title = :title')
+            ->setParameter('name',$artistName)
+            ->setParameter('title',$title)
+            ->getQuery()
+            ->execute();
+        return sizeof($data) > 0 ;
+    }
 }

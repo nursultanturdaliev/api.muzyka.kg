@@ -244,7 +244,7 @@ class Song
     }
 
     /**
-     * @return string
+     * @return Artist
      */
     public function getArtist()
     {

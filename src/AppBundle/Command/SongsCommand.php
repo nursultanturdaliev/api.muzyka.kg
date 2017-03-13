@@ -34,7 +34,7 @@ class SongsCommand extends ContainerAwareCommand
         foreach ($manager->getRepository('LyricsBundle:Song')->findAll() as $song) {
 
             /** @var Song[] $appSong */
-            $appSongs = $manager->getRepository('AppBundle:Song')->findBySongAndArtist($song);
+            $appSongs = $manager->getRepository('AppBundle:Song')->findBySongAndArtist($song->getName(),$song->getArtist()->getName());
             if (sizeof($appSongs) === 0) {
                 continue;
             }
