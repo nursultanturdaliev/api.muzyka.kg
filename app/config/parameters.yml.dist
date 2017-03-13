@@ -19,3 +19,5 @@ parameters:
     secret:            Utd5GLKjtfgskfjw89trfgw9osfjmc
     music_path:        /Users/nursultan/PhpstormProjects/obon/data/music
     locale:            kg
+    base_url_api:      'http://obon.aio.kg/api/'
+    base_url:          'http://obon.aio.kg/'
