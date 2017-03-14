@@ -6,7 +6,9 @@ use AppBundle\Entity\Song;
 use FFMpeg\FFMpeg;
 use FFMpeg\Format\Audio\Mp3;
 use FFMpeg\Media\Audio;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -14,6 +16,9 @@ use Symfony\Component\Finder\Finder;
 
 class FFMpegCommand extends ContainerAwareCommand
 {
+    const FROM = "from";
+    const AMOUNT = "amount";
+
     /**
      * {@inheritdoc}
      */
@@ -21,7 +26,9 @@ class FFMpegCommand extends ContainerAwareCommand
     {
         $this
             ->setName('app:ffmpeg:audio')
-            ->setDescription('Hello PhpStorm');
+            ->addArgument(self::FROM, InputArgument::REQUIRED)
+            ->addArgument(self::AMOUNT, InputArgument::REQUIRED)
+            ->setDescription('Edit audio files.');
     }
 
     /**
@@ -33,23 +40,45 @@ class FFMpegCommand extends ContainerAwareCommand
         $fileSystem = new Filesystem();
         $finder = new Finder();
         $ffmpeg = FFMpeg::create();
-        foreach ($finder->files()->in($this->getMusicDir()) as $fileInfo) {
-            $song = $this->getSong($fileInfo->getBasename());
-            if($song instanceof Song){
-                /** @var Audio $audio */
-                $audio = $ffmpeg->open($fileInfo->getPathname());
-                $audio->filters()->addMetadata(
-                    array(
-                        'title'=>$song->getTitle(),
-                        'artist'=>$song->getArtist()->getName(),
-                        'artwork'=>'logo.jpg',
-                        'album'=>'MUZYKA.KG'
-                    )
-                );
 
-                $audio->save(new Mp3(),$fileInfo->getPathname() . '.mp3');
-                $fileSystem->rename($fileInfo->getPathname() . '.mp3',$fileInfo->getPathname(),true);
-                $output->writeln($audio->getPathfile());
+        $from = (int)$input->getArgument(self::FROM);
+        $amount = (int)$input->getArgument(self::AMOUNT);
+        $counter = 0;
+        foreach ($finder->files()->in($this->getMusicDir()) as $fileInfo) {
+
+            $counter++;
+            if ($counter < $from) {
+                continue;
+            }
+            if($counter> $from + $amount){
+                break;
+            }
+
+            try {
+                $uuid = Uuid::fromString($fileInfo->getBasename());
+                $song = $this->getSong($uuid);
+                if ($song instanceof Song) {
+                    $output->writeln($song->getTitle());
+                    /** @var Audio $audio */
+                    $audio = $ffmpeg->open($fileInfo->getPathname());
+                    $audio->filters()->addMetadata(
+                        array(
+                            'title' => $song->getTitle(),
+                            'artist' => $song->getArtist()->getName(),
+                            'artwork' => 'logo.jpg',
+                            'album' => 'MUZYKA.KG'
+                        )
+                    );
+
+                    $audio->save(new Mp3(), $fileInfo->getPathname() . '.mp3');
+                    $fileSystem->rename($fileInfo->getPathname() . '.mp3', $fileInfo->getPathname(), true);
+                    $output->writeln($audio->getPathfile());
+
+                }else{
+                    $output->writeln('Skipped');
+                }
+            } catch (\InvalidArgumentException $e) {
+                $output->writeln($e->getMessage());
             }
         }
 
@@ -65,13 +94,9 @@ class FFMpegCommand extends ContainerAwareCommand
 
     private function getSong($uuid)
     {
-        try{
             $song = $this->getContainer()->get('doctrine.orm.default_entity_manager')
                 ->getRepository('AppBundle:Song')
                 ->findOneByUuid($uuid);
             return $song;
-        }catch (\Exception $ignore){
-            return null;
-        }
     }
 }

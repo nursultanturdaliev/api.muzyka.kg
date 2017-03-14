@@ -1,6 +1,10 @@
 Obon
 ==========
 
+### Requirements
+    -   PHP 7
+    -   ffmpeg
+
 ### Installation
     php composer.phar install
     php app/console assets:install
