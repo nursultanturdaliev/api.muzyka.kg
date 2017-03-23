@@ -89,4 +89,17 @@ class SongControllerTest extends AbstractBaseTestCase
         $response = $this->getArrayResponse($client);
         $this->assertEquals($response['count_play'], 1001);
     }
+
+    public function testIncrementDownloadAction()
+    {
+        $client = static::createClient();
+        $client->request('PUT','/api/song/1/download');
+
+        $this->checkJSONResponse($client);
+
+        $response = $this->getArrayResponse($client);
+
+        $this->assertEquals($response['id'],1);
+        $this->assertEquals($response['count_download'],1);
+    }
 }

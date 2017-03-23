@@ -14,7 +14,6 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -132,6 +131,7 @@ class SongController extends ApiController
 
     /**
      * @Route("/{id}/increase_count_play", name="app_api_song_increase", options={"expose"=true}, requirements={"id"="\d+"})
+     * @Method("PUT")
      * @ApiDoc(
      *     resource=true,
      *     section="Song",

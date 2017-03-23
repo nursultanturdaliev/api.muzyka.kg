@@ -39,6 +39,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
             ->setLikes(1000)
             ->setLyrics('Lyrics')
             ->setDownloadable(true)
+            ->setCountDownload(0)
             ->setOldUrl('')
             ->setPublished(true)
             ->setUuid('c25a07b8-15e2-481b-a9be-8aa962d811e4');
