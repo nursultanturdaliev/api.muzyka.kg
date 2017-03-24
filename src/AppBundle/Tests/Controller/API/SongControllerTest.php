@@ -77,9 +77,10 @@ class SongControllerTest extends AbstractBaseTestCase
 	public function testTopAction()
 	{
 		$client = static::createClient();
-		$client->request('GET', '/api/song/top/10');
+		$client->request('GET', '/api/song/top/1/2');
 
 		$this->checkJSONResponse($client);
+		$this->assertEquals(2, sizeof($this->getArrayResponse($client)));
 	}
 
 	public function testIncreasePlayCountAction()

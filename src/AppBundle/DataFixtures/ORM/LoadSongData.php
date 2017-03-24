@@ -14,7 +14,6 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @codeCoverageIgnore
@@ -42,7 +41,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
 				'downloadable'   => true,
 				'count_download' => 1,
 				'published'      => true,
-				'published_at'   => new DateTime('01-04-2016'),
+				'published_at'   => new \DateTime('01-04-2016'),
 				'uuid'           => 'c25a07b8-15e2-481b-a9be-8aa962d811e4'
 			),
 			array(
@@ -55,7 +54,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
 				'downloadable'   => true,
 				'count_download' => 2,
 				'published'      => true,
-				'published_at'   => new DateTime('01-01-2016'),
+				'published_at'   => new \DateTime('01-01-2016'),
 				'uuid'           => 'c25a07b8-15e2-481b-a9be-8aa962d811e2'
 			),
 			array(
@@ -68,7 +67,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
 				'downloadable'   => true,
 				'count_download' => 3,
 				'published'      => true,
-				'published_at'   => new DateTime('01-02-2016'),
+				'published_at'   => new \DateTime('01-02-2016'),
 				'uuid'           => 'c25a07b8-15e2-481b-a9be-8aa962d811e1'
 			),
 			array(
@@ -81,7 +80,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
 				'downloadable'   => true,
 				'count_download' => 4,
 				'published'      => true,
-				'published_at'   => new DateTime('01-01-2015'),
+				'published_at'   => new \DateTime('01-01-2015'),
 				'uuid'           => 'c25a07b8-15e2-481b-a9be-8aa962d811e3'
 			)
 		);
@@ -97,6 +96,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
 				 ->setDownloadable($s['downloadable'])
 				 ->setCountDownload($s['count_download'])
 				 ->setPublished($s['published'])
+				 ->setPublishedAt($s['published_at'])
 				 ->setUuid($s['uuid']);
 			$manager->persist($song);
 			$manager->flush();

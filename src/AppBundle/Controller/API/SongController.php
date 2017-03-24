@@ -66,8 +66,8 @@ class SongController extends ApiController
 	 *     section="Song",
 	 *     description="Returns Top Downloads",
 	 *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum number of
-	 *     songs"}}
-	 * )
+     *     songs"}}
+     * )
 	 * @param $max
 	 *
 	 * @return Response
@@ -88,8 +88,8 @@ class SongController extends ApiController
 	 *     section="Song",
 	 *     description="Returns new releases",
 	 *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum number of
-	 *     songs"}}
-	 * )
+     *     songs"}}
+     * )
 	 * @param $max
 	 *
 	 * @return Response
@@ -165,8 +165,8 @@ class SongController extends ApiController
 	 *     description="Get song by uuid",
 	 *     requirements={
 	 *          {"name"="uuid", "dataType"="string", "requirement"="\w+", "required"=true, "description"="Universal
-	 *          unique identity"}
-	 *     }
+     *          unique identity"}
+     *     }
 	 * )
 	 */
 	public function getAction(Song $song)
@@ -175,23 +175,28 @@ class SongController extends ApiController
 	}
 
 	/**
-	 * @Route("/top/{offset}", name="app_api_song_top", options={"expose"=true}, requirements={"offset"="\d+"})
+	 * @Route("/top/{offset}/{limit}", name="app_api_song_top", options={"expose"=true}, requirements={"offset"="\d+",
+	 *                                 "limit"="\d+"})
 	 * @Method("GET")
 	 * @ApiDoc(
 	 *     resource=true,
 	 *     section="Song",
 	 *     description="Get songs by ranking, using offset",
 	 *     requirements={{"name"="offset", "dataType"="integer", "required"=true, "requirement"="\d+",
-	 *     "description"="Offset"}}
+	 *     "description"="Offset"},
+	 *     {"name"="limit", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Limit"}}
 	 * )
 	 * @param $offset
+	 * @param $limit
 	 *
 	 * @return JsonResponse
 	 */
-	public function topAction($offset)
+	public function topAction($offset, $limit)
 	{
-		$songs = $this->getDoctrine()->getRepository('AppBundle:Song')->createQueryBuilder('song')
-					  ->setMaxResults(50)
+		$songs = $this->getDoctrine()
+					  ->getRepository('AppBundle:Song')
+					  ->createQueryBuilder('song')
+					  ->setMaxResults($limit)
 					  ->setFirstResult($offset)
 					  ->orderBy('song.countPlay')
 					  ->getQuery()
@@ -208,8 +213,8 @@ class SongController extends ApiController
 	 *     section="Song",
 	 *     description="Increase song play count",
 	 *     requirements={{"name"="id", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Song
-	 *     Id"}}
-	 * )
+     *     Id"}}
+     * )
 	 * @param Song $song
 	 *
 	 * @return Response
