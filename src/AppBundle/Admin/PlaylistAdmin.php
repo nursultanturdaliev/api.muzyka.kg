@@ -15,14 +15,14 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class PlaylistAdmin extends AbstractAdmin
 {
-    protected function configureListFields(ListMapper $list)
-    {
-        $list->add('name');
-    }
+	protected function configureListFields(ListMapper $list)
+	{
+		$list->add('name');
+	}
 
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('create');
-    }
+	protected function configureRoutes(RouteCollection $collection)
+	{
+		$collection->remove('create');
+	}
 
 }

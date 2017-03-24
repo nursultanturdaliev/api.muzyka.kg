@@ -21,516 +21,527 @@ use Ramsey\Uuid\Uuid;
  */
 class Song
 {
-    /**
-     * @ORM\Column(name="uuid", type="uuid")
-     * @Type("string")
-     * @Expose()
-     */
-    private $uuid;
+	/**
+	 * @ORM\Column(name="uuid", type="uuid")
+	 * @Type("string")
+	 * @Expose()
+	 */
+	private $uuid;
 
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @Expose()
-     */
-    private $id;
+	/**
+	 * @var int
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 * @Expose()
+	 */
+	private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     * @Expose()
-     */
-    private $title;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="title", type="string", length=255)
+	 * @Expose()
+	 */
+	private $title;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="duration", type="string", length=255)
-     * @Expose()
-     */
-    private $duration;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="duration", type="string", length=255)
+	 * @Expose()
+	 */
+	private $duration;
 
-    /**
-     * @ORM\Column(name="published", type="boolean")
-     */
-    private $published = true;
+	/**
+	 * @ORM\Column(name="published", type="boolean")
+	 */
+	private $published = true;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="published_at", type="datetime", nullable=true)
-     */
-    private $publishedAt;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="published_at", type="datetime", nullable=true)
+	 * @Expose()
+	 */
+	private $publishedAt;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="download_able", type="boolean", nullable=true)
-     */
-    private $downloadable = true;
+	/**
+	 * @var boolean
+	 *
+	 * @ORM\Column(name="download_able", type="boolean", nullable=true)
+	 */
+	private $downloadable = true;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="count_download", type="integer", nullable=true)
-     * @Expose()
-     */
-    private $countDownload = 0;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="count_download", type="integer", nullable=true)
+	 * @Expose()
+	 */
+	private $countDownload = 0;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="count_play", type="integer", nullable=true)
-     * @Expose()
-     */
-    private $countPlay = 0;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="count_play", type="integer", nullable=true)
+	 * @Expose()
+	 */
+	private $countPlay = 0;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="likes", type="integer", nullable=true)
-     */
-    private $likes = 0;
+	/**
+	 * @var integer
+	 *
+	 * @ORM\Column(name="likes", type="integer", nullable=true)
+	 */
+	private $likes = 0;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="lyrics", type="text", nullable=true)
-     */
-    private $lyrics;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="lyrics", type="text", nullable=true)
+	 */
+	private $lyrics;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime")
-     */
-    private $createdAt;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="createdAt", type="datetime")
+	 */
+	private $createdAt;
 
-    /**
-     * @ORM\Column(name="updated_at", type="datetime",nullable=true)
-     */
-    private $updatedAt;
+	/**
+	 * @ORM\Column(name="updated_at", type="datetime",nullable=true)
+	 */
+	private $updatedAt;
 
-    /**
-     * @var Artist
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Artist", inversedBy="songs")
-     */
-    private $artist;
+	/**
+	 * @var Artist
+	 *
+	 * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Artist", inversedBy="songs")
+	 */
+	private $artist;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre",inversedBy="songs")
-     */
-    private $genres;
+	/**
+	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre",inversedBy="songs")
+	 */
+	private $genres;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Playlist", mappedBy="songs")
-     * @Exclude()
-     */
-    private $playlists;
+	/**
+	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Playlist", mappedBy="songs")
+	 * @Exclude()
+	 */
+	private $playlists;
 
-    /**
-     * @VirtualProperty()
-     * @Type("integer")
-     * @return int
-     */
-    public function getArtistId()
-    {
-        return $this->artist->getId();
-    }
+	/**
+	 * @VirtualProperty()
+	 * @Type("integer")
+	 * @return int
+	 */
+	public function getArtistId()
+	{
+		return $this->artist->getId();
+	}
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return Song
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
+	/**
+	 * Set title
+	 *
+	 * @param string $title
+	 *
+	 * @return Song
+	 */
+	public function setTitle($title)
+	{
+		$this->title = $title;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get title
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
+	/**
+	 * Get title
+	 *
+	 * @return string
+	 */
+	public function getTitle()
+	{
+		return $this->title;
+	}
 
-    /**
-     * Set duration
-     *
-     * @param string $duration
-     * @return Song
-     */
-    public function setDuration($duration)
-    {
-        $this->duration = $duration;
+	/**
+	 * Set duration
+	 *
+	 * @param string $duration
+	 *
+	 * @return Song
+	 */
+	public function setDuration($duration)
+	{
+		$this->duration = $duration;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get duration
-     *
-     * @return string
-     */
-    public function getDuration()
-    {
-        return $this->duration;
-    }
+	/**
+	 * Get duration
+	 *
+	 * @return string
+	 */
+	public function getDuration()
+	{
+		return $this->duration;
+	}
 
-    /**
-     * Set publishedAt
-     *
-     * @param \DateTime $publishedAt
-     * @return Song
-     */
-    public function setPublishedAt($publishedAt)
-    {
-        $this->publishedAt = $publishedAt;
+	/**
+	 * Set publishedAt
+	 *
+	 * @param \DateTime $publishedAt
+	 *
+	 * @return Song
+	 */
+	public function setPublishedAt($publishedAt)
+	{
+		$this->publishedAt = $publishedAt;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get publishedAt
-     *
-     * @return \DateTime
-     */
-    public function getPublishedAt()
-    {
-        return $this->publishedAt;
-    }
+	/**
+	 * Get publishedAt
+	 *
+	 * @return \DateTime
+	 */
+	public function getPublishedAt()
+	{
+		return $this->publishedAt;
+	}
 
-    /**
-     * @return Artist
-     */
-    public function getArtist()
-    {
-        return $this->artist;
-    }
+	/**
+	 * @return Artist
+	 */
+	public function getArtist()
+	{
+		return $this->artist;
+	}
 
-    /**
-     * @param string $artist
-     * @return $this
-     */
-    public function setArtist($artist)
-    {
-        $this->artist = $artist;
-        return $this;
-    }
+	/**
+	 * @param string $artist
+	 *
+	 * @return $this
+	 */
+	public function setArtist($artist)
+	{
+		$this->artist = $artist;
+		return $this;
+	}
 
-    /**
-     * @return boolean
-     */
-    public function isDownloadable()
-    {
-        return $this->downloadable;
-    }
+	/**
+	 * @return boolean
+	 */
+	public function isDownloadable()
+	{
+		return $this->downloadable;
+	}
 
-    /**
-     * @param boolean $downloadable
-     * @return $this
-     */
-    public function setDownloadable($downloadable)
-    {
-        $this->downloadable = $downloadable;
-        return $this;
-    }
+	/**
+	 * @param boolean $downloadable
+	 *
+	 * @return $this
+	 */
+	public function setDownloadable($downloadable)
+	{
+		$this->downloadable = $downloadable;
+		return $this;
+	}
 
-    /**
-     * @return int
-     */
-    public function getCountDownload()
-    {
-        return $this->countDownload;
-    }
+	/**
+	 * @return int
+	 */
+	public function getCountDownload()
+	{
+		return $this->countDownload;
+	}
 
-    /**
-     * @param int $countDownload
-     * @return $this
-     */
-    public function setCountDownload($countDownload)
-    {
-        $this->countDownload = $countDownload;
-        return $this;
-    }
+	/**
+	 * @param int $countDownload
+	 *
+	 * @return $this
+	 */
+	public function setCountDownload($countDownload)
+	{
+		$this->countDownload = $countDownload;
+		return $this;
+	}
 
-    /**
-     * @return int
-     */
-    public function getCountPlay()
-    {
-        return $this->countPlay;
-    }
+	/**
+	 * @return int
+	 */
+	public function getCountPlay()
+	{
+		return $this->countPlay;
+	}
 
-    /**
-     * @param int $countPlay
-     * @return $this
-     */
-    public function setCountPlay($countPlay)
-    {
-        $this->countPlay = $countPlay;
-        return $this;
-    }
+	/**
+	 * @param int $countPlay
+	 *
+	 * @return $this
+	 */
+	public function setCountPlay($countPlay)
+	{
+		$this->countPlay = $countPlay;
+		return $this;
+	}
 
-    /**
-     * @return int
-     */
-    public function getLikes()
-    {
-        return $this->likes;
-    }
+	/**
+	 * @return int
+	 */
+	public function getLikes()
+	{
+		return $this->likes;
+	}
 
-    /**
-     * @param int $likes
-     * @return $this
-     */
-    public function setLikes($likes)
-    {
-        $this->likes = $likes;
-        return $this;
-    }
+	/**
+	 * @param int $likes
+	 *
+	 * @return $this
+	 */
+	public function setLikes($likes)
+	{
+		$this->likes = $likes;
+		return $this;
+	}
 
-    /**
-     * @return string
-     */
-    public function getLyrics()
-    {
-        return $this->lyrics;
-    }
+	/**
+	 * @return string
+	 */
+	public function getLyrics()
+	{
+		return $this->lyrics;
+	}
 
-    /**
-     * @param string $lyrics
-     * @return $this
-     */
-    public function setLyrics($lyrics)
-    {
-        $this->lyrics = $lyrics;
-        return $this;
-    }
-
-
-    /**
-     * @return int
-     */
-    public function getUuid()
-    {
-        return $this->uuid;
-    }
-
-    /**
-     * @param int $uuid
-     * @return $this
-     */
-    public function setUuid($uuid)
-    {
-        $this->uuid = $uuid;
-        return $this;
-    }
+	/**
+	 * @param string $lyrics
+	 *
+	 * @return $this
+	 */
+	public function setLyrics($lyrics)
+	{
+		$this->lyrics = $lyrics;
+		return $this;
+	}
 
 
-    /**
-     * Get downloadable
-     *
-     * @return boolean
-     */
-    public function getDownloadable()
-    {
-        return $this->downloadable;
-    }
+	/**
+	 * @return int
+	 */
+	public function getUuid()
+	{
+		return $this->uuid;
+	}
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->genres = new ArrayCollection();
-        $this->playlists = new ArrayCollection();
-        $this->uuid = Uuid::uuid4();
-    }
+	/**
+	 * @param int $uuid
+	 *
+	 * @return $this
+	 */
+	public function setUuid($uuid)
+	{
+		$this->uuid = $uuid;
+		return $this;
+	}
 
-    /**
-     * Add genre
-     *
-     * @param Genre $genre
-     *
-     * @return Song
-     */
-    public function addGenre(Genre $genre)
-    {
-        $this->genres->add($genre);
-        return $this;
-    }
 
-    /**
-     * Remove genre
-     *
-     * @param Genre $genre
-     */
-    public function removeGenre(Genre $genre)
-    {
-        $this->genres->removeElement($genre);
-    }
+	/**
+	 * Get downloadable
+	 *
+	 * @return boolean
+	 */
+	public function getDownloadable()
+	{
+		return $this->downloadable;
+	}
 
-    /**
-     * Get genres
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getGenres()
-    {
-        return $this->genres;
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->genres    = new ArrayCollection();
+		$this->playlists = new ArrayCollection();
+		$this->uuid      = Uuid::uuid4();
+	}
 
-    /**
-     * Add playlist
-     *
-     * @param Playlist $playlist
-     *
-     * @return Song
-     */
-    public function addPlaylist(Playlist $playlist)
-    {
-        $this->playlists[] = $playlist;
+	/**
+	 * Add genre
+	 *
+	 * @param Genre $genre
+	 *
+	 * @return Song
+	 */
+	public function addGenre(Genre $genre)
+	{
+		$this->genres->add($genre);
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * Remove genre
+	 *
+	 * @param Genre $genre
+	 */
+	public function removeGenre(Genre $genre)
+	{
+		$this->genres->removeElement($genre);
+	}
 
-    /**
-     * Remove playlist
-     *
-     * @param Playlist $playlist
-     */
-    public function removePlaylist(Playlist $playlist)
-    {
-        $this->playlists->removeElement($playlist);
-    }
+	/**
+	 * Get genres
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getGenres()
+	{
+		return $this->genres;
+	}
 
-    /**
-     * Get playlists
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPlaylists()
-    {
-        return $this->playlists;
-    }
+	/**
+	 * Add playlist
+	 *
+	 * @param Playlist $playlist
+	 *
+	 * @return Song
+	 */
+	public function addPlaylist(Playlist $playlist)
+	{
+		$this->playlists[] = $playlist;
 
-    /**
-     * Set published
-     *
-     * @param boolean $published
-     *
-     * @return Song
-     */
-    public function setPublished($published)
-    {
-        $this->published = $published;
+		return $this;
+	}
 
-        return $this;
-    }
+	/**
+	 * Remove playlist
+	 *
+	 * @param Playlist $playlist
+	 */
+	public function removePlaylist(Playlist $playlist)
+	{
+		$this->playlists->removeElement($playlist);
+	}
 
-    /**
-     * Get published
-     *
-     * @return boolean
-     */
-    public function getPublished()
-    {
-        return $this->published;
-    }
+	/**
+	 * Get playlists
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getPlaylists()
+	{
+		return $this->playlists;
+	}
 
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Song
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
+	/**
+	 * Set published
+	 *
+	 * @param boolean $published
+	 *
+	 * @return Song
+	 */
+	public function setPublished($published)
+	{
+		$this->published = $published;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
+	/**
+	 * Get published
+	 *
+	 * @return boolean
+	 */
+	public function getPublished()
+	{
+		return $this->published;
+	}
 
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Song
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
+	/**
+	 * Set createdAt
+	 *
+	 * @param \DateTime $createdAt
+	 *
+	 * @return Song
+	 */
+	public function setCreatedAt($createdAt)
+	{
+		$this->createdAt = $createdAt;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
+	/**
+	 * Get createdAt
+	 *
+	 * @return \DateTime
+	 */
+	public function getCreatedAt()
+	{
+		return $this->createdAt;
+	}
 
-    /**
-     *
-     * @codeCoverageIgnore
-     *
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = new \DateTime();
-    }
+	/**
+	 * Set updatedAt
+	 *
+	 * @param \DateTime $updatedAt
+	 *
+	 * @return Song
+	 */
+	public function setUpdatedAt($updatedAt)
+	{
+		$this->updatedAt = $updatedAt;
 
-    /**
-     *
-     * @codeCoverageIgnore
-     *
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
+		return $this;
+	}
 
-    /**
-     * @@codeCoverageIgnore
-     *
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * Get updatedAt
+	 *
+	 * @return \DateTime
+	 */
+	public function getUpdatedAt()
+	{
+		return $this->updatedAt;
+	}
+
+	/**
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @ORM\PrePersist
+	 */
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+	}
+
+	/**
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @ORM\PreUpdate
+	 */
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
+
+	/**
+	 * @@codeCoverageIgnore
+	 *
+	 * Get id
+	 *
+	 * @return integer
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 }

@@ -22,169 +22,204 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SongController extends ApiController
 {
-    /**
-     * @Route("/",name="app_api_song_index")
-     * @Method("GET")
-     * @ApiDoc(
-     *     section="Song",
-     *     resource=true,
-     *     description="Get all songs"
-     * )
-     */
-    public function indexAction()
-    {
-        $songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
-        return new JsonResponse($songsAsArray);
-    }
+	/**
+	 * @Route("/",name="app_api_song_index")
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     section="Song",
+	 *     resource=true,
+	 *     description="Get all songs"
+	 * )
+	 */
+	public function indexAction()
+	{
+		$songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
+		return new JsonResponse($songsAsArray);
+	}
 
-    /**
-     * @Route("/random/{max}", name="app_api_song_random", options={"expose"=true}, requirements={"max"="\d+"})
-     * @Method("GET")
-     * @ApiDoc(
-     *     resource=true,
-     *     section="Song",
-     *     description="Random Songs",
-     *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum result"}}
-     * )
-     * @param $max int
-     * @return Response
-     */
-    public function randomAction($max)
-    {
-        $songs = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
-            ->getRandomSongs($max);
-        return $this->prepareJsonResponse($songs);
-    }
+	/**
+	 * @Route("/random/{max}", name="app_api_song_random", options={"expose"=true}, requirements={"max"="\d+"})
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     resource=true,
+	 *     section="Song",
+	 *     description="Random Songs",
+	 *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum result"}}
+	 * )
+	 * @param $max int
+	 *
+	 * @return Response
+	 */
+	public function randomAction($max)
+	{
+		$songs = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
+					  ->getRandomSongs($max);
+		return $this->prepareJsonResponse($songs);
+	}
 
-    /**
-     * @Route("/topdownloads/{max}", name="app_api_song_top_downloads", options={"expose"=true}, requirements={"max"="\d+"})
-     * @Method("GET")
-     * @ApiDoc(
-     *     resource=true,
-     *     section="Song",
-     *     description="Returns Top Downloads",
-     *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum number of songs"}}
-     * )
-     * @param $max
-     * @return Response
-     */
-    public function topDownloadsAction($max)
-    {
-        $songs = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
-            ->topDownloads($max);
-        return $this->prepareJsonResponse($songs);
-    }
+	/**
+	 * @Route("/topdownloads/{max}", name="app_api_song_top_downloads", options={"expose"=true},
+	 *                               requirements={"max"="\d+"})
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     resource=true,
+	 *     section="Song",
+	 *     description="Returns Top Downloads",
+	 *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum number of
+	 *     songs"}}
+	 * )
+	 * @param $max
+	 *
+	 * @return Response
+	 */
+	public function topDownloadsAction($max)
+	{
+		$songs = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
+					  ->topDownloads($max);
+		return $this->prepareJsonResponse($songs);
+	}
 
-    /**
-     * @Route("/info", name="app_api_song_info")
-     * @Method("GET")
-     * @ApiDoc(
-     *     resource=true,
-     *     section="Song",
-     *     description="Statistical information about songs"
-     * )
-     */
-    public function infoAction()
-    {
-        $info = $this->getDoctrine()->getRepository('AppBundle:Song')->getInfo();
-        return new JsonResponse($info);
-    }
+	/**
+	 * @Route("/newreleases/{max}",name="app_api_song_new_release", options={"expose"=true},
+	 *                                                              requirements={"max"="\d+"})
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     resource=true,
+	 *     section="Song",
+	 *     description="Returns new releases",
+	 *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum number of
+	 *     songs"}}
+	 * )
+	 * @param $max
+	 *
+	 * @return Response
+	 */
+	public function newReleaseAction($max)
+	{
+		$songs = $this->get('doctrine.orm.default_entity_manager')
+					  ->getRepository('AppBundle:Song')
+					  ->newReleases($max);
+		return $this->prepareJsonResponse($songs);
+	}
 
-    /**
-     * @Route("/{offset}/{limit}", name="app_api_song_all_by_offset", requirements={"offset"="\d+", "limit"="\d+"})
-     * @Method("GET")
-     * @ApiDoc(
-     *     section="Song",
-     *     resource=true,
-     *     description="Gets songs by {offset} and {limit}",
-     *     requirements={
-     *          {"name"="offset", "dataType"="integer", "requirement"="\d+", "description"="Offset"},
-     *          {"name"="limit", "dataType"="integer", "requirement"="\d+", "description"="Limit"}
-     *     }
-     * )
-     * @param $offset
-     * @param $limit
-     * @return Response
-     */
-    public function allByOffsetAction($offset, $limit)
-    {
-        $songs = $this->getDoctrine()->getRepository('AppBundle:Song')
-            ->createQueryBuilder('song')
-            ->select('song.id')
-            ->addSelect('song.title')
-            ->addSelect('song.uuid')
-            ->addSelect('song.duration')
-            ->addSelect('song.oldUrl as old_url')
-            ->join('song.artist', 'artist')
-            ->addSelect('artist.id artist_id')
-            ->setFirstResult($offset)
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->execute(null, AbstractQuery::HYDRATE_SCALAR);;
-        return $this->prepareJsonResponse($songs);
-    }
+	/**
+	 * @Route("/info", name="app_api_song_info")
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     resource=true,
+	 *     section="Song",
+	 *     description="Statistical information about songs"
+	 * )
+	 */
+	public function infoAction()
+	{
+		$info = $this->getDoctrine()->getRepository('AppBundle:Song')->getInfo();
+		return new JsonResponse($info);
+	}
 
-    /**
-     * @Route("/{uuid}", name="app_api_song_get")
-     * @Method("GET")
-     * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
-     * @param Song $song
-     * @return JsonResponse
-     * @ApiDoc(
-     *     section="Song",
-     *     resource=true,
-     *     description="Get song by uuid",
-     *     requirements={
-     *          {"name"="uuid", "dataType"="string", "requirement"="\w+", "required"=true, "description"="Universal unique identity"}
-     *     }
-     * )
-     */
-    public function getAction(Song $song)
-    {
-        return $this->prepareJsonResponse($song);
-    }
+	/**
+	 * @Route("/{offset}/{limit}", name="app_api_song_all_by_offset", requirements={"offset"="\d+", "limit"="\d+"})
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     section="Song",
+	 *     resource=true,
+	 *     description="Gets songs by {offset} and {limit}",
+	 *     requirements={
+	 *          {"name"="offset", "dataType"="integer", "requirement"="\d+", "description"="Offset"},
+	 *          {"name"="limit", "dataType"="integer", "requirement"="\d+", "description"="Limit"}
+	 *     }
+	 * )
+	 * @param $offset
+	 * @param $limit
+	 *
+	 * @return Response
+	 */
+	public function allByOffsetAction($offset, $limit)
+	{
+		$songs = $this->getDoctrine()->getRepository('AppBundle:Song')
+					  ->createQueryBuilder('song')
+					  ->select('song.id')
+					  ->addSelect('song.title')
+					  ->addSelect('song.uuid')
+					  ->addSelect('song.duration')
+					  ->addSelect('song.oldUrl as old_url')
+					  ->join('song.artist', 'artist')
+					  ->addSelect('artist.id artist_id')
+					  ->setFirstResult($offset)
+					  ->setMaxResults($limit)
+					  ->getQuery()
+					  ->execute(null, AbstractQuery::HYDRATE_SCALAR);;
+		return $this->prepareJsonResponse($songs);
+	}
 
-    /**
-     * @Route("/top/{offset}", name="app_api_song_top", options={"expose"=true}, requirements={"offset"="\d+"})
-     * @Method("GET")
-     * @ApiDoc(
-     *     resource=true,
-     *     section="Song",
-     *     description="Get songs by ranking, using offset",
-     *     requirements={{"name"="offset", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Offset"}}
-     * )
-     * @param $offset
-     * @return JsonResponse
-     */
-    public function topAction($offset)
-    {
-        $songs = $this->getDoctrine()->getRepository('AppBundle:Song')->createQueryBuilder('song')
-            ->setMaxResults(50)
-            ->setFirstResult($offset)
-            ->orderBy('song.countPlay')
-            ->getQuery()
-            ->execute();
-        return $this->prepareJsonResponse($songs);
-    }
+	/**
+	 * @Route("/{uuid}", name="app_api_song_get")
+	 * @Method("GET")
+	 * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
+	 * @param Song $song
+	 *
+	 * @return JsonResponse
+	 * @ApiDoc(
+	 *     section="Song",
+	 *     resource=true,
+	 *     description="Get song by uuid",
+	 *     requirements={
+	 *          {"name"="uuid", "dataType"="string", "requirement"="\w+", "required"=true, "description"="Universal
+	 *          unique identity"}
+	 *     }
+	 * )
+	 */
+	public function getAction(Song $song)
+	{
+		return $this->prepareJsonResponse($song);
+	}
 
-    /**
-     * @Route("/{id}/increase_count_play", name="app_api_song_increase", options={"expose"=true}, requirements={"id"="\d+"})
-     * @Method("PUT")
-     * @ApiDoc(
-     *     resource=true,
-     *     section="Song",
-     *     description="Increase song play count",
-     *     requirements={{"name"="id", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Song Id"}}
-     * )
-     * @param Song $song
-     * @return Response
-     */
-    public function increasePlayCountAction(Song $song)
-    {
-        $song->setCountPlay($song->getCountPlay() + 1);
-        $em = $this->get('doctrine.orm.default_entity_manager');
-        $em->persist($song);
-        $em->flush();
-        return $this->prepareJsonResponse($song);
-    }
+	/**
+	 * @Route("/top/{offset}", name="app_api_song_top", options={"expose"=true}, requirements={"offset"="\d+"})
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     resource=true,
+	 *     section="Song",
+	 *     description="Get songs by ranking, using offset",
+	 *     requirements={{"name"="offset", "dataType"="integer", "required"=true, "requirement"="\d+",
+	 *     "description"="Offset"}}
+	 * )
+	 * @param $offset
+	 *
+	 * @return JsonResponse
+	 */
+	public function topAction($offset)
+	{
+		$songs = $this->getDoctrine()->getRepository('AppBundle:Song')->createQueryBuilder('song')
+					  ->setMaxResults(50)
+					  ->setFirstResult($offset)
+					  ->orderBy('song.countPlay')
+					  ->getQuery()
+					  ->execute();
+		return $this->prepareJsonResponse($songs);
+	}
+
+	/**
+	 * @Route("/{id}/increase_count_play", name="app_api_song_increase", options={"expose"=true},
+	 *                                     requirements={"id"="\d+"})
+	 * @Method("PUT")
+	 * @ApiDoc(
+	 *     resource=true,
+	 *     section="Song",
+	 *     description="Increase song play count",
+	 *     requirements={{"name"="id", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Song
+	 *     Id"}}
+	 * )
+	 * @param Song $song
+	 *
+	 * @return Response
+	 */
+	public function increasePlayCountAction(Song $song)
+	{
+		$song->setCountPlay($song->getCountPlay() + 1);
+		$em = $this->get('doctrine.orm.default_entity_manager');
+		$em->persist($song);
+		$em->flush();
+		return $this->prepareJsonResponse($song);
+	}
 }

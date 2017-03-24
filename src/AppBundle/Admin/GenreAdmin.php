@@ -15,13 +15,13 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class GenreAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $form)
-    {
-        $form->add('name');
-    }
+	protected function configureFormFields(FormMapper $form)
+	{
+		$form->add('name');
+	}
 
-    protected function configureListFields(ListMapper $list)
-    {
-        $list->add('name');
-    }
+	protected function configureListFields(ListMapper $list)
+	{
+		$list->add('name');
+	}
 }

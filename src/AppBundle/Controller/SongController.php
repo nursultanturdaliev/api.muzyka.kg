@@ -23,27 +23,29 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class SongController extends Controller
 {
 
-    /**
-     * @Route("/{uuid}/stream",name="app_song_stream")
-     * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
-     * @Method("GET")
-     * @ApiDoc(
-     *     resource=true,
-     *     section="Song",
-     *     description="Stream song by uuid",
-     *     requirements={{"name"="uuid", "dataType"="string", "requirement"="\w+", "description"="Universal unique id of a song"}}
-     * )
-     * @param Song $song
-     * @return BinaryFileResponse
-     * @throws \Exception
-     */
-    public function streamAction(Song $song)
-    {
-        $file = $this->getParameter('music_path') . '/' . $song->getUuid();
-        $response = new BinaryFileResponse($file, 200);
-        $response->headers->set('Content-Type', 'application/octet-stream');
-        $response->headers->set('connection', 'keep-alive');
-        $response->headers->set('Content-Disposition', 'attachment; filename=' . $song->getArtist() . ' - ' . $song->getTitle() . '.mp3');
-        return $response;
-    }
+	/**
+	 * @Route("/{uuid}/stream",name="app_song_stream")
+	 * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     resource=true,
+	 *     section="Song",
+	 *     description="Stream song by uuid",
+	 *     requirements={{"name"="uuid", "dataType"="string", "requirement"="\w+", "description"="Universal unique id
+	 *     of a song"}}
+	 * )
+	 * @param Song $song
+	 *
+	 * @return BinaryFileResponse
+	 * @throws \Exception
+	 */
+	public function streamAction(Song $song)
+	{
+		$file     = $this->getParameter('music_path') . '/' . $song->getUuid();
+		$response = new BinaryFileResponse($file, 200);
+		$response->headers->set('Content-Type', 'application/octet-stream');
+		$response->headers->set('connection', 'keep-alive');
+		$response->headers->set('Content-Disposition', 'attachment; filename=' . $song->getArtist() . ' - ' . $song->getTitle() . '.mp3');
+		return $response;
+	}
 }

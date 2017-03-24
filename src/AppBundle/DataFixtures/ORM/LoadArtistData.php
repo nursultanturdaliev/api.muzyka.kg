@@ -24,46 +24,46 @@ use Doctrine\Common\Persistence\ObjectManager;
 class LoadArtistData extends AbstractFixture implements FixtureInterface, OrderedFixtureInterface
 {
 
-    /**
-     * Load data fixtures with the passed EntityManager
-     *
-     * @param ObjectManager $manager
-     */
-    public function load(ObjectManager $manager)
-    {
-        $artist = new Artist();
-        $artist->setId(1);
-        $artist->setName('Nursultan');
-        $artist->setLastname('Turdaliev');
-        $artist->setBirthday(new \DateTime('11-11-1992'));
-        $artist->setDebut(new \DateTime('01-01-2016'));
+	/**
+	 * Load data fixtures with the passed EntityManager
+	 *
+	 * @param ObjectManager $manager
+	 */
+	public function load(ObjectManager $manager)
+	{
+		$artist = new Artist();
+		$artist->setId(1);
+		$artist->setName('Nursultan');
+		$artist->setLastname('Turdaliev');
+		$artist->setBirthday(new \DateTime('11-11-1992'));
+		$artist->setDebut(new \DateTime('01-01-2016'));
 
-        $manager->persist($artist);
-        $manager->flush();
+		$manager->persist($artist);
+		$manager->flush();
 
-        $this->addReference('nursultan', $artist);
+		$this->addReference('nursultan', $artist);
 
-        $artist = new Artist();
-        $artist->setId(1);
-        $artist->setName('Sherkazy');
-        $artist->setLastname('Kokumbaev');
-        $artist->setBirthday(new \DateTime('28-03-1992'));
-        $artist->setDebut(new \DateTime('01-04-2016'));
+		$artist = new Artist();
+		$artist->setId(1);
+		$artist->setName('Sherkazy');
+		$artist->setLastname('Kokumbaev');
+		$artist->setBirthday(new \DateTime('28-03-1992'));
+		$artist->setDebut(new \DateTime('01-04-2016'));
 
-        $manager->persist($artist);
-        $manager->flush();
+		$manager->persist($artist);
+		$manager->flush();
 
-        $this->addReference('sheki', $artist);
+		$this->addReference('sheki', $artist);
 
-    }
+	}
 
-    /**
-     * Get the order of this fixture
-     *
-     * @return integer
-     */
-    public function getOrder()
-    {
-        return 0;
-    }
+	/**
+	 * Get the order of this fixture
+	 *
+	 * @return integer
+	 */
+	public function getOrder()
+	{
+		return 0;
+	}
 }

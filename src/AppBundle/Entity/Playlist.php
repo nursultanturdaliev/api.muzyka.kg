@@ -15,213 +15,213 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Playlist
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+	/**
+	 * @var int
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100)
-     */
-    private $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="string", length=100)
+	 */
+	private $name;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime")
-     */
-    private $createdAt;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="createdAt", type="datetime")
+	 */
+	private $createdAt;
 
-    /**
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
+	/**
+	 * @ORM\Column(name="updated_at", type="datetime")
+	 */
+	private $updatedAt;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Song", inversedBy="playlists")
-     */
-    private $songs;
+	/**
+	 * @ORM\ManyToMany(targetEntity="Song", inversedBy="playlists")
+	 */
+	private $songs;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User")
-     */
-    private $user;
+	/**
+	 * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User")
+	 */
+	private $user;
 
 
-    /**
-     * Get id
-     *
-     * @codeCoverageIgnore
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * Get id
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Playlist
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+	/**
+	 * Set name
+	 *
+	 * @param string $name
+	 *
+	 * @return Playlist
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+	/**
+	 * Get name
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Playlist
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
+	/**
+	 * Set createdAt
+	 *
+	 * @param \DateTime $createdAt
+	 *
+	 * @return Playlist
+	 */
+	public function setCreatedAt($createdAt)
+	{
+		$this->createdAt = $createdAt;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
+	/**
+	 * Get createdAt
+	 *
+	 * @return \DateTime
+	 */
+	public function getCreatedAt()
+	{
+		return $this->createdAt;
+	}
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->songs = new ArrayCollection();
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->songs = new ArrayCollection();
+	}
 
-    /**
-     * Add song
-     *
-     * @param Song $song
-     *
-     * @return Playlist
-     */
-    public function addSong(Song $song)
-    {
-        $this->songs->add($song);
-        $song->addPlaylist($this);
+	/**
+	 * Add song
+	 *
+	 * @param Song $song
+	 *
+	 * @return Playlist
+	 */
+	public function addSong(Song $song)
+	{
+		$this->songs->add($song);
+		$song->addPlaylist($this);
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Remove song
-     *
-     * @param Song $song
-     */
-    public function removeSong(Song $song)
-    {
-        $this->songs->removeElement($song);
-    }
+	/**
+	 * Remove song
+	 *
+	 * @param Song $song
+	 */
+	public function removeSong(Song $song)
+	{
+		$this->songs->removeElement($song);
+	}
 
-    /**
-     * Get songs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSongs()
-    {
-        return $this->songs;
-    }
+	/**
+	 * Get songs
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getSongs()
+	{
+		return $this->songs;
+	}
 
-    /**
-     * @codeCoverageIgnore
-     *
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = new \DateTime();
-    }
+	/**
+	 * @codeCoverageIgnore
+	 *
+	 * @ORM\PrePersist
+	 */
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+	}
 
-    /**
-     * @codeCoverageIgnore
-     *
-     * @ORM\PreUpdate()
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
+	/**
+	 * @codeCoverageIgnore
+	 *
+	 * @ORM\PreUpdate()
+	 */
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
 
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Playlist
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
+	/**
+	 * Set updatedAt
+	 *
+	 * @param \DateTime $updatedAt
+	 *
+	 * @return Playlist
+	 */
+	public function setUpdatedAt($updatedAt)
+	{
+		$this->updatedAt = $updatedAt;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
+	/**
+	 * Get updatedAt
+	 *
+	 * @return \DateTime
+	 */
+	public function getUpdatedAt()
+	{
+		return $this->updatedAt;
+	}
 
-    /**
-     * Set user
-     *
-     * @param User $user
-     *
-     * @return Playlist
-     */
-    public function setUser(User $user = null)
-    {
-        $this->user = $user;
+	/**
+	 * Set user
+	 *
+	 * @param User $user
+	 *
+	 * @return Playlist
+	 */
+	public function setUser(User $user = null)
+	{
+		$this->user = $user;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
+	/**
+	 * Get user
+	 *
+	 * @return User
+	 */
+	public function getUser()
+	{
+		return $this->user;
+	}
 }

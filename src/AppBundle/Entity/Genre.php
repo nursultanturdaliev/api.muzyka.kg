@@ -16,103 +16,103 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  */
 class Genre
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+	/**
+	 * @var int
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=255, unique=true)
-     */
-    private $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="string", length=255, unique=true)
+	 */
+	private $name;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Song", mappedBy="genres")
-     * @Exclude()
-     */
-    private $songs;
+	/**
+	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Song", mappedBy="genres")
+	 * @Exclude()
+	 */
+	private $songs;
 
-    /**
-     * @codeCoverageIgnore
-     *
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * @codeCoverageIgnore
+	 *
+	 * Get id
+	 *
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Genre
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+	/**
+	 * Set name
+	 *
+	 * @param string $name
+	 *
+	 * @return Genre
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+	/**
+	 * Get name
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->songs = new ArrayCollection();
-    }
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		$this->songs = new ArrayCollection();
+	}
 
-    /**
-     * Add song
-     *
-     * @param Song $song
-     *
-     * @return Genre
-     */
-    public function addSong(Song $song)
-    {
-        $this->songs->add($song);
+	/**
+	 * Add song
+	 *
+	 * @param Song $song
+	 *
+	 * @return Genre
+	 */
+	public function addSong(Song $song)
+	{
+		$this->songs->add($song);
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Remove song
-     *
-     * @param Song $song
-     */
-    public function removeSong(Song $song)
-    {
-        $this->songs->removeElement($song);
-    }
+	/**
+	 * Remove song
+	 *
+	 * @param Song $song
+	 */
+	public function removeSong(Song $song)
+	{
+		$this->songs->removeElement($song);
+	}
 
-    /**
-     * Get songs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSongs()
-    {
-        return $this->songs;
-    }
+	/**
+	 * Get songs
+	 *
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getSongs()
+	{
+		return $this->songs;
+	}
 }

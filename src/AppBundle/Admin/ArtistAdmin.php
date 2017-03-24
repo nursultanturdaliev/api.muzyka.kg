@@ -16,32 +16,32 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class ArtistAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $form)
-    {
-        $form->add('name');
-        $form->add('lastname');
-        $form->add('birthday', 'date', array(
-            'years' => range(1800, 2016),
-            'empty_data' => new \DateTime('1990-01-01')
-        ));
-        $form->add('gender', 'choice', array(
-            'choices' => array('M' => 'Male', 'F' => 'Female')
-        ));
-    }
+	protected function configureFormFields(FormMapper $form)
+	{
+		$form->add('name');
+		$form->add('lastname');
+		$form->add('birthday', 'date', array(
+			'years'      => range(1800, 2016),
+			'empty_data' => new \DateTime('1990-01-01')
+		));
+		$form->add('gender', 'choice', array(
+			'choices' => array('M' => 'Male', 'F' => 'Female')
+		));
+	}
 
-    protected function configureListFields(ListMapper $list)
-    {
-        $list->addIdentifier('name');
-        $list->add('email');
-        $list->add('lastname');
-        $list->add('birthday');
-        $list->add('gender');
-    }
+	protected function configureListFields(ListMapper $list)
+	{
+		$list->addIdentifier('name');
+		$list->add('email');
+		$list->add('lastname');
+		$list->add('birthday');
+		$list->add('gender');
+	}
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
-    {
-        $filter->add('name');
-    }
+	protected function configureDatagridFilters(DatagridMapper $filter)
+	{
+		$filter->add('name');
+	}
 
 
 }

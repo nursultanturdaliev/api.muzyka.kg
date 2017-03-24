@@ -7,6 +7,7 @@
  */
 
 namespace AppBundle\Controller\API;
+
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,20 +18,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  */
 class EnvironmentController extends ApiController
 {
-    /**
-     * @Route("/variables")
-     * @Method("GET")
-     * @ApiDoc(
-     *     section="Environment",
-     *     resource=true,
-     *     description="Returns environment variables"
-     * )
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function variablesAction(){
-        return $this->prepareJsonResponse(array(
-           'BASE_URL'=>$this->getParameter('base_url'),
-            'BASE_URL_API'=>$this->getParameter('base_url_api')
-        ));
-    }
+	/**
+	 * @Route("/variables")
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     section="Environment",
+	 *     resource=true,
+	 *     description="Returns environment variables"
+	 * )
+	 * @return \Symfony\Component\HttpFoundation\Response
+	 */
+	public function variablesAction()
+	{
+		return $this->prepareJsonResponse(array(
+			'BASE_URL'     => $this->getParameter('base_url'),
+			'BASE_URL_API' => $this->getParameter('base_url_api')
+		));
+	}
 }

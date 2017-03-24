@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -11,25 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class ArtistRepository extends EntityRepository
 {
-    public function getInfo()
-    {
-        return array(
-            'count' => $this->createQueryBuilder('artist')
-                ->select('count(artist.id)')
-                ->getQuery()
-                ->getSingleScalarResult()
-        );
-    }
+	public function getInfo()
+	{
+		return array(
+			'count' => $this->createQueryBuilder('artist')
+							->select('count(artist.id)')
+							->getQuery()
+							->getSingleScalarResult()
+		);
+	}
 
-    public function songAlreadyExists($artistName, $title)
-    {
-        $data = $this->createQueryBuilder('artist')
-            ->where('artist.name = :name')
-            ->andWhere('artist.songs.title = :title')
-            ->setParameter('name',$artistName)
-            ->setParameter('title',$title)
-            ->getQuery()
-            ->execute();
-        return sizeof($data) > 0 ;
-    }
+	public function songAlreadyExists($artistName, $title)
+	{
+		$data = $this->createQueryBuilder('artist')
+					 ->where('artist.name = :name')
+					 ->andWhere('artist.songs.title = :title')
+					 ->setParameter('name', $artistName)
+					 ->setParameter('title', $title)
+					 ->getQuery()
+					 ->execute();
+		return sizeof($data) > 0;
+	}
 }

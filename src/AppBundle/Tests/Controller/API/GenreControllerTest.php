@@ -12,25 +12,25 @@ use AppBundle\Test\AbstractBaseTestCase;
 
 class GenreControllerTest extends AbstractBaseTestCase
 {
-    public static function setUpBeforeClass()
-    {
-        self::resetDb();
-    }
+	public static function setUpBeforeClass()
+	{
+		self::resetDb();
+	}
 
 
-    public function testIndexAction()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/api/genre/');
+	public function testIndexAction()
+	{
+		$client = static::createClient();
+		$client->request('GET', '/api/genre/');
 
-        $this->checkJSONResponse($client);
-    }
+		$this->checkJSONResponse($client);
+	}
 
-    public function testArtistSongsAction()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/api/genre/5/songs');
+	public function testArtistSongsAction()
+	{
+		$client = static::createClient();
+		$client->request('GET', '/api/genre/5/songs');
 
-        $this->checkJSONResponse($client);
-    }
+		$this->checkJSONResponse($client);
+	}
 }

@@ -3,7 +3,6 @@
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use LyricsBundle\Entity\Song as LyricsSong;
 
 /**
  * SongRepository
@@ -13,59 +12,76 @@ use LyricsBundle\Entity\Song as LyricsSong;
  */
 class SongRepository extends EntityRepository
 {
-    public function findAllQuery()
-    {
-        return $this->createQueryBuilder('s');
-    }
+	public function findAllQuery()
+	{
+		return $this->createQueryBuilder('s');
+	}
 
-    public function getInfo()
-    {
-        return array(
-            'count' => $this->createQueryBuilder('song')
-                ->select('count(song.id)')
-                ->getQuery()
-                ->getSingleScalarResult()
-        );
-    }
+	public function getInfo()
+	{
+		return array(
+			'count' => $this->createQueryBuilder('song')
+							->select('count(song.id)')
+							->getQuery()
+							->getSingleScalarResult()
+		);
+	}
 
-    /**
-     * @param $songTitle
-     * @param $artistName
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    public function findBySongAndArtist($songTitle, $artistName)
-    {
-        return $this->createQueryBuilder('song')
-            ->join('song.artist', 'artist')
-            ->where('song.title = :title')
-            ->andWhere('artist.name = :artistName')
-            ->setParameter('title', $songTitle)
-            ->setParameter('artistName', $artistName)
-            ->getQuery()
-            ->execute();
-    }
+	/**
+	 * @param $songTitle
+	 * @param $artistName
+	 *
+	 * @return \Doctrine\ORM\QueryBuilder
+	 */
+	public function findBySongAndArtist($songTitle, $artistName)
+	{
+		return $this->createQueryBuilder('song')
+					->join('song.artist', 'artist')
+					->where('song.title = :title')
+					->andWhere('artist.name = :artistName')
+					->setParameter('title', $songTitle)
+					->setParameter('artistName', $artistName)
+					->getQuery()
+					->execute();
+	}
 
-    /**
-     * @param int $max
-     * @return array
-     */
-    public function getRandomSongs($max = 20)
-    {
-        $songs = $this->findAll();
-        shuffle($songs);
-        return array_slice($songs, 0, $max);
-    }
+	/**
+	 * @param int $max
+	 *
+	 * @return array
+	 */
+	public function getRandomSongs($max = 20)
+	{
+		$songs = $this->createQueryBuilder('song')
+					  ->where('song.published = true')
+					  ->getQuery()
+					  ->execute();
+		shuffle($songs);
+		return array_slice($songs, 0, $max);
+	}
 
-    /**
-     * @param $max
-     * @return mixed
-     */
-    public function topDownloads($max)
-    {
-        return $this->createQueryBuilder('song')
-            ->addOrderBy('song.countDownload', 'DESC')
-            ->setMaxResults($max)
-            ->getQuery()
-            ->execute();
-    }
+	/**
+	 * @param $max
+	 *
+	 * @return mixed
+	 */
+	public function topDownloads($max)
+	{
+		return $this->createQueryBuilder('song')
+					->where('song.published = true')
+					->addOrderBy('song.countDownload', 'DESC')
+					->setMaxResults($max)
+					->getQuery()
+					->execute();
+	}
+
+	public function newReleases($max)
+	{
+		return $this->createQueryBuilder('song')
+					->where('song.published = true')
+					->orderBy('song.publishedAt')
+					->setMaxResults($max)
+					->getQuery()
+					->execute();
+	}
 }

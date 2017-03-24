@@ -12,47 +12,47 @@ use AppBundle\Test\AbstractBaseTestCase;
 
 class ArtistControllerTest extends AbstractBaseTestCase
 {
-    public static function setUpBeforeClass()
-    {
-        self::resetDb();
-    }
+	public static function setUpBeforeClass()
+	{
+		self::resetDb();
+	}
 
 
-    public function testIndexAction()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/api/artist/');
+	public function testIndexAction()
+	{
+		$client = static::createClient();
+		$client->request('GET', '/api/artist/');
 
-        $this->checkJSONResponse($client);
-    }
+		$this->checkJSONResponse($client);
+	}
 
-    public function testInfoAction()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/api/artist/info');
+	public function testInfoAction()
+	{
+		$client = static::createClient();
+		$client->request('GET', '/api/artist/info');
 
-        $this->checkJSONResponse($client);
+		$this->checkJSONResponse($client);
 
-    }
+	}
 
-    public function testByOffsetAction()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/api/artist/0/100');
-        $this->checkJSONResponse($client);
-    }
+	public function testByOffsetAction()
+	{
+		$client = static::createClient();
+		$client->request('GET', '/api/artist/0/100');
+		$this->checkJSONResponse($client);
+	}
 
-    public function testGetAction()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/api/artist/1');
-        $this->checkJSONResponse($client);
-    }
+	public function testGetAction()
+	{
+		$client = static::createClient();
+		$client->request('GET', '/api/artist/1');
+		$this->checkJSONResponse($client);
+	}
 
-    public function testArtistSongsAction()
-    {
-        $client = static::createClient();
-        $client->request('GET', '/api/artist/1/songs');
-        $this->checkJSONResponse($client);
-    }
+	public function testArtistSongsAction()
+	{
+		$client = static::createClient();
+		$client->request('GET', '/api/artist/1/songs');
+		$this->checkJSONResponse($client);
+	}
 }
