@@ -42,6 +42,19 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
         $manager->flush();
 
         $this->addReference('nursultan', $artist);
+
+        $artist = new Artist();
+        $artist->setId(1);
+        $artist->setName('Sherkazy');
+        $artist->setLastname('Kokumbaev');
+        $artist->setBirthday(new \DateTime('28-03-1992'));
+        $artist->setDebut(new \DateTime('01-04-2016'));
+
+        $manager->persist($artist);
+        $manager->flush();
+
+        $this->addReference('sheki', $artist);
+
     }
 
     /**

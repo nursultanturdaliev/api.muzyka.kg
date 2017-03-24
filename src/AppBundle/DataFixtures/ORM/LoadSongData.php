@@ -57,7 +57,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
                 'uuid' => 'c25a07b8-15e2-481b-a9be-8aa962d811e2'
             ),
             array(
-                'artist'=>$this->getReference('nursultan'),
+                'artist'=>$this->getReference('sheki'),
                 'title' => 'Bishkek',
                 'duration' => '03:10',
                 'count_play' => 120,
@@ -69,7 +69,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
                 'uuid' => 'c25a07b8-15e2-481b-a9be-8aa962d811e1'
             ),
             array(
-                'artist'=>$this->getReference('nursultan'),
+                'artist'=>$this->getReference('sheki'),
                 'title' => 'Saga',
                 'duration' => '03:20',
                 'count_play' => 120,
