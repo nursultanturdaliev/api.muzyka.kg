@@ -68,14 +68,6 @@ class Song
     private $publishedAt;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="old_url", type="string", length=255, unique=true)
-     * @Expose()
-     */
-    private $oldUrl;
-
-    /**
      * @var boolean
      *
      * @ORM\Column(name="download_able", type="boolean", nullable=true)
@@ -218,29 +210,6 @@ class Song
     public function getPublishedAt()
     {
         return $this->publishedAt;
-    }
-
-    /**
-     * Set url
-     *
-     * @param $oldUrl
-     * @return Song
-     */
-    public function setOldUrl($oldUrl)
-    {
-        $this->oldUrl = $oldUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string
-     */
-    public function getOldUrl()
-    {
-        return $this->oldUrl;
     }
 
     /**

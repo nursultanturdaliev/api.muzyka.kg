@@ -44,4 +44,15 @@ class SongRepository extends EntityRepository
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * @param int $max
+     * @return array
+     */
+    public function getRandomSongs($max = 20)
+    {
+        $songs = $this->findAll();
+        shuffle($songs);
+        return array_slice($songs,0,$max);
+    }
 }

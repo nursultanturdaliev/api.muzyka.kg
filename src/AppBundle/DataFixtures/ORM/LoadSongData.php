@@ -31,20 +31,72 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
      */
     public function load(ObjectManager $manager)
     {
-        $song = new Song();
-        $song->setArtist($this->getReference('nursultan'))
-            ->setTitle('Kyrgyzstan')
-            ->setDuration('04:00')
-            ->setCountPlay(1000)
-            ->setLikes(1000)
-            ->setLyrics('Lyrics')
-            ->setDownloadable(true)
-            ->setCountDownload(0)
-            ->setOldUrl('')
-            ->setPublished(true)
-            ->setUuid('c25a07b8-15e2-481b-a9be-8aa962d811e4');
-        $manager->persist($song);
-        $manager->flush();
+        $songs = array(
+            array(
+                'artist'=>$this->getReference('nursultan'),
+                'title' => 'Kyrgyzstan',
+                'duration' => '04:00',
+                'count_play' => 100,
+                'likes' => 100,
+                'lyrics' => 'Lyrics',
+                'downloadable' => true,
+                'count_download' => true,
+                'published' => true,
+                'uuid' => 'c25a07b8-15e2-481b-a9be-8aa962d811e4'
+            ),
+            array(
+                'artist'=>$this->getReference('nursultan'),
+                'title' => 'Atameken',
+                'duration' => '02:00',
+                'count_play' => 100,
+                'likes' => 100,
+                'lyrics' => 'Atamekinim',
+                'downloadable' => true,
+                'count_download' => true,
+                'published' => true,
+                'uuid' => 'c25a07b8-15e2-481b-a9be-8aa962d811e2'
+            ),
+            array(
+                'artist'=>$this->getReference('nursultan'),
+                'title' => 'Bishkek',
+                'duration' => '03:10',
+                'count_play' => 120,
+                'likes' => 120,
+                'lyrics' => 'Bishkegim',
+                'downloadable' => true,
+                'count_download' => true,
+                'published' => true,
+                'uuid' => 'c25a07b8-15e2-481b-a9be-8aa962d811e1'
+            ),
+            array(
+                'artist'=>$this->getReference('nursultan'),
+                'title' => 'Saga',
+                'duration' => '03:20',
+                'count_play' => 120,
+                'likes' => 120,
+                'lyrics' => 'Saga',
+                'downloadable' => true,
+                'count_download' => true,
+                'published' => true,
+                'uuid' => 'c25a07b8-15e2-481b-a9be-8aa962d811e3'
+            )
+        );
+        foreach ($songs as $s) {
+
+            $song = new Song();
+            $song->setArtist($s['artist'])
+                ->setTitle($s['title'])
+                ->setDuration($s['duration'])
+                ->setCountPlay($s['count_play'])
+                ->setLikes($s['likes'])
+                ->setLyrics($s['lyrics'])
+                ->setDownloadable($s['downloadable'])
+                ->setCountDownload($s['count_download'])
+                ->setPublished($s['published'])
+                ->setUuid($s['uuid']);
+            $manager->persist($song);
+            $manager->flush();
+        }
     }
 
 

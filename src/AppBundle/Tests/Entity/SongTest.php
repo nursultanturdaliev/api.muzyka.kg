@@ -29,7 +29,6 @@ class SongTest extends TestCase
         $this->song->setTitle('Kyrgyzstan')
             ->setDuration('04:00')
             ->setCountPlay(100)
-            ->setOldUrl('')
             ->setLikes(100)
             ->setLyrics('Lyrics')
             ->setCreatedAt($this->createdAt)
@@ -49,7 +48,6 @@ class SongTest extends TestCase
         $this->assertFalse($this->song->isDownloadable());
         $this->assertFalse($this->song->getDownloadable());
         $this->assertEquals($this->song->getCountPlay(), 100);
-        $this->assertEquals($this->song->getOldUrl(), '');
         $this->assertEquals($this->song->getLikes(), 100);
         $this->assertEquals($this->song->getLyrics(), 'Lyrics');
         $this->assertEquals($this->song->getCreatedAt(), $this->createdAt);

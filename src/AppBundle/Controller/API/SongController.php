@@ -38,6 +38,25 @@ class SongController extends ApiController
     }
 
     /**
+     * @Route("/random/{max}", name="app_api_song_random", options={"expose"=true}, requirements={"max"="\d+"})
+     * @Method("GET")
+     * @ApiDoc(
+     *     resource=true,
+     *     section="Song",
+     *     description="Random Songs",
+     *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum result"}}
+     * )
+     * @param $max int
+     * @return Response
+     */
+    public function randomAction($max)
+    {
+        $songs = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
+            ->getRandomSongs($max);
+        return $this->prepareJsonResponse($songs);
+    }
+
+    /**
      * @Route("/info", name="app_api_song_info")
      * @Method("GET")
      * @ApiDoc(
@@ -141,7 +160,7 @@ class SongController extends ApiController
      * @param Song $song
      * @return Response
      */
-    public function increasePlayCount(Song $song)
+    public function increasePlayCountAction(Song $song)
     {
         $song->setCountPlay($song->getCountPlay() + 1);
         $em = $this->get('doctrine.orm.default_entity_manager');

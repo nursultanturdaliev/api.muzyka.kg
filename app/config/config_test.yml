@@ -16,4 +16,4 @@ swiftmailer:
     disable_delivery: true
 doctrine:
     dbal:
-        dbname:   "obon_test"
+        dbname:   "muzyka.test.kg"

@@ -67,7 +67,6 @@ class SuperInfoCommand extends ContainerAwareCommand
             $song->setTitle($songTitle);
             $song->setArtist($artist);
             $song->setDuration($duration);
-            $song->setOldUrl($oldUrl);
             $this->save($song);
             $fs->copy($oldUrl, $this->getBaseMusicDir() . '/' . $song->getUuid());
             if($song->getArtist() instanceof Artist){
