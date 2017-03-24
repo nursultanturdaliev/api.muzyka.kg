@@ -78,6 +78,7 @@ class Song
      * @var integer
      *
      * @ORM\Column(name="count_download", type="integer", nullable=true)
+     * @Expose()
      */
     private $countDownload = 0;
 

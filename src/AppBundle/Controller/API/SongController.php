@@ -57,6 +57,25 @@ class SongController extends ApiController
     }
 
     /**
+     * @Route("/topdownloads/{max}", name="app_api_song_top_downloads", options={"expose"=true}, requirements={"max"="\d+"})
+     * @Method("GET")
+     * @ApiDoc(
+     *     resource=true,
+     *     section="Song",
+     *     description="Returns Top Downloads",
+     *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum number of songs"}}
+     * )
+     * @param $max
+     * @return Response
+     */
+    public function topDownloadsAction($max)
+    {
+        $songs = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
+            ->topDownloads($max);
+        return $this->prepareJsonResponse($songs);
+    }
+
+    /**
      * @Route("/info", name="app_api_song_info")
      * @Method("GET")
      * @ApiDoc(

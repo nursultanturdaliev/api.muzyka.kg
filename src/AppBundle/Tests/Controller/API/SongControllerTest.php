@@ -42,7 +42,7 @@ class SongControllerTest extends AbstractBaseTestCase
         $client->request('GET', '/api/song/info');
 
         $this->checkJSONResponse($client);
-        $this->assertEquals('{"count":1}', $client->getResponse()->getContent());
+        $this->assertEquals('{"count":4}', $client->getResponse()->getContent());
     }
 
     public function testAllByOffsetAction()
@@ -96,6 +96,17 @@ class SongControllerTest extends AbstractBaseTestCase
         $client->request('GET','/api/song/random/2');
         $response = $this->getArrayResponse($client);
         $this->checkJSONResponse($client);
+        $this->assertEquals(2, sizeof($response));
+    }
+
+    public function testTopDownloadsAction()
+    {
+        $client = static::createClient();
+        $client->request('GET','/api/song/topdownloads/2');
+
+        $response = $this->getArrayResponse($client);
+        $this->checkJSONResponse($client);
+        $this->assertEquals(4, $response['count_download']);
         $this->assertEquals(2, sizeof($response));
     }
 }

@@ -53,6 +53,19 @@ class SongRepository extends EntityRepository
     {
         $songs = $this->findAll();
         shuffle($songs);
-        return array_slice($songs,0,$max);
+        return array_slice($songs, 0, $max);
+    }
+
+    /**
+     * @param $max
+     * @return mixed
+     */
+    public function topDownloads($max)
+    {
+        return $this->createQueryBuilder('song')
+            ->addOrderBy('song.countDownload', 'DESC')
+            ->setMaxResults($max)
+            ->getQuery()
+            ->execute();
     }
 }
