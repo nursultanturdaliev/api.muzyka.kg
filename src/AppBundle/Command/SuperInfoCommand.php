@@ -66,12 +66,12 @@ class SuperInfoCommand extends ContainerAwareCommand
 			$artist = $this->getArtistOrCreate($artistName);
 			$song   = new Song();
 			$song->setTitle($songTitle);
-			$song->setArtist($artist);
+			$song->addArtist($artist);
 			$song->setDuration($duration);
 			$this->save($song);
 			$fs->copy($oldUrl, $this->getBaseMusicDir() . '/' . $song->getUuid());
-			if ($song->getArtist() instanceof Artist) {
-				return $song->getTitle() . ' ' . $song->getArtist()->getName();
+			if (sizeof($song->getArtists()) === 1) {
+				return $song->getTitle() . ' ' . $song->getArtists()[0]->getName();
 			} else {
 				return $song->getTitle();
 			}

@@ -62,9 +62,9 @@ class SongTest extends TestCase
 	public function testSongArtist()
 	{
 		$artist = new Artist();
-		$this->song->setArtist($artist);
+		$this->song->addArtist($artist);
 
-		$this->assertEquals($this->song->getArtist(), $artist);
+		$this->assertEquals($this->song->getArtists(), $artist);
 	}
 
 	public function testAddGenre()

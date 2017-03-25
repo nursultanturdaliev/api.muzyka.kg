@@ -45,7 +45,7 @@ class SongController extends Controller
 		$response = new BinaryFileResponse($file, 200);
 		$response->headers->set('Content-Type', 'application/octet-stream');
 		$response->headers->set('connection', 'keep-alive');
-		$response->headers->set('Content-Disposition', 'attachment; filename=' . $song->getArtist() . ' - ' . $song->getTitle() . '.mp3');
+		$response->headers->set('Content-Disposition', 'attachment; filename=' . $song->getArtists() . ' - ' . $song->getTitle() . '.mp3');
 		return $response;
 	}
 }

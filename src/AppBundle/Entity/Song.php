@@ -120,9 +120,10 @@ class Song
 	/**
 	 * @var Artist
 	 *
-	 * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Artist", inversedBy="songs")
+	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Artist", mappedBy="songs")
+	 * @Expose()
 	 */
-	private $artist;
+	private $artists;
 
 	/**
 	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre",inversedBy="songs")
@@ -135,14 +136,12 @@ class Song
 	 */
 	private $playlists;
 
-	/**
-	 * @VirtualProperty()
-	 * @Type("integer")
-	 * @return int
-	 */
-	public function getArtistId()
+	public function __construct()
 	{
-		return $this->artist->getId();
+		$this->artists   = new ArrayCollection();
+		$this->genres    = new ArrayCollection();
+		$this->playlists = new ArrayCollection();
+		$this->uuid      = Uuid::uuid4();
 	}
 
 	/**
@@ -218,21 +217,21 @@ class Song
 	}
 
 	/**
-	 * @return Artist
+	 * @return Artist[]
 	 */
-	public function getArtist()
+	public function getArtists()
 	{
-		return $this->artist;
+		return $this->artists;
 	}
 
 	/**
-	 * @param string $artist
+	 * @param string $artists
 	 *
 	 * @return $this
 	 */
-	public function setArtist($artist)
+	public function setArtists($artists)
 	{
-		$this->artist = $artist;
+		$this->artists = $artists;
 		return $this;
 	}
 
@@ -360,16 +359,6 @@ class Song
 	public function getDownloadable()
 	{
 		return $this->downloadable;
-	}
-
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->genres    = new ArrayCollection();
-		$this->playlists = new ArrayCollection();
-		$this->uuid      = Uuid::uuid4();
 	}
 
 	/**
@@ -543,5 +532,29 @@ class Song
 	public function getId()
 	{
 		return $this->id;
+	}
+
+	/**
+	 * Add artist
+	 *
+	 * @param Artist $artist
+	 *
+	 * @return Song
+	 */
+	public function addArtist(Artist $artist)
+	{
+		$this->artists[] = $artist;
+
+		return $this;
+	}
+
+	/**
+	 * Remove artist
+	 *
+	 * @param Artist $artist
+	 */
+	public function removeArtist(Artist $artist)
+	{
+		$this->artists->removeElement($artist);
 	}
 }

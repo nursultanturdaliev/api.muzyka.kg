@@ -79,11 +79,16 @@ class Artist
 	private $biography;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\Song", mappedBy="artist", cascade={"persist"}, fetch="LAZY")
-	 *
+	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Song", inversedBy="artists", cascade={"persist"}, fetch="LAZY")
+	 * @ORM\JoinTable(name="app_artist_song")
+	 * @Expose()
 	 */
 	private $songs;
 
+	public function __construct()
+	{
+		$this->songs = new ArrayCollection();
+	}
 
 	/**
 	 * Get id
@@ -264,14 +269,6 @@ class Artist
 	}
 
 	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->songs = new ArrayCollection();
-	}
-
-	/**
 	 * Add song
 	 *
 	 * @param Song $song
@@ -280,6 +277,7 @@ class Artist
 	 */
 	public function addSong(Song $song)
 	{
+		$song->addArtist($this);
 		$this->songs->add($song);
 
 		return $this;

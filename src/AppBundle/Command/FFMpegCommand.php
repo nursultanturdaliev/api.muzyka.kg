@@ -63,10 +63,10 @@ class FFMpegCommand extends ContainerAwareCommand
 					$audio = $ffmpeg->open($fileInfo->getPathname());
 					$audio->filters()->addMetadata(
 						array(
-							'title'   => $song->getTitle(),
-							'artist'  => $song->getArtist()->getName(),
-							'artwork' => 'logo.jpg',
-							'album'   => 'MUZYKA.KG'
+								'title'   => $song->getTitle(),
+								'artist'  => $song->getArtists()->getName(),
+								'artwork' => 'logo.jpg',
+								'album'   => 'MUZYKA.KG'
 						)
 					);
 

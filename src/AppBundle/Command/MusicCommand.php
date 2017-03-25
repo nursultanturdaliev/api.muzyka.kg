@@ -7154,12 +7154,12 @@ class MusicCommand extends ContainerAwareCommand
 		$hash      = $this->getMusicsAsHash();
 		$counter   = 0;
 		foreach ($musics as $music) {
-			$key = $music->getArtist()->getName() . '-' . $music->getTitle();
+			$key = $music->getArtists()->getName() . '-' . $music->getTitle();
 			if (array_key_exists($key, $hash)) {
 				$oldFileName = $hash[$key];
 				$newFileName = $music->getUuid();
 				if (!$oldFileName) {
-					$output->writeln($music->getArtist()->getName() . '-' . $music->getTitle());
+					$output->writeln($music->getArtists()->getName() . '-' . $music->getTitle());
 					$manager->remove($music);
 					$manager->flush();
 				} else {

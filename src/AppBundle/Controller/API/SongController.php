@@ -137,17 +137,7 @@ class SongController extends ApiController
 	public function allByOffsetAction($offset, $limit)
 	{
 		$songs = $this->getDoctrine()->getRepository('AppBundle:Song')
-					  ->createQueryBuilder('song')
-					  ->select('song.id')
-					  ->addSelect('song.title')
-					  ->addSelect('song.uuid')
-					  ->addSelect('song.duration')
-					  ->join('song.artist', 'artist')
-					  ->addSelect('artist.id artist_id')
-					  ->setFirstResult($offset)
-					  ->setMaxResults($limit)
-					  ->getQuery()
-					  ->execute(null, AbstractQuery::HYDRATE_SCALAR);;
+					  ->findBy(array(),array(),$limit,$offset);
 		return $this->prepareJsonResponse($songs);
 	}
 
