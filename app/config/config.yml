@@ -116,3 +116,22 @@ jms_serializer:
     visitors:
         json:
             options: JSON_UNESCAPED_UNICODE
+
+fos_elastica:
+    indexes:
+        app:
+            types:
+                artist:
+                    mappings:
+                        name: {search_analyzer: custom_search_analyzer, index_analyzer: custom_index_analyzer, name: string}
+                    persistence:
+                        driver: orm
+                        model:  AppBundle\Entity\Artist
+                        provider: ~
+                        finder: ~
+                        provider: ~
+                        listener: ~ # by default, listens to "insert", "update" and "delete"
+#                song:
+#                    mappings:
+#                        name: ~
+#                        desc: ~
