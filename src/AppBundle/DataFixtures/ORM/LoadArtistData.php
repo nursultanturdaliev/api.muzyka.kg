@@ -34,12 +34,13 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 	{
 		$data = array(
 			array(
-				'id'       => 1,
-				'name'     => 'Nursultan',
-				'lastname' => 'Turdaliev',
-				'birthday' => new \DateTime('11-11-1992'),
-				'debut'    => new \DateTime('01-01-2016'),
-				'songs'    =>
+				'id'        => 1,
+				'name'      => 'Nursultan',
+				'lastname'  => 'Turdaliev',
+				'birthday'  => new \DateTime('11-11-1992'),
+				'debut'     => new \DateTime('01-01-2016'),
+				'instagram' => 'https://www.instagram.com/mirbek_atabekov/',
+				'songs'     =>
 					array(
 						array(
 							'title'          => 'Kyrgyzstan',
@@ -67,12 +68,13 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 						))
 			),
 			array(
-				'id'       => 2,
-				'name'     => 'Sherkazy',
-				'lastname' => 'Kokumbaev',
-				'birthday' => new \DateTime('23-08-1992'),
-				'debut'    => new \DateTime('01-04-2016'),
-				'songs'    =>
+				'id'        => 2,
+				'name'      => 'Sherkazy',
+				'lastname'  => 'Kokumbaev',
+				'birthday'  => new \DateTime('23-08-1992'),
+				'debut'     => new \DateTime('01-04-2016'),
+				'instagram' => 'https://www.instagram.com/nurlannasip_official/',
+				'songs'     =>
 					array(
 						array(
 							'title'          => 'Bishkek',
@@ -107,6 +109,7 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 			$artist->setLastname($item['lastname']);
 			$artist->setBirthday($item['birthday']);
 			$artist->setDebut($item['debut']);
+			$artist->setInstagram($item['instagram']);
 
 			foreach ($item['songs'] as $s) {
 				$song = new Song();
