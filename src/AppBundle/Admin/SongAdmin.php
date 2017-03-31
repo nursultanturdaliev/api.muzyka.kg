@@ -32,17 +32,27 @@ class SongAdmin extends AbstractAdmin
 		));
 	}
 
-	protected function configureListFields(ListMapper $list)
-	{
-		$list->addIdentifier('title');
-		$list->add('artist');
-		$list->add('published');
-		$list->add('duration');
-		$list->add('createdAt');
-		$list->add('updatedAt');
-		$list->add('likes');
-		$list->add('countDownload');
-	}
+    public function createQuery($context = 'list')
+    {
+        $user = $this->getConfigurationPool()->getContainer()->get('security.token_storage')->getToken()->getUser();
+        $query = parent::createQuery($context);
+        $query->andWhere(
+            $query->expr()->eq($query->getRootAliases()[0] . '.artist', ':artist')
+        );
+        $query->setParameter('artist', $user->getId());
+        return $query;
+    }
+    protected function configureListFields(ListMapper $list)
+    {
+        $list->addIdentifier('title');
+        $list->add('artist');
+        $list->add('published');
+        $list->add('duration');
+        $list->add('createdAt');
+        $list->add('updatedAt');
+        $list->add('likes');
+        $list->add('countDownload');
+    }
 
 	protected function configureDatagridFilters(DatagridMapper $filter)
 	{

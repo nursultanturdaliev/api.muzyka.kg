@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: sonata/sonata_admin.yml }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
 
 framework:
     #esi:             ~
@@ -67,9 +68,25 @@ swiftmailer:
 sonata_user:
     security_acl: true
     manager_type: orm # can be orm or mongodb
+
+sonata_admin:
+    security:
+        handler: sonata.admin.security.handler.role
+        information:
+              ADMIN: [ LIST, CREATE, VIEW]
+    title: ОБОН
+    title_logo: /apple-touch-icon.png
+#    templates:
+        # other configuration options
+#        layout:  SonataAdminBundle::layout.html.twig
+#        search:              SonataAdminBundle:Core:search.html.twig
+#        search_result_block: SonataAdminBundle:Block:block_search_result.html.twig
+
+
 sonata_block:
     default_contexts: [cms]
     blocks:
+        sonata.admin.block.search_result:
         sonata.admin.block.admin_list:
             contexts: [admin]
         sonata.user.block.menu:
