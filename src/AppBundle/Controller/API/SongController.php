@@ -196,7 +196,7 @@ class SongController extends ApiController
 	/**
 	 * @Route("/{id}/increase_count_play", name="app_api_song_increase", options={"expose"=true},
 	 *                                     requirements={"id"="\d+"})
-	 * @Method("PUT")
+	 * @Method({"PUT", "OPTIONS"})
 	 * @ApiDoc(
 	 *     resource=true,
 	 *     section="Song",
