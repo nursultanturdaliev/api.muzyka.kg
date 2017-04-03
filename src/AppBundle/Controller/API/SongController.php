@@ -137,7 +137,7 @@ class SongController extends ApiController
 	public function allByOffsetAction($offset, $limit)
 	{
 		$songs = $this->getDoctrine()->getRepository('AppBundle:Song')
-					  ->findBy(array(),array(),$limit,$offset);
+					  ->findBy(array(), array(), $limit, $offset);
 		return $this->prepareJsonResponse($songs);
 	}
 
@@ -210,10 +210,13 @@ class SongController extends ApiController
 	 */
 	public function increasePlayCountAction(Song $song)
 	{
-		$song->setCountPlay($song->getCountPlay() + 1);
-		$em = $this->get('doctrine.orm.default_entity_manager');
-		$em->persist($song);
-		$em->flush();
+		if ($this->get('request')->isMethod('PUT')) {
+			$song->setCountPlay($song->getCountPlay() + 1);
+
+			$em = $this->get('doctrine.orm.default_entity_manager');
+			$em->persist($song);
+			$em->flush();
+		}
 		return $this->prepareJsonResponse($song);
 	}
 }
