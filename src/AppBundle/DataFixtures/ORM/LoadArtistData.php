@@ -10,7 +10,6 @@ namespace AppBundle\DataFixtures\ORM;
 
 
 use AppBundle\Entity\Artist;
-use AppBundle\Entity\Song;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -32,76 +31,37 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 	 */
 	public function load(ObjectManager $manager)
 	{
-		$data = array(
-			array(
+		$data = [
+			[
 				'id'        => 1,
-				'name'      => 'Nursultan',
-				'lastname'  => 'Turdaliev',
-				'birthday'  => new \DateTime('11-11-1992'),
-				'debut'     => new \DateTime('01-01-2016'),
-				'instagram' => 'https://www.instagram.com/mirbek_atabekov/',
+				'name'      => 'Самара',
+				'lastname'  => 'Каримова',
+				'birthday'  => new \DateTime('11-11-1990'),
+				'debut'     => new \DateTime('01-01-2005'),
+				'instagram' => 'https://www.instagram.com/samarakarimova_official/',
 				'songs'     =>
-					array(
-						array(
-							'title'          => 'Kyrgyzstan',
-							'duration'       => '04:00',
-							'count_play'     => 100,
-							'likes'          => 100,
-							'lyrics'         => 'Lyrics',
-							'downloadable'   => true,
-							'count_download' => 1,
-							'published'      => true,
-							'published_at'   => new \DateTime('01-04-2016'),
-							'uuid'           => 'c25a07b8-15e2-481b-a9be-8aa962d811e4'
-						),
-						array(
-							'title'          => 'Atameken',
-							'duration'       => '02:00',
-							'count_play'     => 101,
-							'likes'          => 102,
-							'lyrics'         => 'Atamekinim',
-							'downloadable'   => true,
-							'count_download' => 2,
-							'published'      => true,
-							'published_at'   => new \DateTime('01-01-2016'),
-							'uuid'           => 'c25a07b8-15e2-481b-a9be-8aa962d811e2'
-						))
-			),
-			array(
+					[
+						'ead5ab32-11c1-4771-8fdc-8764a4109adc',
+						'e0dc01f8-cfdd-4ba3-bab7-8d8f6511e0a5',
+						'1bf85ee0-1510-40ff-b7d9-86bbf0318ff4',
+						'd214ec6b-e5ae-43f1-a56d-6686cd5ac0a3'
+					],
+			],
+			[
 				'id'        => 2,
-				'name'      => 'Sherkazy',
-				'lastname'  => 'Kokumbaev',
-				'birthday'  => new \DateTime('23-08-1992'),
-				'debut'     => new \DateTime('01-04-2016'),
-				'instagram' => 'https://www.instagram.com/nurlannasip_official/',
-				'songs'     =>
-					array(
-						array(
-							'title'          => 'Bishkek',
-							'duration'       => '03:10',
-							'count_play'     => 122,
-							'likes'          => 123,
-							'lyrics'         => 'Bishkegim',
-							'downloadable'   => true,
-							'count_download' => 3,
-							'published'      => true,
-							'published_at'   => new \DateTime('01-02-2016'),
-							'uuid'           => 'c25a07b8-15e2-481b-a9be-8aa962d811e1'
-						),
-						array(
-							'title'          => 'Saga',
-							'duration'       => '03:20',
-							'count_play'     => 123,
-							'likes'          => 124,
-							'lyrics'         => 'Saga',
-							'downloadable'   => true,
-							'count_download' => 4,
-							'published'      => true,
-							'published_at'   => new \DateTime('01-01-2015'),
-							'uuid'           => 'c25a07b8-15e2-481b-a9be-8aa962d811e3'
-						))
-			)
-		);
+				'name'      => 'Нурлан',
+				'lastname'  => 'Насип',
+				'birthday'  => new \DateTime('23-08-1990'),
+				'debut'     => new \DateTime('01-04-2010'),
+				'songs'     => [
+					'ead5ab32-11c1-4771-8fdc-8764a4109adc',
+					'e849bcb0-c9de-493e-b65f-f6f9f4cd7539',
+					'c461ebe3-eaf5-461f-aa16-d768728dc18d',
+					'24aa3472-1fed-4aed-ac25-f6fe38378a16'
+				],
+				'instagram' => 'https://www.instagram.com/nurlannasip_official/'
+			]
+		];
 		foreach ($data as $item) {
 			$artist = new Artist();
 			$artist->setId($item['id']);
@@ -111,19 +71,8 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 			$artist->setDebut($item['debut']);
 			$artist->setInstagram($item['instagram']);
 
-			foreach ($item['songs'] as $s) {
-				$song = new Song();
-				$song->setTitle($s['title'])
-					 ->setDuration($s['duration'])
-					 ->setCountPlay($s['count_play'])
-					 ->setLikes($s['likes'])
-					 ->setLyrics($s['lyrics'])
-					 ->setDownloadable($s['downloadable'])
-					 ->setCountDownload($s['count_download'])
-					 ->setPublished($s['published'])
-					 ->setPublishedAt($s['published_at'])
-					 ->setUuid($s['uuid']);
-				$artist->addSong($song);
+			foreach ($item['songs'] as $songUUID) {
+				$artist->addSong($this->getReference($songUUID));
 			}
 
 			$manager->persist($artist);
@@ -138,6 +87,6 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 	 */
 	public function getOrder()
 	{
-		return 0;
+		return 1;
 	}
 }
