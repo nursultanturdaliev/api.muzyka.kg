@@ -39,6 +39,7 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 				'birthday'  => new \DateTime('11-11-1990'),
 				'debut'     => new \DateTime('01-01-2005'),
 				'instagram' => 'https://www.instagram.com/samarakarimova_official/',
+				'profile'   =>'https://scontent-frt3-2.cdninstagram.com/t51.2885-19/s320x320/19986082_2041740165852082_2464042528924499968_a.jpg',
 				'songs'     =>
 					[
 						'ead5ab32-11c1-4771-8fdc-8764a4109adc',
@@ -59,7 +60,8 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 					'c461ebe3-eaf5-461f-aa16-d768728dc18d',
 					'24aa3472-1fed-4aed-ac25-f6fe38378a16'
 				],
-				'instagram' => 'https://www.instagram.com/nurlannasip_official/'
+				'instagram' => 'https://www.instagram.com/nurlannasip_official/',
+				'profile' => 'https://scontent-frt3-2.cdninstagram.com/t51.2885-19/s320x320/18947371_1699687010333397_5507363613641277440_a.jpg'
 			]
 		];
 		foreach ($data as $item) {
@@ -69,6 +71,7 @@ class LoadArtistData extends AbstractFixture implements FixtureInterface, Ordere
 			$artist->setLastname($item['lastname']);
 			$artist->setBirthday($item['birthday']);
 			$artist->setDebut($item['debut']);
+			$artist->setProfile($item['profile']);
 			$artist->setInstagram($item['instagram']);
 
 			foreach ($item['songs'] as $songUUID) {

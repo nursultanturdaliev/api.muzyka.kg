@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
@@ -102,6 +103,7 @@ class Song
 	 * @var string
 	 *
 	 * @ORM\Column(name="lyrics", type="text", nullable=true)
+	 * @Expose()
 	 */
 	private $lyrics;
 
@@ -217,7 +219,7 @@ class Song
 	}
 
 	/**
-	 * @return Artist[]
+	 * @return PersistentCollection|Artist[]
 	 */
 	public function getArtists()
 	{
@@ -556,5 +558,16 @@ class Song
 	public function removeArtist(Artist $artist)
 	{
 		$this->artists->removeElement($artist);
+	}
+
+	/**
+	 * @VirtualProperty()
+	 * @return string
+	 */
+	public function getArtistAsOne()
+	{
+		return implode(', ', array_map(function (Artist $artist) {
+			return $artist->getName() . ' ' . $artist->getLastname();
+		}, $this->getArtists()->toArray()));
 	}
 }

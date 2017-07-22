@@ -86,6 +86,13 @@ class Artist
 	private $instagram;
 
 	/**
+	 * @var
+	 * @ORM\Column(name="profile", type="string", nullable=true)
+	 * @Expose()
+	 */
+	private $profile;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Song", inversedBy="artists", cascade={"persist"}, fetch="LAZY")
 	 * @ORM\JoinTable(name="app_artist_song")
 	 * @Expose()
@@ -320,27 +327,47 @@ class Artist
 		$this->id = $id;
 	}
 
-    /**
-     * Set instagram
-     *
-     * @param string $instagram
-     *
-     * @return Artist
-     */
-    public function setInstagram($instagram)
-    {
-        $this->instagram = $instagram;
+	/**
+	 * Set instagram
+	 *
+	 * @param string $instagram
+	 *
+	 * @return Artist
+	 */
+	public function setInstagram($instagram)
+	{
+		$this->instagram = $instagram;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get instagram
-     *
-     * @return string
-     */
-    public function getInstagram()
-    {
-        return $this->instagram;
-    }
+	/**
+	 * Get instagram
+	 *
+	 * @return string
+	 */
+	public function getInstagram()
+	{
+		return $this->instagram;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProfile()
+	{
+		return $this->profile;
+	}
+
+	/**
+	 * @param string $profile
+	 *
+	 * @return $this
+	 */
+	public function setProfile($profile)
+	{
+		$this->profile = $profile;
+
+		return $this;
+	}
 }
