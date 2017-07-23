@@ -58,17 +58,21 @@ class SuperInfoCommand extends ContainerAwareCommand
 		$artistName = substr($musicAndTitle, 8, strpos($musicAndTitle, '</') - 8);
 		$songTitle  = substr($musicAndTitle, strpos($musicAndTitle, '"') + 1, strrpos($musicAndTitle, '"') - strpos($musicAndTitle, '"') - 1);
 
-		if (!$this->songAlreadyExists($songTitle, $artistName)) {
+		$artistNames = explode(',', $artistName);
+		if (!$this->songAlreadyExists($songTitle, $artistNames)) {
 			$oldUrl = self::AUDIO_STREAM_BASE_URL . $fileName;
 
-			$this->removeSong($oldUrl);
-
-			$artist = $this->getArtistOrCreate($artistName);
-			$song   = new Song();
+			$song = new Song();
 			$song->setTitle($songTitle);
-			$song->addArtist($artist);
 			$song->setDuration($duration);
 			$this->save($song);
+
+			foreach ($artistNames as $artistName) {
+				$artist = $this->getArtistOrCreate($artistName);
+				$artist->addSong($song);
+				$this->save($artist);
+			}
+
 			$fs->copy($oldUrl, $this->getBaseMusicDir() . '/' . $song->getUuid());
 			if (sizeof($song->getArtists()) === 1) {
 				return $song->getTitle() . ' ' . $song->getArtists()[0]->getName();
@@ -80,11 +84,11 @@ class SuperInfoCommand extends ContainerAwareCommand
 		}
 	}
 
-	private function songAlreadyExists($title, $artistName)
+	private function songAlreadyExists($title, $artistNames)
 	{
 		$data = $this->getContainer()->get('doctrine.orm.entity_manager')
 					 ->getRepository('AppBundle:Song')
-					 ->findBySongAndArtist($title, $artistName);
+					 ->findBySongAndArtist($title, $artistNames);
 
 		return sizeof($data) > 0;
 	}
@@ -117,9 +121,7 @@ class SuperInfoCommand extends ContainerAwareCommand
 
 	private function getBaseMusicDir()
 	{
-		$music_dir  = $this->getContainer()->getParameter('music_path');
-		$kernel_dir = $this->getContainer()->get('kernel')->getRootDir();
-		return $kernel_dir . '/../' . $music_dir;
+		return $this->getContainer()->getParameter('music_path');
 	}
 
 	private function removeSong($oldUrl)
