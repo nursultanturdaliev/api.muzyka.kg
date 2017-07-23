@@ -84,4 +84,28 @@ class SongRepository extends EntityRepository
 					->getQuery()
 					->execute();
 	}
+
+	/**
+	 * Search Song by title and artist
+	 *
+	 * @param $text
+	 *
+	 * @return mixed
+	 */
+	public function search($text)
+	{
+		$texts        = explode(' ', $text);
+		$queryBuilder = $this->createQueryBuilder('song')
+							 ->join('song.artists', 'artists');
+		foreach ($texts as $text) {
+			$queryBuilder->orWhere('upper(song.title) LIKE :text')
+						 ->orWhere('upper(artists.name) LIKE :text')
+						 ->orWhere('upper(artists.lastname) LIKE :text');
+
+		}
+		return $queryBuilder
+			->setParameter(':text', '%' . strtoupper($text) . '%')
+			->getQuery()
+			->execute();
+	}
 }

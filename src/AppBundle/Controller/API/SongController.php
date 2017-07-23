@@ -9,12 +9,13 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Song;
-use Doctrine\ORM\AbstractQuery;
+use AppBundle\Repository\SongRepository;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -35,6 +36,28 @@ class SongController extends ApiController
 	{
 		$songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
 		return new JsonResponse($songsAsArray);
+	}
+
+	/**
+	 * @Route("/search/{text}", name="app_api_song_search", options={"expose"=true})
+	 *
+	 * @Method("GET")
+	 * @ApiDoc(
+	 *     resource=true,
+	 *     section="Song",
+	 *     description="Search songs"
+	 * )
+	 *
+	 * @param $text
+	 *
+	 * @return Response
+	 */
+	public function searchAction($text)
+	{
+		/** @var SongRepository $searchRepository */
+		$searchRepository = $this->getDoctrine()->getRepository('AppBundle:Song');
+		$songs            = $searchRepository->search($text);
+		return $this->prepareJsonResponse($songs);
 	}
 
 	/**
