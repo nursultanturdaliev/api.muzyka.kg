@@ -24,7 +24,7 @@ class SongController extends Controller
 {
 
 	/**
-	 * @Route("/{uuid}/stream",name="app_song_stream")
+	 * @Route("/stream/{uuid}",name="app_song_stream")
 	 * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
 	 * @Method("GET")
 	 * @ApiDoc(
@@ -45,7 +45,7 @@ class SongController extends Controller
 		$response = new BinaryFileResponse($file, 200);
 		$response->headers->set('Content-Type', 'application/octet-stream');
 		$response->headers->set('connection', 'keep-alive');
-		$response->headers->set('Content-Disposition', 'attachment; filename=' . $song->getArtistAsOne() . ' - ' . $song->getTitle() . '.mp3');
+		$response->headers->set('Content-Disposition', 'attachment; filename=' . str_replace(',','',$song->getArtistAsOne()) . ' - ' . $song->getTitle() . '.mp3');
 		return $response;
 	}
 }

@@ -48,14 +48,23 @@ class SongRepository extends EntityRepository
 	/**
 	 * @param int $max
 	 *
+	 * @param null $artistId
+	 *
 	 * @return array
 	 */
-	public function getRandomSongs($max = 20)
+	public function getRandomSongs($max = 20, $artistId = null)
 	{
-		$songs = $this->createQueryBuilder('song')
-					  ->where('song.published = true')
-					  ->getQuery()
-					  ->execute();
+		$query = $this->createQueryBuilder('song')
+					  ->where('song.published = true');
+		if ($artistId) {
+			$songs = $this->getSongsOfArtist($artistId);
+			$ids   = array_column($songs, 'id');
+
+			$query->where('song.id NOT IN(:ids)')
+				  ->setParameter('ids', $ids);
+		}
+		$songs = $query->getQuery()
+					   ->execute();
 		shuffle($songs);
 		return array_slice($songs, 0, $max);
 	}
@@ -107,5 +116,16 @@ class SongRepository extends EntityRepository
 			->setParameter(':text', '%' . strtoupper($text) . '%')
 			->getQuery()
 			->execute();
+	}
+
+	private function getSongsOfArtist($artistId)
+	{
+		return $this->createQueryBuilder('song')
+					->select('song.id')
+					->join('song.artists', 'artists')
+					->where('artists.id = :id')
+					->setParameter('id', $artistId)
+					->getQuery()
+					->execute();
 	}
 }

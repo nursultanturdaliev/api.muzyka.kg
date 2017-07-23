@@ -12,7 +12,6 @@ use AppBundle\Entity\Song;
 use AppBundle\Repository\SongRepository;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,14 +68,16 @@ class SongController extends ApiController
 	 *     description="Random Songs",
 	 *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum result"}}
 	 * )
+	 * @param Request $request
 	 * @param $max int
 	 *
 	 * @return Response
 	 */
-	public function randomAction($max)
+	public function randomAction(Request $request, $max)
 	{
-		$songs = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
-					  ->getRandomSongs($max);
+		$artistId = $request->query->get('artistId');
+		$songs    = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
+						 ->getRandomSongs($max, $artistId);
 		return $this->prepareJsonResponse($songs);
 	}
 
@@ -167,10 +168,11 @@ class SongController extends ApiController
 	/**
 	 * @Route("/{uuid}", name="app_api_song_get")
 	 * @Method("GET")
-	 * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
-	 * @param Song $song
+	 * @param $uuid
 	 *
 	 * @return JsonResponse
+	 * @internal param Song $song
+	 *
 	 * @ApiDoc(
 	 *     section="Song",
 	 *     resource=true,
@@ -181,8 +183,9 @@ class SongController extends ApiController
      *     }
 	 * )
 	 */
-	public function getAction(Song $song)
+	public function getAction($uuid)
 	{
+		$song = $this->getDoctrine()->getRepository('AppBundle:Song')->findOneByUuid($uuid);
 		return $this->prepareJsonResponse($song);
 	}
 
