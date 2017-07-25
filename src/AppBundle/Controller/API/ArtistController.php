@@ -9,6 +9,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Artist;
+use AppBundle\Formatter\ArtistFormatter;
 use Doctrine\ORM\AbstractQuery;
 use FOS\RestBundle\Controller\Annotations\Route;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -34,6 +35,9 @@ class ArtistController extends ApiController
 	public function indexAction()
 	{
 		$artists = $this->getDoctrine()->getRepository('AppBundle:Artist')->findAll();
+
+		$artists = ArtistFormatter::format($artists);
+
 		return $this->prepareJsonResponse($artists);
 	}
 
@@ -102,7 +106,7 @@ class ArtistController extends ApiController
 	 */
 	public function getAction(Artist $artist)
 	{
-		return $this->prepareJsonResponse($artist);
+		return $this->prepareJsonResponse(ArtistFormatter::format($artist));
 	}
 
 	/**

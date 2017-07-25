@@ -93,6 +93,13 @@ class Artist
 	private $profile;
 
 	/**
+	 * @var
+	 * @ORM\Column(name="profile_local", type="text", nullable=true)
+	 * @Expose()
+	 */
+	private $profileLocal;
+
+	/**
 	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Song", inversedBy="artists", cascade={"persist"}, fetch="LAZY")
 	 * @ORM\JoinTable(name="app_artist_song")
 	 * @Expose()
@@ -369,5 +376,24 @@ class Artist
 		$this->profile = $profile;
 
 		return $this;
+	}
+
+	/**
+	 * @param mixed $profileLocal
+	 *
+	 * @return Artist
+	 */
+	public function setProfileLocal($profileLocal)
+	{
+		$this->profileLocal = $profileLocal;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getProfileLocal()
+	{
+		return $this->profileLocal;
 	}
 }

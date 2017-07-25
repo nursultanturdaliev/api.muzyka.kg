@@ -6,6 +6,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\Artist;
 use AppBundle\Entity\Song;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
@@ -24,6 +25,10 @@ class SuperInfoCommand extends ContainerAwareCommand
 	{
 		$this
 			->setName('app:superinfo')
+			->setDefinition(array(
+				new InputArgument('from', InputArgument::REQUIRED, 'Page From'),
+				new InputArgument('to', InputArgument::REQUIRED, 'Page To'),
+			))
 			->setDescription('Downloads music from super info');
 	}
 
@@ -32,23 +37,30 @@ class SuperInfoCommand extends ContainerAwareCommand
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
+		$from = $input->getArgument('from');
+		$to   = $input->getArgument('to');
+
 		libxml_use_internal_errors(true);
-		$html = file_get_contents(self::URL);
 
-		/** @var Crawler $crawler */
-		$crawler = new Crawler($html);
+		while ($from <= $to) {
+			$html = file_get_contents(self::URL . '?pg=' . $from);
+
+			/** @var Crawler $crawler */
+			$crawler = new Crawler($html);
 
 
-		$crawler->filter('.audio-block .audio-item')
-				->each(function ($element) use ($output) {
-					/** @var Crawler $element */
-					$fileName = $element->attr('data-file');
-					$title    = $element->filter('.audio-item-title a')->attr('title');
-					$duration = $element->filter('.info-item.length')->text();
-					$duration = substr($duration, 3, 5);
+			$crawler->filter('.audio-block .audio-item')
+					->each(function ($element) use ($output) {
+						/** @var Crawler $element */
+						$fileName = $element->attr('data-file');
+						$title    = $element->filter('.audio-item-title a')->attr('title');
+						$duration = $element->filter('.info-item.length')->text();
+						$duration = substr($duration, 3, 5);
 
-					$output->writeln($this->saveFile($fileName, $title, $duration));
-				});
+						$output->writeln($this->saveFile($fileName, $title, $duration));
+					});
+			$from += 1;
+		}
 	}
 
 	private function saveFile($fileName, $musicAndTitle, $duration)
@@ -95,9 +107,11 @@ class SuperInfoCommand extends ContainerAwareCommand
 
 	private function getArtistOrCreate($artistName)
 	{
+		$artistName = trim($artistName);
 
 		$manager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-		$artist  = $manager
+
+		$artist = $manager
 			->getRepository('AppBundle:Artist')
 			->findOneByName($artistName);
 
