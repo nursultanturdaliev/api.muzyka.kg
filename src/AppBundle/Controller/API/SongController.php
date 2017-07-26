@@ -9,6 +9,7 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Song;
+use AppBundle\Formatter\SongFormatter;
 use AppBundle\Repository\SongRepository;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -78,7 +79,8 @@ class SongController extends ApiController
 		$artistId = $request->query->get('artistId');
 		$songs    = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
 						 ->getRandomSongs($max, $artistId);
-		return $this->prepareJsonResponse($songs);
+
+		return $this->prepareJsonResponse(SongFormatter::format($songs));
 	}
 
 	/**

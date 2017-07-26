@@ -45,6 +45,7 @@ class ArtistFormatter implements FormatterInterface
 			'instagram'     => $value->getInstagram(),
 			'profile'       => $value->getProfile(),
 			'profileLocal'  => $value->getProfileLocal(),
+			'hasProfileLocal'=> boolval($value->getProfileLocal()),
 			'numberOfSongs' => $value->getSongs()->count()
 		];
 	}
@@ -72,9 +73,10 @@ class ArtistFormatter implements FormatterInterface
 	private static function formatSong($song)
 	{
 		return [
-			'uuid'     => $song->getUuid()->jsonSerialize(),
-			'title'    => $song->getTitle(),
-			'duration' => $song->getDuration()
+			'uuid'           => $song->getUuid()->jsonSerialize(),
+			'title'          => $song->getTitle(),
+			'duration'       => $song->getDuration(),
+			'artist_as_one' => $song->getArtistAsOne()
 		];
 	}
 }

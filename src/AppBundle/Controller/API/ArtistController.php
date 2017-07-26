@@ -34,10 +34,11 @@ class ArtistController extends ApiController
 	 */
 	public function indexAction()
 	{
-		$artists = $this->getDoctrine()->getRepository('AppBundle:Artist')->findAll();
+		$artists = $this->getDoctrine()->getRepository('AppBundle:Artist')->createQueryBuilder('artist')
+				->where('artist.profileLocal IS NOT NULL')
+				->orWhere("artist.profileLocal <> ''")->setMaxResults(50)->getQuery()->execute();
 
 		$artists = ArtistFormatter::format($artists);
-
 		return $this->prepareJsonResponse($artists);
 	}
 
