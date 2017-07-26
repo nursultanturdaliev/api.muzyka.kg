@@ -100,9 +100,11 @@ class SongRepository extends EntityRepository
 	 *
 	 * @param $text
 	 *
+	 * @param int $limit
+	 *
 	 * @return mixed
 	 */
-	public function search($text)
+	public function search($text, $limit = 200)
 	{
 		$texts        = explode(' ', $text);
 		$queryBuilder = $this->createQueryBuilder('song')
@@ -114,6 +116,7 @@ class SongRepository extends EntityRepository
 
 		}
 		return $queryBuilder
+			->setMaxResults($limit)
 			->setParameter(':text', '%' . strtoupper($text) . '%')
 			->getQuery()
 			->execute();

@@ -57,7 +57,8 @@ class SongController extends ApiController
 		/** @var SongRepository $searchRepository */
 		$searchRepository = $this->getDoctrine()->getRepository('AppBundle:Song');
 		$songs            = $searchRepository->search($text);
-		return $this->prepareJsonResponse($songs);
+		$formattedSongs = SongFormatter::format($songs);
+		return $this->prepareJsonResponse($formattedSongs);
 	}
 
 	/**
@@ -162,9 +163,10 @@ class SongController extends ApiController
 	 */
 	public function allByOffsetAction($offset, $limit)
 	{
-		$songs = $this->getDoctrine()->getRepository('AppBundle:Song')
-					  ->findBy(array(), array(), $limit, $offset);
-		return $this->prepareJsonResponse($songs);
+		$songs          = $this->getDoctrine()->getRepository('AppBundle:Song')
+							   ->findBy(array(), array(), $limit, $offset);
+		$formattedSongs = SongFormatter::format($songs);
+		return $this->prepareJsonResponse($formattedSongs);
 	}
 
 	/**

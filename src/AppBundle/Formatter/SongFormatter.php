@@ -47,11 +47,12 @@ class SongFormatter implements FormatterInterface
 	{
 		return [
 			'artist_as_one' => $value->getArtistAsOne(),
-			'artists'  => self::formatArtists($value->getArtists()),
-			'duration' => $value->getDuration(),
-			'id'       => $value->getId(),
-			'uuid'     => $value->getUuid()->jsonSerialize(),
-			'title'    => $value->getTitle(),
+			'artists'       => self::formatArtists($value->getArtists()),
+			'duration'      => $value->getDuration(),
+			'id'            => $value->getId(),
+			'uuid'          => $value->getUuid()->jsonSerialize(),
+			'title'         => $value->getTitle(),
+			'profileLocal'  => self::getProfileLocal($value->getArtists())
 		];
 	}
 
@@ -66,14 +67,32 @@ class SongFormatter implements FormatterInterface
 		/** @var Artist $artist */
 		foreach ($artists as $artist) {
 			$formattedArray[] = [
-				'id'       => $artist->getId(),
-				'lastname' => $artist->getName(),
-				'name'     => $artist->getName(),
-				'profileLocal'=>$artist->getProfileLocal()
+				'id'           => $artist->getId(),
+				'lastname'     => $artist->getLastname(),
+				'name'         => $artist->getName(),
+				'profileLocal' => $artist->getProfileLocal()
 			];
 		}
 
 		return $formattedArray;
 
+	}
+
+	/**
+	 * @param PersistentCollection $artists
+	 *
+	 * @return bool
+	 */
+	private static function getProfileLocal($artists)
+	{
+		if (!$artists) {
+			return false;
+		}
+		/** @var Artist $artist */
+		foreach ($artists as $artist) {
+			if ($artist->getProfileLocal()) {
+				return $artist->getProfileLocal();
+			}
+		}
 	}
 }
