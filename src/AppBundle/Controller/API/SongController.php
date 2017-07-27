@@ -26,21 +26,6 @@ class SongController extends ApiController
 	const MAXIMUM_SONG_RESPONSE = 100;
 
 	/**
-	 * @Route("/",name="app_api_song_index")
-	 * @Method("GET")
-	 * @ApiDoc(
-	 *     section="Song",
-	 *     resource=true,
-	 *     description="Get all songs"
-	 * )
-	 */
-	public function indexAction()
-	{
-		$songsAsArray = $this->getDoctrine()->getRepository('AppBundle:Song')->findAllQuery()->getQuery()->getArrayResult();
-		return new JsonResponse($songsAsArray);
-	}
-
-	/**
 	 * @Route("/search/{text}", name="app_api_song_search", options={"expose"=true})
 	 *
 	 * @Method("GET")
@@ -109,7 +94,7 @@ class SongController extends ApiController
 	}
 
 	/**
-	 * @Route("/status/new/{limit}",name="app_api_song_new_release", options={"expose"=true},
+	 * @Route("/status/new",name="app_api_song_new_release", options={"expose"=true},
 	 *                                                              requirements={"limit"="\d+"})
 	 * @Method("GET")
 	 * @ApiDoc(
@@ -123,15 +108,12 @@ class SongController extends ApiController
 	 *
 	 * @return Response
 	 */
-	public function statusNewAction($limit)
+	public function statusNewAction()
 	{
-		if ($limit > self::MAXIMUM_SONG_RESPONSE) {
-			$limit = self::MAXIMUM_SONG_RESPONSE;
-		}
 
 		$songs = $this->get('doctrine.orm.default_entity_manager')
 					  ->getRepository('AppBundle:Song')
-					  ->newReleases($limit);
+					  ->newReleases(10);
 
 		$formattedSongs = SongFormatter::format($songs);
 		return $this->prepareJsonResponse($formattedSongs);
@@ -153,26 +135,24 @@ class SongController extends ApiController
 	}
 
 	/**
-	 * @Route("/{offset}/{limit}", name="app_api_song_all_by_offset", requirements={"offset"="\d+", "limit"="\d+"})
+	 * @Route("/page/{page}/", name="app_api_song_pagination", requirements={"page"="\d+"})
 	 * @Method("GET")
 	 * @ApiDoc(
 	 *     section="Song",
 	 *     resource=true,
 	 *     description="Gets songs by {offset} and {limit}",
 	 *     requirements={
-	 *          {"name"="offset", "dataType"="integer", "requirement"="\d+", "description"="Offset"},
-	 *          {"name"="limit", "dataType"="integer", "requirement"="\d+", "description"="Limit"}
+	 *          {"name"="page", "dataType"="integer", "requirement"="\d+", "description"="Page"},
 	 *     }
 	 * )
-	 * @param $offset
-	 * @param $limit
+	 * @param $page
 	 *
 	 * @return Response
 	 */
-	public function allByOffsetAction($offset, $limit)
+	public function pageAction($page = 1)
 	{
 		$songs          = $this->getDoctrine()->getRepository('AppBundle:Song')
-							   ->findBy(array(), array(), $limit, $offset);
+							   ->findBy(array(), array(), self::MAXIMUM_SONG_RESPONSE, self::MAXIMUM_SONG_RESPONSE * abs($page - 1));
 		$formattedSongs = SongFormatter::format($songs);
 		return $this->prepareJsonResponse($formattedSongs);
 	}
