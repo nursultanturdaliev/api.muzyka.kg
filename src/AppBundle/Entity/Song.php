@@ -138,12 +138,20 @@ class Song
 	 */
 	private $playlists;
 
+	/**
+	 *
+	 * @ORM\Column(type="boolean", name="is_new", nullable=true)
+	 * @var bool $isNew
+	 */
+	private $isNew;
+
 	public function __construct()
 	{
 		$this->artists   = new ArrayCollection();
 		$this->genres    = new ArrayCollection();
 		$this->playlists = new ArrayCollection();
 		$this->uuid      = Uuid::uuid4();
+		$this->isNew     = false;
 	}
 
 	/**
@@ -569,5 +577,16 @@ class Song
 		return implode(', ', array_map(function (Artist $artist) {
 			return $artist->getName() . ' ' . $artist->getLastname();
 		}, $this->getArtists()->toArray()));
+	}
+
+	/**
+	 * @param boolean $isNew
+	 *
+	 * @return Song
+	 */
+	public function setIsNew($isNew)
+	{
+		$this->isNew = $isNew;
+		return $this;
 	}
 }

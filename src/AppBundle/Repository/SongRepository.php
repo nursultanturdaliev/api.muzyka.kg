@@ -85,12 +85,13 @@ class SongRepository extends EntityRepository
 					->execute();
 	}
 
-	public function newReleases($max)
+	public function newReleases($limit)
 	{
 		return $this->createQueryBuilder('song')
-					->where('song.published = true')
+					->where('song.isNew = :isNew')
+					->setParameter('isNew', true)
 					->orderBy('song.publishedAt')
-					->setMaxResults($max)
+					->setMaxResults($limit)
 					->getQuery()
 					->execute();
 	}

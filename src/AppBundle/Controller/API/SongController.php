@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class SongController extends ApiController
 {
+	const MAXIMUM_SONG_RESPONSE = 100;
+
 	/**
 	 * @Route("/",name="app_api_song_index")
 	 * @Method("GET")
@@ -57,7 +59,7 @@ class SongController extends ApiController
 		/** @var SongRepository $searchRepository */
 		$searchRepository = $this->getDoctrine()->getRepository('AppBundle:Song');
 		$songs            = $searchRepository->search($text);
-		$formattedSongs = SongFormatter::format($songs);
+		$formattedSongs   = SongFormatter::format($songs);
 		return $this->prepareJsonResponse($formattedSongs);
 	}
 
@@ -107,8 +109,8 @@ class SongController extends ApiController
 	}
 
 	/**
-	 * @Route("/newreleases/{max}",name="app_api_song_new_release", options={"expose"=true},
-	 *                                                              requirements={"max"="\d+"})
+	 * @Route("/status/new/{limit}",name="app_api_song_new_release", options={"expose"=true},
+	 *                                                              requirements={"limit"="\d+"})
 	 * @Method("GET")
 	 * @ApiDoc(
 	 *     resource=true,
@@ -117,16 +119,22 @@ class SongController extends ApiController
 	 *     requirements={{"name"="max", "dataType"="integer", "requirement"="\d+", "description"="Maximum number of
      *     songs"}}
      * )
-	 * @param $max
+	 * @param $limit
 	 *
 	 * @return Response
 	 */
-	public function newReleaseAction($max)
+	public function statusNewAction($limit)
 	{
+		if ($limit > self::MAXIMUM_SONG_RESPONSE) {
+			$limit = self::MAXIMUM_SONG_RESPONSE;
+		}
+
 		$songs = $this->get('doctrine.orm.default_entity_manager')
 					  ->getRepository('AppBundle:Song')
-					  ->newReleases($max);
-		return $this->prepareJsonResponse($songs);
+					  ->newReleases($limit);
+
+		$formattedSongs = SongFormatter::format($songs);
+		return $this->prepareJsonResponse($formattedSongs);
 	}
 
 	/**
