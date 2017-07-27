@@ -23,20 +23,26 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ArtistController extends ApiController
 {
+	const ARTIST_PER_RESPONSE_LIMIT = 100;
+
 	/**
-	 * @Route("/", name="app_api_artist_index")
+	 * @Route("/page/{page}", name="app_api_artist_index", requirements={"page":"\d+"})
 	 * @Method("GET")
 	 * @ApiDoc(
 	 *     resource=true,
 	 *     section="Artist",
 	 *     description="Get all artists"
 	 * )
+	 * @param $page integer
+	 *
+	 * @return Response
 	 */
-	public function indexAction()
+	public function indexAction($page)
 	{
 		$artists = $this->getDoctrine()->getRepository('AppBundle:Artist')->createQueryBuilder('artist')
-				->where('artist.profileLocal IS NOT NULL')
-				->orWhere("artist.profileLocal <> ''")->setMaxResults(50)->getQuery()->execute();
+						->setMaxResults(self::ARTIST_PER_RESPONSE_LIMIT)
+						->setFirstResult(abs($page - 1) * self::ARTIST_PER_RESPONSE_LIMIT)
+						->getQuery()->execute();
 
 		$artists = ArtistFormatter::format($artists);
 		return $this->prepareJsonResponse($artists);

@@ -16,6 +16,8 @@ use JMS\Serializer\Annotation\Expose;
  */
 class Artist
 {
+	private $placeholders = ['placeholder_one', 'placeholder_two'];
+
 	/**
 	 * @var int
 	 *
@@ -394,6 +396,9 @@ class Artist
 	 */
 	public function getProfileLocal()
 	{
-		return $this->profileLocal;
+		if ($this->profileLocal) {
+			return $this->profileLocal;
+		}
+		return $this->placeholders[rand(0, 1)];
 	}
 }
