@@ -33,6 +33,10 @@ class ArtistFormatter implements FormatterInterface
 			$formattedArray[] = self::formatArtist($artist);
 		}
 
+
+		usort($formattedArray,function($a, $b){
+			return $b['numberOfSongs'] - $a['numberOfSongs'];
+		});
 		return $formattedArray;
 	}
 

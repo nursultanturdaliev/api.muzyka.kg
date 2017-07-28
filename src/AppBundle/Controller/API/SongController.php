@@ -182,33 +182,32 @@ class SongController extends ApiController
 	}
 
 	/**
-	 * @Route("/top/{offset}/{limit}", name="app_api_song_top", options={"expose"=true}, requirements={"offset"="\d+",
-	 *                                 "limit"="\d+"})
+	 * @Route("/top/{page}", name="app_api_song_top", options={"expose"=true}, requirements={"page"="\d+"})
 	 * @Method("GET")
 	 * @ApiDoc(
 	 *     resource=true,
 	 *     section="Song",
 	 *     description="Get songs by ranking, using offset",
-	 *     requirements={{"name"="offset", "dataType"="integer", "required"=true, "requirement"="\d+",
-	 *     "description"="Offset"},
-	 *     {"name"="limit", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Limit"}}
+	 *     requirements={{"name"="page", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Limit"}}
 	 * )
-	 * @param $offset
-	 * @param $limit
 	 *
 	 * @return JsonResponse
+	 * @param $page
+	 * @return Response
 	 */
-	public function topAction($offset, $limit)
+	public function topAction($page)
 	{
 		$songs = $this->getDoctrine()
 					  ->getRepository('AppBundle:Song')
 					  ->createQueryBuilder('song')
-					  ->setMaxResults($limit)
-					  ->setFirstResult($offset)
+					  ->setMaxResults(10)
+					  ->setFirstResult(abs($page - 1) * 10)
 					  ->orderBy('song.countPlay')
 					  ->getQuery()
 					  ->execute();
-		return $this->prepareJsonResponse($songs);
+
+		$formattedSongs = SongFormatter::format($songs);
+		return $this->prepareJsonResponse($formattedSongs);
 	}
 
 	/**
