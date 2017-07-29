@@ -11,7 +11,7 @@ namespace AppBundle\Tests\Entity;
 
 use AppBundle\Entity\Playlist;
 use AppBundle\Entity\Song;
-use Application\Sonata\UserBundle\Entity\User;
+use AppBundle\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class PlaylistTest extends TestCase

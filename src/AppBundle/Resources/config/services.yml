@@ -2,3 +2,6 @@ services:
 #    info_company.example:
 #        class: Info\CompanyBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+    rch_jwt_user.credential_fetcher:
+        class: RCH\JWTUserBundle\Services\CredentialFetcher
+        arguments: ["@request_stack","@validator"]

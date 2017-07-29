@@ -11,3 +11,5 @@ fos_js_routing:
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
+rch_jwt_user:
+    resource: "@RCHJWTUserBundle/Resources/config/routing.yml"

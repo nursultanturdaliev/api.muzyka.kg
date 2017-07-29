@@ -1,8 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
-
-use Application\Sonata\UserBundle\Entity\User;
+use AppBundle\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 

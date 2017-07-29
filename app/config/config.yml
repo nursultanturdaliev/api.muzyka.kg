@@ -81,3 +81,13 @@ jms_serializer:
     visitors:
         json:
             options: JSON_UNESCAPED_UNICODE
+fos_user:
+    firewall_name: main
+    user_class: AppBundle\Entity\User
+    from_email:
+        address: "%mailer_user%"
+        sender_name: "%mailer_user%"
+rch_jwt_user:
+    user_class: AppBundle\Entity\User # your user class (required)
+    user_identity_field: email        # the property used as authentication credential (tied to password)
+    passphrase: obon                # the passphrase of your RSA private key

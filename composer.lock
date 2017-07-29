@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cd5fc4d7065041bf23d11682169dedbb",
-    "content-hash": "5305cd2e234fa6bdc7b200005e7c280f",
+    "hash": "230ff06b63fbf5ac2d60de81357d6bb7",
+    "content-hash": "3f3d3b80ceba673a30c1f7aff8baad3c",
     "packages": [
         {
             "name": "alchemy/binary-driver",
@@ -1894,7 +1894,7 @@
             ],
             "authors": [
                 {
-                    "name": "KNPLabs Team",
+                    "name": "KnpLabs Team",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3797,13 +3797,13 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/chalasr/RCHJWTUserBundle.git",
-                "reference": "a394723577dbcae2bd0a3c47397b5348ff5ca54a"
+                "url": "https://github.com/nurolopher/RCHJWTUserBundle.git",
+                "reference": "606f8c59f6f970bf4b4f2a9f751c11338cb52cf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chalasr/RCHJWTUserBundle/zipball/a394723577dbcae2bd0a3c47397b5348ff5ca54a",
-                "reference": "a394723577dbcae2bd0a3c47397b5348ff5ca54a",
+                "url": "https://api.github.com/repos/nurolopher/RCHJWTUserBundle/zipball/606f8c59f6f970bf4b4f2a9f751c11338cb52cf9",
+                "reference": "606f8c59f6f970bf4b4f2a9f751c11338cb52cf9",
                 "shasum": ""
             },
             "require": {
@@ -3821,18 +3821,11 @@
                 "symfony/swiftmailer-bundle": "~2.3"
             },
             "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "1.x": "1.x-dev",
-                    "dev-master": "2.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "RCH\\JWTUserBundle\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-3.0"
             ],
@@ -3845,13 +3838,16 @@
             ],
             "description": "Json Web Token authentication bundle including FOSUserBundle integration",
             "keywords": [
-                "Authentication",
+                "authentication",
                 "jwt",
                 "rest",
                 "token",
                 "user"
             ],
-            "time": "2016-08-16 13:33:31"
+            "support": {
+                "source": "https://github.com/nurolopher/RCHJWTUserBundle/tree/master"
+            },
+            "time": "2017-07-29 13:27:23"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
