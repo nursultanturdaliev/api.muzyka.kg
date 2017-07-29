@@ -77,18 +77,6 @@ knp_paginator:
         sortable: 'KnpPaginatorBundle:Pagination:sortable_link.html.twig'
 nelmio_api_doc: ~
 
-fos_http_cache:
-    cache_control:
-        defaults:
-            overwrite: true
-        rules:
-            -
-                match:
-                    path: ^/api
-                headers:
-                    cache_control: { public: true, max_age: 86400, s_maxage: 86400 }
-                    etag: true
-                    vary: [Accept-Encoding, Accept-Language]
 jms_serializer:
     visitors:
         json:
