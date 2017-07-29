@@ -16,5 +16,6 @@
 /data/music/*
 /db
 /var
+.web-server-pid
 aws.txt
 coverage

@@ -22,18 +22,24 @@ class FavouriteFormatter implements FormatterInterface
 	 */
 	public static function format($value)
 	{
-		if ($value instanceof FavouriteFormatter) {
-			$formatted = self::formatFavourite($value);
+		if ($value instanceof Favourite) {
+			$formatted         = [];
+			$formatted['id']   = $value->getId();
+			$formatted['song'] = SongFormatter::format($value->getSong());
 			return $formatted;
 		}
 		if ($value instanceof PersistentCollection and !($value->first() instanceof Favourite)) {
 			throw new \InvalidArgumentException();
 		}
 
-		$formatted = [];
+		$formatted               = [];
+		$formatted['songs']      = [];
+		$formatted['favourites'] = [];
 		foreach ($value as $favourite) {
-			$formatted[] = self::formatFavourite($favourite);
+			$formatted['favourites'][] = self::formatFavourite($favourite);
+			$formatted['songs'][]      = SongFormatter::format($favourite->getSong());
 		}
+
 
 		return $formatted;
 	}
@@ -41,8 +47,8 @@ class FavouriteFormatter implements FormatterInterface
 	private static function formatFavourite(Favourite $favourite)
 	{
 		return [
-			'id'   => $favourite->getId(),
-			'song' => SongFormatter::format($favourite->getSong())
+			'id'     => $favourite->getId(),
+			'songId' => $favourite->getSong()->getId()
 		];
 	}
 }
