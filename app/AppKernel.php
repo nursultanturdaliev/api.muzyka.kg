@@ -16,22 +16,11 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
-
-            new Sonata\CoreBundle\SonataCoreBundle(),
-            new Sonata\BlockBundle\SonataBlockBundle(),
-            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Sonata\DoctrineORMAdminBundle\SonataDoctrineORMAdminBundle(),
-            new Sonata\AdminBundle\SonataAdminBundle(),
-            new Sonata\EasyExtendsBundle\SonataEasyExtendsBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
-            new FOS\UserBundle\FOSUserBundle(),
-            new Sonata\UserBundle\SonataUserBundle('FOSUserBundle'),
-            new Application\Sonata\UserBundle\ApplicationSonataUserBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new FOS\HttpCacheBundle\FOSHttpCacheBundle(),
-            new FOS\ElasticaBundle\FOSElasticaBundle(),
             new LyricsBundle\LyricsBundle()
         );
 

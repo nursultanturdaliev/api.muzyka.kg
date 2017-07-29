@@ -48,11 +48,6 @@ class Playlist
 	 */
 	private $songs;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="Application\Sonata\UserBundle\Entity\User")
-	 */
-	private $user;
-
 
 	/**
 	 * Get id
@@ -199,29 +194,5 @@ class Playlist
 	public function getUpdatedAt()
 	{
 		return $this->updatedAt;
-	}
-
-	/**
-	 * Set user
-	 *
-	 * @param User $user
-	 *
-	 * @return Playlist
-	 */
-	public function setUser(User $user = null)
-	{
-		$this->user = $user;
-
-		return $this;
-	}
-
-	/**
-	 * Get user
-	 *
-	 * @return User
-	 */
-	public function getUser()
-	{
-		return $this->user;
 	}
 }

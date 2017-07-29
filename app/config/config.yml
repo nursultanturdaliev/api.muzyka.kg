@@ -2,7 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: sonata/sonata_admin.yml }
     - { resource: "@AppBundle/Resources/config/services.yml" }
 
 framework:
@@ -43,8 +42,8 @@ doctrine:
         password: "%database_password%"
         charset:  UTF8
         types:
-            json: Sonata\Doctrine\Types\JsonType
             uuid: Ramsey\Uuid\Doctrine\UuidType
+            json: \Doctrine\DBAL\Types\JsonArrayType
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -64,45 +63,6 @@ swiftmailer:
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
-
-sonata_user:
-    security_acl: true
-    manager_type: orm # can be orm or mongodb
-
-sonata_admin:
-    security:
-        handler: sonata.admin.security.handler.role
-        information:
-              ADMIN: [ LIST, CREATE, VIEW]
-    title: ОБОН
-    title_logo: /apple-touch-icon.png
-#    templates:
-        # other configuration options
-#        layout:  SonataAdminBundle::layout.html.twig
-#        search:              SonataAdminBundle:Core:search.html.twig
-#        search_result_block: SonataAdminBundle:Block:block_search_result.html.twig
-
-
-sonata_block:
-    default_contexts: [cms]
-    blocks:
-        sonata.admin.block.search_result:
-        sonata.admin.block.admin_list:
-            contexts: [admin]
-        sonata.user.block.menu:
-        sonata.user.block.account:
-        sonata.block.service.text:
-
-fos_user:
-    db_driver:      orm # can be orm or odm
-    firewall_name:  main
-    user_class:     Application\Sonata\UserBundle\Entity\User
-    group:
-        group_class:   Application\Sonata\UserBundle\Entity\Group
-        group_manager: sonata.user.orm.group_manager
-
-    service:
-        user_manager: sonata.user.orm.user_manager
 
 knp_paginator:
     page_range: 5
@@ -133,22 +93,3 @@ jms_serializer:
     visitors:
         json:
             options: JSON_UNESCAPED_UNICODE
-
-fos_elastica:
-    indexes:
-        app:
-            types:
-                artist:
-                    mappings:
-                        name: {search_analyzer: custom_search_analyzer, index_analyzer: custom_index_analyzer, name: string}
-                    persistence:
-                        driver: orm
-                        model:  AppBundle\Entity\Artist
-                        provider: ~
-                        finder: ~
-                        provider: ~
-                        listener: ~ # by default, listens to "insert", "update" and "delete"
-#                song:
-#                    mappings:
-#                        name: ~
-#                        desc: ~

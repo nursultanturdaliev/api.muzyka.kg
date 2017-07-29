@@ -2,11 +2,3 @@ services:
 #    info_company.example:
 #        class: Info\CompanyBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
-
-    app.admin.song:
-        class: AppBundle\Admin\SongAdmin
-        arguments: [~, AppBundle\Entity\Song, SonataAdminBundle:CRUD]
-        tags:
-            - { name: sonata.admin, manager_type: orm, group: admin, label: Song }
-        calls:
-            - [ setTemplate, [edit, AppBundle:Template:edit_song.html.twig]]
