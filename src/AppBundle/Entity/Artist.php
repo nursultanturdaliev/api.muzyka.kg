@@ -391,14 +391,19 @@ class Artist
 		return $this;
 	}
 
+	public function hasProfileLocal()
+	{
+		return boolval($this->profileLocal);
+	}
+
 	/**
 	 * @return mixed
 	 */
 	public function getProfileLocal()
 	{
-		if ($this->profileLocal) {
-			return $this->profileLocal;
+		if (!$this->profileLocal) {
+			$this->profileLocal = $this->placeholders[rand(0, 1)];
 		}
-		return $this->placeholders[rand(0, 1)];
+		return 'http://localhost:8000/uploads/artist/profile/' . $this->profileLocal . '.jpg';
 	}
 }

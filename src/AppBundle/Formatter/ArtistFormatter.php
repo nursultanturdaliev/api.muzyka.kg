@@ -34,7 +34,7 @@ class ArtistFormatter implements FormatterInterface
 		}
 
 
-		usort($formattedArray,function($a, $b){
+		usort($formattedArray, function ($a, $b) {
 			return $b['numberOfSongs'] - $a['numberOfSongs'];
 		});
 		return $formattedArray;
@@ -43,14 +43,14 @@ class ArtistFormatter implements FormatterInterface
 	private static function formatArtist(Artist $value)
 	{
 		return [
-			'id'            => $value->getId(),
-			'name'          => $value->getName(),
-			'lastname'      => $value->getLastname(),
-			'instagram'     => $value->getInstagram(),
-			'profile'       => $value->getProfile(),
-			'profileLocal'  => $value->getProfileLocal(),
-			'hasProfileLocal'=> boolval($value->getProfileLocal()),
-			'numberOfSongs' => $value->getSongs()->count()
+			'id'              => $value->getId(),
+			'name'            => $value->getName(),
+			'lastname'        => $value->getLastname(),
+			'instagram'       => $value->getInstagram(),
+			'profile'         => $value->getProfile(),
+			'profileLocal'    => $value->getProfileLocal(),
+			'hasProfileLocal' => $value->hasProfileLocal(),
+			'numberOfSongs'   => $value->getSongs()->count()
 		];
 	}
 
@@ -77,9 +77,9 @@ class ArtistFormatter implements FormatterInterface
 	private static function formatSong($song)
 	{
 		return [
-			'uuid'           => $song->getUuid()->jsonSerialize(),
-			'title'          => $song->getTitle(),
-			'duration'       => $song->getDuration(),
+			'uuid'          => $song->getUuid()->jsonSerialize(),
+			'title'         => $song->getTitle(),
+			'duration'      => $song->getDuration(),
 			'artist_as_one' => $song->getArtistAsOne()
 		];
 	}
