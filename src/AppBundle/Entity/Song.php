@@ -133,12 +133,6 @@ class Song
 	private $genres;
 
 	/**
-	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Playlist", mappedBy="songs")
-	 * @Exclude()
-	 */
-	private $playlists;
-
-	/**
 	 *
 	 * @ORM\Column(type="boolean", name="is_new", nullable=true)
 	 * @var bool $isNew
@@ -403,41 +397,6 @@ class Song
 	{
 		return $this->genres;
 	}
-
-	/**
-	 * Add playlist
-	 *
-	 * @param Playlist $playlist
-	 *
-	 * @return Song
-	 */
-	public function addPlaylist(Playlist $playlist)
-	{
-		$this->playlists[] = $playlist;
-
-		return $this;
-	}
-
-	/**
-	 * Remove playlist
-	 *
-	 * @param Playlist $playlist
-	 */
-	public function removePlaylist(Playlist $playlist)
-	{
-		$this->playlists->removeElement($playlist);
-	}
-
-	/**
-	 * Get playlists
-	 *
-	 * @return \Doctrine\Common\Collections\Collection
-	 */
-	public function getPlaylists()
-	{
-		return $this->playlists;
-	}
-
 	/**
 	 * Set published
 	 *
@@ -589,4 +548,25 @@ class Song
 		$this->isNew = $isNew;
 		return $this;
 	}
+
+	/**
+	 * @param mixed $favourites
+	 *
+	 * @return Song
+	 */
+	public function setFavourites($favourites)
+	{
+		$this->favourites = $favourites;
+		return $this;
+	}
+
+    /**
+     * Get isNew
+     *
+     * @return boolean
+     */
+    public function getIsNew()
+    {
+        return $this->isNew;
+    }
 }

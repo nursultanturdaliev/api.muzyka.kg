@@ -15,5 +15,6 @@
 /bower_components
 /data/music/*
 /db
+/var
 aws.txt
 coverage

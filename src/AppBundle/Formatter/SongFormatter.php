@@ -27,7 +27,7 @@ class SongFormatter implements FormatterInterface
 		$formattedArray = [];
 		if ($value instanceof Song) {
 			$preFormatted            = self::formatSong($value);
-			$preFormatted['artists'] = self::formatArtists($value);
+			$preFormatted['artists'] = self::formatArtists($value->getArtists());
 			return $preFormatted;
 		}
 
