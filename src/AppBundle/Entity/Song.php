@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
-use JMS\Serializer\Annotation\Exclude;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Type;
@@ -397,6 +396,7 @@ class Song
 	{
 		return $this->genres;
 	}
+
 	/**
 	 * Set published
 	 *
@@ -560,13 +560,18 @@ class Song
 		return $this;
 	}
 
-    /**
-     * Get isNew
-     *
-     * @return boolean
-     */
-    public function getIsNew()
-    {
-        return $this->isNew;
-    }
+	/**
+	 * Get isNew
+	 *
+	 * @return boolean
+	 */
+	public function getIsNew()
+	{
+		return $this->isNew;
+	}
+
+	public function equals(Song $song)
+	{
+		return $this->getId() === $song->getId();
+	}
 }

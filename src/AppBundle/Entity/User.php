@@ -29,6 +29,11 @@ class User extends BaseUser
 	 */
 	private $favourites;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\History", mappedBy="user")
+	 */
+	private $histories;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -53,27 +58,72 @@ class User extends BaseUser
 		return $this->favourites;
 	}
 
+	/**
+	 * Add favourite
+	 *
+	 * @param \AppBundle\Entity\Favourite $favourite
+	 *
+	 * @return User
+	 */
+	public function addFavourite(\AppBundle\Entity\Favourite $favourite)
+	{
+		$this->favourites[] = $favourite;
+
+		return $this;
+	}
+
+	/**
+	 * Remove favourite
+	 *
+	 * @param \AppBundle\Entity\Favourite $favourite
+	 */
+	public function removeFavourite(\AppBundle\Entity\Favourite $favourite)
+	{
+		$this->favourites->removeElement($favourite);
+	}
+
+	/**
+	 * @param mixed $histories
+	 *
+	 * @return User
+	 */
+	public function setHistories($histories)
+	{
+		$this->histories = $histories;
+		return $this;
+	}
+
     /**
-     * Add favourite
+     * Add history
      *
-     * @param \AppBundle\Entity\Favourite $favourite
+     * @param \AppBundle\Entity\History $history
      *
      * @return User
      */
-    public function addFavourite(\AppBundle\Entity\Favourite $favourite)
+    public function addHistory(\AppBundle\Entity\History $history)
     {
-        $this->favourites[] = $favourite;
+        $this->histories[] = $history;
 
         return $this;
     }
 
     /**
-     * Remove favourite
+     * Remove history
      *
-     * @param \AppBundle\Entity\Favourite $favourite
+     * @param \AppBundle\Entity\History $history
      */
-    public function removeFavourite(\AppBundle\Entity\Favourite $favourite)
+    public function removeHistory(\AppBundle\Entity\History $history)
     {
-        $this->favourites->removeElement($favourite);
+        $this->histories->removeElement($history);
+    }
+
+    /**
+     * Get histories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHistories()
+    {
+        return $this->histories;
     }
 }

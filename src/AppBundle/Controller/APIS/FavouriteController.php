@@ -35,7 +35,7 @@ class FavouriteController extends ApiController
 
 	/**
 	 * @Route("/song/{uuid}")
-	 * @@ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
+	 * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
 	 * @Method("POST")
 	 * @param Song $song
 	 *
