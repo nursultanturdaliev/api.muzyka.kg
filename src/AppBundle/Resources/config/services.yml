@@ -5,3 +5,16 @@ services:
     rch_jwt_user.credential_fetcher:
         class: RCH\JWTUserBundle\Services\CredentialFetcher
         arguments: ["@request_stack","@validator"]
+
+    app_formatter.song:
+        class: AppBundle\Formatter\SongFormatter
+        arguments:  ['@security.token_storage','@doctrine.orm.default_entity_manager']
+    app_formatter.artist:
+        class: AppBundle\Formatter\ArtistFormatter
+        arguments:  ['@app_formatter.song']
+    app_formatter.favourite:
+        class:  AppBundle\Formatter\FavouriteFormatter
+        arguments:  ['@app_formatter.song']
+    app_formatter.history:
+        class: AppBundle\Formatter\HistoryFormatter
+        arguments:  ['@app_formatter.song']

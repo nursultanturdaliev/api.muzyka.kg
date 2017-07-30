@@ -13,7 +13,6 @@ use AppBundle\Controller\API\ApiController;
 use AppBundle\Entity\History;
 use AppBundle\Entity\Song;
 use AppBundle\Entity\User;
-use AppBundle\Formatter\HistoryFormatter;
 use FOS\RestBundle\Controller\Annotations\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -35,7 +34,7 @@ class HistoryController extends ApiController
 		/** @var User $user */
 		$user = $this->getUser();
 
-		$formattedHistory = HistoryFormatter::format($user->getHistories());
+		$formattedHistory = $this->get('app_formatter.history')->format($user->getHistories());
 
 		return $this->prepareJsonResponse($formattedHistory);
 	}
@@ -56,7 +55,7 @@ class HistoryController extends ApiController
 
 		$historyId = $redis->get($song->getRedisKey($this->getUser()));
 		if ($historyId) {
-			$history = $em->getRepository('AppBundle:History')->find(intval($historyId));
+			$history = $em->getRepository('AppBundle:History')->find($historyId);
 			$em->remove($history);
 			$em->flush();
 			$redis->del($song->getRedisKey($this->getUser()));
@@ -70,7 +69,7 @@ class HistoryController extends ApiController
 		$em->persist($history);
 		$em->flush();
 
-		$formattedHistory = HistoryFormatter::format($history);
+		$formattedHistory = $this->get('app_formatter.history')->format($history);
 
 		$redis->set($song->getRedisKey($this->getUser()), $history->getId());
 
@@ -97,7 +96,7 @@ class HistoryController extends ApiController
 			return new JsonResponse([], Response::HTTP_NOT_FOUND);
 		}
 
-		$history = $em->getRepository('AppBundle:History')->find(intval($historyId));
+		$history = $em->getRepository('AppBundle:History')->find($historyId);
 
 		if (!$history || !$history->getSong()->equals($song)) {
 			return new JsonResponse([], Response::HTTP_NOT_FOUND);

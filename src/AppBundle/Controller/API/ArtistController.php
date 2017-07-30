@@ -44,7 +44,7 @@ class ArtistController extends ApiController
 						->setFirstResult(abs($page - 1) * self::ARTIST_PER_RESPONSE_LIMIT)
 						->getQuery()->execute();
 
-		$artists = ArtistFormatter::format($artists);
+		$artists = $this->get('app_formatter.artist')->format($artists);
 		return $this->prepareJsonResponse($artists);
 	}
 
@@ -113,7 +113,7 @@ class ArtistController extends ApiController
 	 */
 	public function getAction(Artist $artist)
 	{
-		return $this->prepareJsonResponse(ArtistFormatter::format($artist));
+		return $this->prepareJsonResponse($this->get('app_formatter.artist')->format($artist));
 	}
 
 	/**

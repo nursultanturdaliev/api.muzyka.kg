@@ -32,12 +32,14 @@ class SongController extends Controller
 	 *     section="Song",
 	 *     description="Stream song by uuid",
 	 *     requirements={{"name"="uuid", "dataType"="string", "requirement"="\w+", "description"="Universal unique id
-	 *     of a song"}}
-	 * )
+     *     of a song"}}
+     * )
 	 * @param Song $song
 	 *
 	 * @return BinaryFileResponse
 	 * @throws \Exception
+	 * @param Song $song
+	 * @return BinaryFileResponse
 	 */
 	public function streamAction(Song $song)
 	{

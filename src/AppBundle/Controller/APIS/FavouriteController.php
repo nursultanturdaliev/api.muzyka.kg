@@ -6,7 +6,6 @@ use AppBundle\Controller\API\ApiController;
 use AppBundle\Entity\Favourite;
 use AppBundle\Entity\Song;
 use AppBundle\Entity\User;
-use AppBundle\Formatter\FavouriteFormatter;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use FOS\RestBundle\Controller\Annotations\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -28,7 +27,7 @@ class FavouriteController extends ApiController
 		/** @var User $user */
 		$user       = $this->getUser();
 		$favourites = $user->getFavourites();
-		$formatted  = FavouriteFormatter::format($favourites);
+		$formatted  = $this->get('app_formatter.favourite')->format($favourites);
 
 		return $this->prepareJsonResponse($formatted);
 	}
@@ -56,7 +55,7 @@ class FavouriteController extends ApiController
 			return new JsonResponse(array(), Response::HTTP_CONFLICT);
 		}
 
-		$formattedFavourite = FavouriteFormatter::format($favourite);
+		$formattedFavourite = $this->get('app_formatter.favourite')->format($favourite);
 
 		return $this->prepareJsonResponse($formattedFavourite);
 	}

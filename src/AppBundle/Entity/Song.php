@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
@@ -130,6 +131,12 @@ class Song
 	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Genre",inversedBy="songs")
 	 */
 	private $genres;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\History", mappedBy="song")
+	 * @var Collection
+	 */
+	private $histories;
 
 	/**
 	 *
@@ -578,5 +585,48 @@ class Song
 	public function getRedisKey(User $user)
 	{
 		return $user->getId() . ':' . $this->getUuid();
+	}
+
+	/**
+	 * @param mixed $histories
+	 *
+	 * @return Song
+	 */
+	public function setHistories($histories)
+	{
+		$this->histories = $histories;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getHistories()
+	{
+		return $this->histories;
+	}
+
+	/**
+	 * Add history
+	 *
+	 * @param History $history
+	 *
+	 * @return Song
+	 */
+	public function addHistory(History $history)
+	{
+		$this->histories[] = $history;
+
+		return $this;
+	}
+
+	/**
+	 * Remove history
+	 *
+	 * @param History $history
+	 */
+	public function removeHistory(History $history)
+	{
+		$this->histories->removeElement($history);
 	}
 }

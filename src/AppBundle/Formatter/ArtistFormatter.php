@@ -15,17 +15,25 @@ use AppBundle\Entity\Song;
 class ArtistFormatter implements FormatterInterface
 {
 
+	/** @var  SongFormatter */
+	private $songFormatter;
+
+	public function __construct(SongFormatter $songFormatter)
+	{
+		$this->songFormatter = $songFormatter;
+	}
+
 	/**
 	 * @param Artist|Artist[] $value
 	 *
 	 * @return array
 	 */
-	public static function format($value)
+	public function format($value)
 	{
 		$formattedArray = [];
 		if ($value instanceof Artist) {
 			$preFormatted          = self::formatArtist($value);
-			$preFormatted['songs'] = self::formatSongs($value);
+			$preFormatted['songs'] = $this->songFormatter->format($value->getSongs());
 			return $preFormatted;
 		}
 
@@ -40,7 +48,7 @@ class ArtistFormatter implements FormatterInterface
 		return $formattedArray;
 	}
 
-	private static function formatArtist(Artist $value)
+	private function formatArtist(Artist $value)
 	{
 		return [
 			'id'              => $value->getId(),
@@ -51,36 +59,6 @@ class ArtistFormatter implements FormatterInterface
 			'profileLocal'    => $value->getProfileLocal(),
 			'hasProfileLocal' => $value->hasProfileLocal(),
 			'numberOfSongs'   => $value->getSongs()->count()
-		];
-	}
-
-	/**
-	 * @param Artist $artist
-	 *
-	 * @return array
-	 */
-	private static function formatSongs($artist)
-	{
-		$formatted = [];
-		/** @var Song $song */
-		foreach ($artist->getSongs() as $song) {
-			$formatted[] = self::formatSong($song);
-		}
-		return $formatted;
-	}
-
-	/**
-	 * @param Song $song
-	 *
-	 * @return array
-	 */
-	private static function formatSong($song)
-	{
-		return [
-			'uuid'          => $song->getUuid()->jsonSerialize(),
-			'title'         => $song->getTitle(),
-			'duration'      => $song->getDuration(),
-			'artist_as_one' => $song->getArtistAsOne()
 		];
 	}
 }

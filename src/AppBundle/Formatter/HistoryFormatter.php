@@ -15,12 +15,19 @@ use Doctrine\Common\Collections\Collection;
 class HistoryFormatter implements FormatterInterface
 {
 
+	private $songFormatter;
+
+	public function __construct(SongFormatter $songFormatter)
+	{
+		$this->songFormatter = $songFormatter;
+	}
+
 	/**
 	 * @param History|History[]|Collection $value
 	 *
 	 * @return array
 	 */
-	public static function format($value)
+	public function format($value)
 	{
 		if ($value instanceof History) {
 			$formatted = self::formatHistory($value);
@@ -38,11 +45,11 @@ class HistoryFormatter implements FormatterInterface
 	 *
 	 * @return array
 	 */
-	private static function formatHistory(History $value)
+	private function formatHistory(History $value)
 	{
 		return [
 			'id'        => $value->getId(),
-			'song'      => SongFormatter::format($value->getSong()),
+			'song'      => $this->songFormatter->format($value->getSong()),
 			'startedAt' => $value->getStartedAt()->format('Y.m.d H:i:s'),
 			'stoppedAt' => $value->getStoppedAt() ? $value->getStoppedAt()->format('Y-m-d H:i:s') : null
 		];

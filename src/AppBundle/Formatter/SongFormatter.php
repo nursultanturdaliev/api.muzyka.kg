@@ -11,17 +11,31 @@ namespace AppBundle\Formatter;
 
 use AppBundle\Entity\Artist;
 use AppBundle\Entity\Song;
+use AppBundle\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class SongFormatter implements FormatterInterface
 {
+
+	/** @var  TokenStorage */
+	private $tokenStorage;
+
+	private $entityManager;
+
+	public function __construct(TokenStorage $tokenStorage, EntityManager $entityManager)
+	{
+		$this->tokenStorage  = $tokenStorage;
+		$this->entityManager = $entityManager;
+	}
 
 	/**
 	 * @param PersistentCollection|Song $value
 	 *
 	 * @return array
 	 */
-	public static function format($value)
+	public function format($value)
 	{
 
 		$formattedArray = [];
@@ -43,7 +57,7 @@ class SongFormatter implements FormatterInterface
 	 *
 	 * @return array
 	 */
-	private static function formatSong(Song $value)
+	private function formatSong(Song $value)
 	{
 		return [
 			'artist_as_one' => $value->getArtistAsOne(),
@@ -52,7 +66,9 @@ class SongFormatter implements FormatterInterface
 			'id'            => $value->getId(),
 			'uuid'          => $value->getUuid()->jsonSerialize(),
 			'title'         => $value->getTitle(),
-			'profileLocal'  => self::getProfileLocal($value->getArtists())
+			'profileLocal'  => self::getProfileLocal($value->getArtists()),
+			'history'       => count($value->getHistories()),
+			'is_favourite'  => $this->isFavourite($value)
 		];
 	}
 
@@ -61,7 +77,7 @@ class SongFormatter implements FormatterInterface
 	 *
 	 * @return array
 	 */
-	private static function formatArtists($artists)
+	private function formatArtists($artists)
 	{
 		$formattedArray = [];
 		/** @var Artist $artist */
@@ -83,7 +99,7 @@ class SongFormatter implements FormatterInterface
 	 *
 	 * @return bool
 	 */
-	private static function getProfileLocal($artists)
+	private function getProfileLocal($artists)
 	{
 		if (!$artists) {
 			return false;
@@ -94,5 +110,30 @@ class SongFormatter implements FormatterInterface
 				return $artist->getProfileLocal();
 			}
 		}
+	}
+
+	public function formatTop($songs)
+	{
+		$formatted = [];
+		foreach ($songs as $song) {
+			$formattedSong = self::formatSong($song[0]);
+			$formatted[]   = $formattedSong;
+		}
+		return $formatted;
+	}
+
+	private function isFavourite(Song $song)
+	{
+		if (!$this->tokenStorage->getToken()) {
+			return false;
+		}
+
+		/** @var User $user */
+		$user = $this->tokenStorage->getToken()->getUser();
+		if (!$user) {
+			return false;
+		}
+
+		return $this->entityManager->getRepository('AppBundle:Favourite')->isFavourite($user,$song);
 	}
 }

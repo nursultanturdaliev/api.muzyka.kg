@@ -9,5 +9,5 @@ namespace AppBundle\Formatter;
 
 interface FormatterInterface
 {
-	public static function format($value);
+	public function format($value);
 }

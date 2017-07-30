@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ramsey\Uuid\Uuid;
 
 /**
  * History
@@ -16,9 +17,8 @@ class History
 	/**
 	 * @var int
 	 *
-	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Column(name="id", type="uuid")
 	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="AUTO")
 	 */
 	private $id;
 
@@ -49,6 +49,10 @@ class History
 	 */
 	private $user;
 
+	public function __construct()
+	{
+		$this->id = Uuid::uuid4();
+	}
 
 	/**
 	 * Get id
@@ -156,4 +160,18 @@ class History
 		$diffInSeconds = $stoppedAt - $startedAt;
 		return ($diffInSeconds) > 60 && $diffInSeconds < 1800;
 	}
+
+    /**
+     * Set id
+     *
+     * @param uuid $id
+     *
+     * @return History
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 }

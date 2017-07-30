@@ -133,4 +133,9 @@ class SongRepository extends EntityRepository
 					->getQuery()
 					->execute();
 	}
+
+	public function top()
+	{
+		return $this->getEntityManager()->createQuery('SELECT s, a, count(h.id) as amount from AppBundle:Song s JOIN s.artists a JOIN AppBundle:History h WHERE  s = h.song GROUP BY s.id, a.id ORDER BY amount DESC');
+	}
 }

@@ -2,7 +2,10 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Song;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * FavouriteRepository
@@ -12,4 +15,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class FavouriteRepository extends EntityRepository
 {
+	public function isFavourite(User $user, Song $song)
+	{
+		try {
+			$this->createQueryBuilder('favouriteRepository')
+				 ->where('favouriteRepository.user = :user')
+				 ->andWhere('favouriteRepository.song = :song')
+				 ->setParameter('user', $user)
+				 ->setParameter('song', $song)
+				 ->getQuery()
+				 ->getSingleScalarResult();
+		} catch (NoResultException $ignore) {
+			return false;
+		}
+		return true;
+	}
 }

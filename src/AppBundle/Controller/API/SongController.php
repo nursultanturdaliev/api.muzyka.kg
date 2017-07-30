@@ -9,7 +9,6 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Song;
-use AppBundle\Formatter\SongFormatter;
 use AppBundle\Repository\SongRepository;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -44,7 +43,7 @@ class SongController extends ApiController
 		/** @var SongRepository $searchRepository */
 		$searchRepository = $this->getDoctrine()->getRepository('AppBundle:Song');
 		$songs            = $searchRepository->search($text);
-		$formattedSongs   = SongFormatter::format($songs);
+		$formattedSongs   = $this->get('app_formatter.song')->format($songs);;
 		return $this->prepareJsonResponse($formattedSongs);
 	}
 
@@ -68,7 +67,7 @@ class SongController extends ApiController
 		$songs    = $this->get('doctrine.orm.default_entity_manager')->getRepository('AppBundle:Song')
 						 ->getRandomSongs($max, $artistId);
 
-		return $this->prepareJsonResponse(SongFormatter::format($songs));
+		return $this->prepareJsonResponse($this->get('app_formatter.song')->format($songs));
 	}
 
 	/**
@@ -115,7 +114,7 @@ class SongController extends ApiController
 					  ->getRepository('AppBundle:Song')
 					  ->newReleases(10);
 
-		$formattedSongs = SongFormatter::format($songs);
+		$formattedSongs = $this->get('app_formatter.song')->format($songs);
 		return $this->prepareJsonResponse($formattedSongs);
 	}
 
@@ -153,7 +152,7 @@ class SongController extends ApiController
 	{
 		$songs          = $this->getDoctrine()->getRepository('AppBundle:Song')
 							   ->findBy(array(), array(), self::MAXIMUM_SONG_RESPONSE, self::MAXIMUM_SONG_RESPONSE * abs($page - 1));
-		$formattedSongs = SongFormatter::format($songs);
+		$formattedSongs = $this->get('app_formatter.song')->format($songs);
 		return $this->prepareJsonResponse($formattedSongs);
 	}
 
@@ -192,48 +191,21 @@ class SongController extends ApiController
 	 * )
 	 *
 	 * @return JsonResponse
+	 *
 	 * @param $page
+	 *
 	 * @return Response
 	 */
 	public function topAction($page)
 	{
 		$songs = $this->getDoctrine()
 					  ->getRepository('AppBundle:Song')
-					  ->createQueryBuilder('song')
+					  ->top()
 					  ->setMaxResults(10)
 					  ->setFirstResult(abs($page - 1) * 10)
-					  ->orderBy('song.countPlay')
-					  ->getQuery()
-					  ->execute();
+					  ->getResult();
 
-		$formattedSongs = SongFormatter::format($songs);
+		$formattedSongs = $this->get('app_formatter.song')->formatTop($songs);
 		return $this->prepareJsonResponse($formattedSongs);
-	}
-
-	/**
-	 * @Route("/{id}/increase_count_play", name="app_api_song_increase", options={"expose"=true},
-	 *                                     requirements={"id"="\d+"})
-	 * @Method({"PUT", "OPTIONS"})
-	 * @ApiDoc(
-	 *     resource=true,
-	 *     section="Song",
-	 *     description="Increase song play count",
-	 *     requirements={{"name"="id", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Song
-     *     Id"}}
-     * )
-	 * @param Song $song
-	 *
-	 * @return Response
-	 */
-	public function increasePlayCountAction(Song $song)
-	{
-		if ($this->get('request')->isMethod('PUT')) {
-			$song->setCountPlay($song->getCountPlay() + 1);
-
-			$em = $this->get('doctrine.orm.default_entity_manager');
-			$em->persist($song);
-			$em->flush();
-		}
-		return $this->prepareJsonResponse($song);
 	}
 }
