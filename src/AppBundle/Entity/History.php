@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class History
 {
-	const SESSION_ID = "history";
+	const SESSION_ID = "history:";
 	/**
 	 * @var int
 	 *

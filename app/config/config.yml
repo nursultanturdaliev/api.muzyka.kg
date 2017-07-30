@@ -97,6 +97,13 @@ nelmio_cors:
             '^/':
                 allow_credentials: true
                 allow_origin: ['*']
-                allow_headers: ['X-Custom-Auth', 'Content-Type','Authorization','Origin', 'X-Requested-With', 'Accept']
+                allow_headers: ['X-Custom-Auth', 'Content-Type','Authorization','Origin', 'X-Requested-With', 'Content-Type', 'Accept']
                 allow_methods: ['POST', 'PUT', 'GET', 'DELETE','OPTIONS']
                 max_age: 3600
+snc_redis:
+    clients:
+        default:
+            type: predis
+            alias: default
+            dsn: redis://localhost
+            logging: "%kernel.debug%"

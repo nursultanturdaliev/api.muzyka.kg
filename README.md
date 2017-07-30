@@ -52,3 +52,8 @@ Remove Everything docker has
     
 ### Super Info
     Last executed command page '17'
+    
+
+### Redis
+
+    https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-homebrew-eb8df9a4f298

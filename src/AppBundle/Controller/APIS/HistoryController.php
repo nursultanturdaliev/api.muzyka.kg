@@ -50,11 +50,16 @@ class HistoryController extends ApiController
 	 */
 	public function startAction(Song $song)
 	{
-		$em = $this->get('doctrine.orm.default_entity_manager');
+		$this->get('logger')->addDebug('START', ['uuid' => $song->getUuid()]);
+		$em    = $this->get('doctrine.orm.default_entity_manager');
+		$redis = $this->container->get('snc_redis.default');
 
-		$historyId = $this->get('session')->get(History::SESSION_ID, null);
+		$historyId = $redis->get($song->getRedisKey($this->getUser()));
 		if ($historyId) {
-			$this->get('session')->remove(History::SESSION_ID);
+			$history = $em->getRepository('AppBundle:History')->find(intval($historyId));
+			$em->remove($history);
+			$em->flush();
+			$redis->del($song->getRedisKey($this->getUser()));
 		}
 
 		$history = new History();
@@ -67,7 +72,7 @@ class HistoryController extends ApiController
 
 		$formattedHistory = HistoryFormatter::format($history);
 
-		$this->get('session')->set(History::SESSION_ID, $history->getId());
+		$redis->set($song->getRedisKey($this->getUser()), $history->getId());
 
 		return $this->prepareJsonResponse($formattedHistory);
 	}
@@ -82,9 +87,11 @@ class HistoryController extends ApiController
 	 */
 	public function stopAction(Song $song)
 	{
+		$this->get('logger')->addDebug('STOP', ['uuid' => $song->getUuid()]);
 		$em = $this->get('doctrine.orm.default_entity_manager');
 
-		$historyId = $this->get('session')->get(History::SESSION_ID);
+		$redis     = $this->container->get('snc_redis.default');
+		$historyId = $redis->get($song->getRedisKey($this->getUser()));
 
 		if (!$historyId) {
 			return new JsonResponse([], Response::HTTP_NOT_FOUND);
@@ -104,7 +111,7 @@ class HistoryController extends ApiController
 		}
 		$em->flush();
 
-		$this->get('session')->remove(History::SESSION_ID);
+		$redis->del($song->getRedisKey($this->getUser()));
 
 		return new JsonResponse();
 	}

@@ -574,4 +574,9 @@ class Song
 	{
 		return $this->getId() === $song->getId();
 	}
+
+	public function getRedisKey(User $user)
+	{
+		return $user->getId() . ':' . $this->getUuid();
+	}
 }
