@@ -48,7 +48,7 @@ class HistoryFormatter implements FormatterInterface
 	private function formatHistory(History $value)
 	{
 		return [
-			'id'        => $value->getId(),
+			'id'        => $value->getId()->jsonSerialize(),
 			'song'      => $this->songFormatter->format($value->getSong()),
 			'startedAt' => $value->getStartedAt()->format('Y.m.d H:i:s'),
 			'stoppedAt' => $value->getStoppedAt() ? $value->getStoppedAt()->format('Y-m-d H:i:s') : null

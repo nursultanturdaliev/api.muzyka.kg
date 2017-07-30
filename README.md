@@ -57,3 +57,7 @@ Remove Everything docker has
 ### Redis
 
     https://medium.com/@petehouston/install-and-config-redis-on-mac-os-x-via-homebrew-eb8df9a4f298
+    
+### nginx
+    
+    https://blog.frd.mn/install-nginx-php-fpm-mysql-and-phpmyadmin-on-os-x-mavericks-using-homebrew/

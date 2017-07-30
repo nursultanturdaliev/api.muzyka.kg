@@ -404,6 +404,6 @@ class Artist
 		if (!$this->profileLocal) {
 			$this->profileLocal = $this->placeholders[rand(0, 1)];
 		}
-		return 'http://localhost:8000/uploads/artist/profile/' . $this->profileLocal . '.jpg';
+		return 'http://muzyka.api/uploads/artist/profile/' . $this->profileLocal . '.jpg';
 	}
 }
