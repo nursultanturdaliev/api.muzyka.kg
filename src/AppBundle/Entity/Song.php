@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use JMS\Serializer\Annotation\Type;
@@ -18,6 +19,7 @@ use Ramsey\Uuid\Uuid;
  * @ORM\Table(name="app_songs")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SongRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @ExclusionPolicy("All")
  */
 class Song
@@ -144,6 +146,11 @@ class Song
 	 * @var bool $isNew
 	 */
 	private $isNew;
+
+	/**
+	 * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+	 */
+	private $deletedAt;
 
 	public function __construct()
 	{
@@ -628,5 +635,24 @@ class Song
 	public function removeHistory(History $history)
 	{
 		$this->histories->removeElement($history);
+	}
+
+	/**
+	 * @param mixed $deletedAt
+	 *
+	 * @return Song
+	 */
+	public function setDeletedAt($deletedAt)
+	{
+		$this->deletedAt = $deletedAt;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDeletedAt()
+	{
+		return $this->deletedAt;
 	}
 }

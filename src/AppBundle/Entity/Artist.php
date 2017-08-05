@@ -6,12 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-
+use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Artist
  *
  * @ORM\Table(name="app_artists")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArtistRepository")
+ * @Gedmo\SoftDeleteable(fieldName="deletedAt", timeAware=false)
  * @ExclusionPolicy("All")
  */
 class Artist
@@ -107,6 +108,11 @@ class Artist
 	 * @Expose()
 	 */
 	private $songs;
+
+	/**
+	 * @ORM\Column(name="deletedAt", type="datetime", nullable=true)
+	 */
+	private $deletedAt;
 
 	public function __construct()
 	{
@@ -405,5 +411,24 @@ class Artist
 			$this->profileLocal = $this->placeholders[rand(0, 1)];
 		}
 		return 'http://muzyka.api/uploads/artist/profile/' . $this->profileLocal . '.jpg';
+	}
+
+	/**
+	 * @param mixed $deletedAt
+	 *
+	 * @return Artist
+	 */
+	public function setDeletedAt($deletedAt)
+	{
+		$this->deletedAt = $deletedAt;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getDeletedAt()
+	{
+		return $this->deletedAt;
 	}
 }

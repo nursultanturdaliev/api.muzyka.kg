@@ -27,6 +27,7 @@ class AppKernel extends Kernel
 			new Gesdinet\JWTRefreshTokenBundle\GesdinetJWTRefreshTokenBundle(),
 			new Nelmio\CorsBundle\NelmioCorsBundle(),
 			new Snc\RedisBundle\SncRedisBundle(),
+			new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 		);
 
 		if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
