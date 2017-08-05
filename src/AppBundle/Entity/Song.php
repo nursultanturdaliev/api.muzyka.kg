@@ -152,6 +152,13 @@ class Song
 	 */
 	private $deletedAt;
 
+	/**
+	 * @var
+	 *
+	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\Favourite", mappedBy="song")
+	 */
+	private $favourites;
+
 	public function __construct()
 	{
 		$this->artists   = new ArrayCollection();
@@ -564,17 +571,6 @@ class Song
 	}
 
 	/**
-	 * @param mixed $favourites
-	 *
-	 * @return Song
-	 */
-	public function setFavourites($favourites)
-	{
-		$this->favourites = $favourites;
-		return $this;
-	}
-
-	/**
 	 * Get isNew
 	 *
 	 * @return boolean
@@ -654,5 +650,24 @@ class Song
 	public function getDeletedAt()
 	{
 		return $this->deletedAt;
+	}
+
+	/**
+	 * @param mixed $favourites
+	 *
+	 * @return Song
+	 */
+	public function setFavourites($favourites)
+	{
+		$this->favourites = $favourites;
+		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getFavourites()
+	{
+		return $this->favourites;
 	}
 }

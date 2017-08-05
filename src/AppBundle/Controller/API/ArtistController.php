@@ -9,7 +9,6 @@
 namespace AppBundle\Controller\API;
 
 use AppBundle\Entity\Artist;
-use AppBundle\Formatter\ArtistFormatter;
 use Doctrine\ORM\AbstractQuery;
 use FOS\RestBundle\Controller\Annotations\Route;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -23,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ArtistController extends ApiController
 {
-	const ARTIST_PER_RESPONSE_LIMIT = 100;
+	const ARTIST_PER_RESPONSE_LIMIT = 300;
 
 	/**
 	 * @Route("/page/{page}", name="app_api_artist_index", requirements={"page":"\d+"})

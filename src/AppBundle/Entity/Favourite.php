@@ -32,7 +32,7 @@ class Favourite
 	private $user;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Song")
+	 * @ORM\ManyToOne(targetEntity="Song", inversedBy="favourites")
 	 */
 	private $song;
 
@@ -76,27 +76,27 @@ class Favourite
 		return $this->user;
 	}
 
-    /**
-     * Set song
-     *
-     * @param Song $song
-     *
-     * @return Favourite
-     */
-    public function setSong(Song $song = null)
-    {
-        $this->song = $song;
+	/**
+	 * Set song
+	 *
+	 * @param Song $song
+	 *
+	 * @return Favourite
+	 */
+	public function setSong(Song $song = null)
+	{
+		$this->song = $song;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get song
-     *
-     * @return Song
-     */
-    public function getSong()
-    {
-        return $this->song;
-    }
+	/**
+	 * Get song
+	 *
+	 * @return Song
+	 */
+	public function getSong()
+	{
+		return $this->song;
+	}
 }

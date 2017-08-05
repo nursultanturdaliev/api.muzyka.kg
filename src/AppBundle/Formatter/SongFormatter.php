@@ -68,7 +68,11 @@ class SongFormatter implements FormatterInterface
 			'title'         => $value->getTitle(),
 			'profileLocal'  => self::getProfileLocal($value->getArtists()),
 			'history'       => count($value->getHistories()),
-			'is_favourite'  => $this->isFavourite($value)
+			'is_favourite'  => $this->isFavourite($value),
+			'statistics'    => [
+				'played'    => count($value->getHistories()),
+				'favourite' => count($value->getFavourites())
+			]
 		];
 	}
 
@@ -134,6 +138,6 @@ class SongFormatter implements FormatterInterface
 			return false;
 		}
 
-		return $this->entityManager->getRepository('AppBundle:Favourite')->isFavourite($user,$song);
+		return $this->entityManager->getRepository('AppBundle:Favourite')->isFavourite($user, $song);
 	}
 }
