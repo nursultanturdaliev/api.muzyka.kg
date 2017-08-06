@@ -32,8 +32,12 @@ class ArtistFormatter implements FormatterInterface
 	{
 		$formattedArray = [];
 		if ($value instanceof Artist) {
-			$preFormatted          = self::formatArtist($value);
-			$preFormatted['songs'] = $this->songFormatter->format($value->getSongs());
+			$preFormatted = self::formatArtist($value);
+			$songs        = $value->getSongs()->toArray();
+			usort($songs, function (Song $a, Song $b) {
+				return strcmp($a->getTitle(), $b->getTitle());
+			});
+			$preFormatted['songs'] = $this->songFormatter->format($songs);
 			return $preFormatted;
 		}
 

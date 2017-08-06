@@ -53,7 +53,7 @@ class Song
 	/**
 	 * @var string
 	 *
-	 * @ORM\Column(name="duration", type="string", length=255)
+	 * @ORM\Column(name="duration", type="string", length=255, nullable=true)
 	 * @Expose()
 	 */
 	private $duration;

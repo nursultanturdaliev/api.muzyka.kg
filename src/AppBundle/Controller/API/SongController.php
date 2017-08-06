@@ -112,7 +112,7 @@ class SongController extends ApiController
 
 		$songs = $this->get('doctrine.orm.default_entity_manager')
 					  ->getRepository('AppBundle:Song')
-					  ->newReleases(10);
+					  ->newReleases();
 
 		$formattedSongs = $this->get('app_formatter.song')->format($songs);
 		return $this->prepareJsonResponse($formattedSongs);

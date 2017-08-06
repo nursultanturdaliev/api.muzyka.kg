@@ -69,6 +69,7 @@ class SongFormatter implements FormatterInterface
 			'profileLocal'  => self::getProfileLocal($value->getArtists()),
 			'history'       => count($value->getHistories()),
 			'is_favourite'  => $this->isFavourite($value),
+			'is_new'        => $value->getIsNew(),
 			'statistics'    => [
 				'played'    => count($value->getHistories()),
 				'favourite' => count($value->getFavourites())
