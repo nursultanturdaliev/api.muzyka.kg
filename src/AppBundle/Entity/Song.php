@@ -153,6 +153,12 @@ class Song
 	private $deletedAt;
 
 	/**
+	 * @var string
+	 * @ORM\Column(name="youtube", type="string", nullable=true)
+	 */
+	public $youtube;
+
+	/**
 	 * @var
 	 *
 	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\Favourite", mappedBy="song")
@@ -669,5 +675,24 @@ class Song
 	public function getFavourites()
 	{
 		return $this->favourites;
+	}
+
+	/**
+	 * @param string $youtube
+	 *
+	 * @return Song
+	 */
+	public function setYoutube($youtube)
+	{
+		$this->youtube = $youtube;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getYoutube()
+	{
+		return $this->youtube;
 	}
 }

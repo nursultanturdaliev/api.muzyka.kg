@@ -151,7 +151,7 @@ class SongController extends ApiController
 	public function pageAction($page = 1)
 	{
 		$songs          = $this->getDoctrine()->getRepository('AppBundle:Song')
-							   ->findBy(array(), array(), self::MAXIMUM_SONG_RESPONSE, self::MAXIMUM_SONG_RESPONSE * abs($page - 1));
+							   ->findBy(array(), array('title' => 'ASC'), self::MAXIMUM_SONG_RESPONSE, self::MAXIMUM_SONG_RESPONSE * abs($page - 1));
 		$formattedSongs = $this->get('app_formatter.song')->format($songs);
 		return $this->prepareJsonResponse($formattedSongs);
 	}

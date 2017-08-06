@@ -70,6 +70,7 @@ class SongFormatter implements FormatterInterface
 			'history'       => count($value->getHistories()),
 			'is_favourite'  => $this->isFavourite($value),
 			'is_new'        => $value->getIsNew(),
+			'youtube'      => $value->getYoutube(),
 			'statistics'    => [
 				'played'    => count($value->getHistories()),
 				'favourite' => count($value->getFavourites())
