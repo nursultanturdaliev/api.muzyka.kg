@@ -4027,12 +4027,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nurolopher/RCHJWTUserBundle.git",
-                "reference": "606f8c59f6f970bf4b4f2a9f751c11338cb52cf9"
+                "reference": "76d688b8547cb6aaf8f2d3d0117c6cce94714359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nurolopher/RCHJWTUserBundle/zipball/606f8c59f6f970bf4b4f2a9f751c11338cb52cf9",
-                "reference": "606f8c59f6f970bf4b4f2a9f751c11338cb52cf9",
+                "url": "https://api.github.com/repos/nurolopher/RCHJWTUserBundle/zipball/76d688b8547cb6aaf8f2d3d0117c6cce94714359",
+                "reference": "76d688b8547cb6aaf8f2d3d0117c6cce94714359",
                 "shasum": ""
             },
             "require": {
@@ -4076,7 +4076,7 @@
             "support": {
                 "source": "https://github.com/nurolopher/RCHJWTUserBundle/tree/master"
             },
-            "time": "2017-07-29 13:27:23"
+            "time": "2017-08-10 21:22:36"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",

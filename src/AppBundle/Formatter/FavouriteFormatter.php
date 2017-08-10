@@ -35,9 +35,6 @@ class FavouriteFormatter implements FormatterInterface
 			$formatted['song'] = $this->songFormatter->format($value->getSong());
 			return $formatted;
 		}
-		if ($value instanceof PersistentCollection and !($value->first() instanceof Favourite)) {
-			throw new \InvalidArgumentException();
-		}
 
 		$formatted               = [];
 		$formatted['songs']      = [];
