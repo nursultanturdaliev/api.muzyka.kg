@@ -24,7 +24,7 @@ security_login:
         methods: POST
 
 security_oauth_login:
-    path:    /api/oauth/login
+    path:    /api/oauth/login/{provider}
     defaults: { _controller: AppBundle:Security:loginFromOAuthResponse }
     requirements:
         methods: POST

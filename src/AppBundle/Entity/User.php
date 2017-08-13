@@ -57,6 +57,20 @@ class User extends BaseUser
 	private $facebookAccessToken;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="google_id", type="string", nullable=true)
+	 */
+	private $googleId;
+
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="google_access_token", type="string", nullable=true)
+	 */
+	private $googleAccessToken;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\History", mappedBy="user")
 	 */
 	private $histories;
@@ -230,5 +244,43 @@ class User extends BaseUser
 	public function getFacebookAccessToken()
 	{
 		return $this->facebookAccessToken;
+	}
+
+	/**
+	 * @param string $googleId
+	 *
+	 * @return User
+	 */
+	public function setGoogleId($googleId)
+	{
+		$this->googleId = $googleId;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGoogleId()
+	{
+		return $this->googleId;
+	}
+
+	/**
+	 * @param string $googleAccessToken
+	 *
+	 * @return User
+	 */
+	public function setGoogleAccessToken($googleAccessToken)
+	{
+		$this->googleAccessToken = $googleAccessToken;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getGoogleAccessToken()
+	{
+		return $this->googleAccessToken;
 	}
 }

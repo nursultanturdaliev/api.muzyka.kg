@@ -11,25 +11,23 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use Gesdinet\JWTRefreshTokenBundle\Entity\RefreshToken;
-use RCH\JWTUserBundle\Exception\InvalidPropertyUserException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController extends Controller
 {
-	public function loginFromOAuthResponseAction(Request $request)
+	public function loginFromOAuthResponseAction(Request $request, $provider)
 	{
+		$id             = $provider . 'Id';
 		$userManager    = $this->get('doctrine.orm.default_entity_manager');
 		$userRepository = $userManager->getRepository('AppBundle:User');
 
 		$data = \GuzzleHttp\json_decode($request->getContent(), true);
 
-		if (true !== $this->isValidFacebookAccount($data['facebookId'], $data['accessToken'])) {
-			throw new InvalidPropertyUserException('The given facebook_id does not correspond to a valid acount');
-		}
+
 		/** @var User $user */
-		$user = $userRepository->findOneBy(['facebookId' => $data['facebookId']]);
+		$user = $userRepository->findOneBy([$id => $data['id']]);
 
 		if ($user) {
 			return $this->renderToken($user);
@@ -38,49 +36,35 @@ class SecurityController extends Controller
 		$user = $userRepository->findOneBy(['email' => $data['email']]);
 
 		if ($user) {
-			$user->setFacebookId($data['facebookId']);
-			$user->setFacebookAccessToken($data['accessToken']);
+			if ($provider == 'facebook') {
+				$user->setFacebookId($data['id']);
+				$user->setFacebookAccessToken($data['accessToken']);
+			} else if ($provider == 'google') {
+				$user->setGoogleAccessToken($data['accessToken']);
+				$user->setGoogleId($data['id']);
+			}
 			return $this->renderToken($user);
 		}
 
 		$data['password'] = $this->generateRandomPassword();
 
 		$user = new User();
-
+		if ($provider == 'facebook') {
+			$user->setFacebookId($data['id']);
+			$user->setFacebookAccessToken($data['accessToken']);
+		} else if ($provider == 'google') {
+			$user->setGoogleAccessToken($data['accessToken']);
+			$user->setGoogleId($data['id']);
+		}
 		$user->setPlainPassword($data['password']);
-		$user->setFirstName($data['name']);
-		$user->setLastName($data['name']);
-		$user->setFacebookId($data['facebookId']);
-		$user->setFacebookAccessToken($data['accessToken']);
+		$user->setFirstName($data['firstName']);
+		$user->setLastName($data['lastName']);
 		$user->setEmail($data['email']);
 		$user->setUsername($data['email']);
 		$userManager->persist($user);
 		$userManager->flush();
 
 		return $this->renderToken($user);
-	}
-
-	/**
-	 * @param $id
-	 * @param $accessToken
-	 *
-	 * @return bool Facebook account status
-	 * @throws InvalidPropertyUserException
-	 * @internal param int $facebookId Facebook account id
-	 * @internal param string $facebookAccessToken Facebook access token
-	 *
-	 */
-	protected function isValidFacebookAccount($id, $accessToken)
-	{
-		$client = new \Goutte\Client();
-		$client->request('GET', sprintf('https://graph.facebook.com/me?access_token=%s', $accessToken));
-		$response = json_decode($client->getResponse()->getContent(), true);
-
-		if (array_key_exists('error', $response)) {
-			throw new InvalidPropertyUserException($response->error->message);
-		}
-
-		return $response['id'] == $id;
 	}
 
 	/**
