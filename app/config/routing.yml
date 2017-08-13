@@ -11,5 +11,26 @@ fos_js_routing:
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
-rch_jwt_user:
-    resource: "@RCHJWTUserBundle/Resources/config/routing.yml"
+security_register:
+    path:    /register
+    defaults: { _controller: RCHJWTUserBundle:Security:register }
+    requirements:
+        methods: POST
+
+security_login:
+    path:    /login
+    defaults: { _controller: RCHJWTUserBundle:Security:login }
+    requirements:
+        methods: POST
+
+security_oauth_login:
+    path:    /api/oauth/login
+    defaults: { _controller: AppBundle:Security:loginFromOAuthResponse }
+    requirements:
+        methods: POST
+
+security_refresh_token:
+    path:     /refresh_token
+    defaults: { _controller: gesdinet.jwtrefreshtoken:refresh }
+    requirements:
+        methods: POST

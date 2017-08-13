@@ -44,6 +44,19 @@ class User extends BaseUser
 	private $lastName;
 
 	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="facebook_id", type="string", nullable=true)
+	 */
+	private $facebookId;
+
+	/**
+	 * @var string
+	 * @ORM\Column(name="facebook_access_token", type="string", nullable=true)
+	 */
+	private $facebookAccessToken;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\History", mappedBy="user")
 	 */
 	private $histories;
@@ -179,5 +192,43 @@ class User extends BaseUser
 	public function getFirstName()
 	{
 		return $this->firstName;
+	}
+
+	/**
+	 * @param string $facebookId
+	 *
+	 * @return User
+	 */
+	public function setFacebookId($facebookId)
+	{
+		$this->facebookId = $facebookId;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFacebookId()
+	{
+		return $this->facebookId;
+	}
+
+	/**
+	 * @param string $facebookAccessToken
+	 *
+	 * @return User
+	 */
+	public function setFacebookAccessToken($facebookAccessToken)
+	{
+		$this->facebookAccessToken = $facebookAccessToken;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getFacebookAccessToken()
+	{
+		return $this->facebookAccessToken;
 	}
 }
