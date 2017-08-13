@@ -18,3 +18,5 @@ services:
     app_formatter.history:
         class: AppBundle\Formatter\HistoryFormatter
         arguments:  ['@app_formatter.song']
+    app_formatter.user:
+        class: AppBundle\Formatter\UserFormatter

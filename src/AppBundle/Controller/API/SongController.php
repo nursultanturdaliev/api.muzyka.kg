@@ -201,7 +201,7 @@ class SongController extends ApiController
 		$songs = $this->getDoctrine()
 					  ->getRepository('AppBundle:Song')
 					  ->top()
-					  ->setMaxResults(10)
+					  ->setMaxResults(20)
 					  ->setFirstResult(abs($page - 1) * 10)
 					  ->getResult();
 
