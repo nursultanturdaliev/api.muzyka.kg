@@ -43,7 +43,7 @@ class SongController extends ApiController
 		/** @var SongRepository $searchRepository */
 		$searchRepository = $this->getDoctrine()->getRepository('AppBundle:Song');
 		$songs            = $searchRepository->search($text);
-		$formattedSongs   = $this->get('app_formatter.song')->format($songs);;
+		$formattedSongs   = $this->get('app_formatter.song')->format($songs);
 		return $this->prepareJsonResponse($formattedSongs);
 	}
 

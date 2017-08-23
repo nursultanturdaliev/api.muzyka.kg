@@ -108,16 +108,18 @@ class SongRepository extends EntityRepository
 	{
 		$texts        = explode(' ', $text);
 		$queryBuilder = $this->createQueryBuilder('song')
-							 ->join('song.artists', 'artists');
+							 ->leftJoin('song.artists', 'artists')
+        ;
 		foreach ($texts as $text) {
-			$queryBuilder->orWhere('upper(song.title) LIKE :text')
-						 ->orWhere('upper(artists.name) LIKE :text')
-						 ->orWhere('upper(artists.lastname) LIKE :text');
+			$queryBuilder->orWhere('lower(song.title) LIKE :text')
+						 ->orWhere('lower(artists.name) LIKE :text')
+						 ->orWhere('lower(artists.lastname) LIKE :text')
+            ;
 
 		}
 		return $queryBuilder
 			->setMaxResults($limit)
-			->setParameter(':text', '%' . strtoupper($text) . '%')
+			->setParameter(':text', '%' . strtolower($text) . '%')
 			->getQuery()
 			->execute();
 	}
