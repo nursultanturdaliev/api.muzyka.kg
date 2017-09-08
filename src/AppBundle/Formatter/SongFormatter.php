@@ -14,20 +14,22 @@ use AppBundle\Entity\Song;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 class SongFormatter implements FormatterInterface
 {
 
-	/** @var  TokenStorage */
+
 	private $tokenStorage;
-
 	private $entityManager;
+	private $container;
 
-	public function __construct(TokenStorage $tokenStorage, EntityManager $entityManager)
+	public function __construct(TokenStorage $tokenStorage, EntityManager $entityManager, ContainerInterface $container)
 	{
 		$this->tokenStorage  = $tokenStorage;
 		$this->entityManager = $entityManager;
+		$this->container = $container;
 	}
 
 	/**
@@ -53,28 +55,33 @@ class SongFormatter implements FormatterInterface
 	}
 
 	/**
-	 * @param Song $value
+	 * @param Song $song
 	 *
 	 * @return array
 	 */
-	private function formatSong(Song $value)
+	private function formatSong(Song $song)
 	{
 		return [
-			'artist_as_one' => $value->getArtistAsOne(),
-			'artists'       => self::formatArtists($value->getArtists()),
-			'duration'      => $value->getDuration(),
-			'id'            => $value->getId(),
-			'uuid'          => $value->getUuid()->jsonSerialize(),
-			'title'         => $value->getTitle(),
-			'profileLocal'  => self::getProfileLocal($value->getArtists()),
-			'history'       => count($value->getHistories()),
-			'is_favourite'  => $this->isFavourite($value),
-			'is_new'        => $value->getIsNew(),
-			'youtube'      => $value->getYoutube(),
-			'statistics'    => [
-				'played'    => count($value->getHistories()),
-				'favourite' => count($value->getFavourites())
-			]
+				'artist_as_one' => $song->getArtistAsOne(),
+				'artists'       => $this->formatArtists($song->getArtists()),
+				'composed_by'   => $song->getComposedBy(),
+				'cover_photo'   => $this->getCoverPhoto($this->container->getParameter('base_url'), $song),
+				'duration'      => $song->getDuration(),
+				'id'            => $song->getId(),
+				'history'       => count($song->getHistories()),
+				'is_favourite'  => $this->isFavourite($song),
+				'is_new'        => $song->getIsNew(),
+				'lyrics'        => $song->getLyrics(),
+				'profileLocal'  => $this->getProfileLocal($song->getArtists()),
+				'released_at'   => $song->getReleasedAt(),
+				'statistics'    => [
+						'played'    => count($song->getHistories()),
+						'favourite' => count($song->getFavourites())
+				],
+				'title'         => $song->getTitle(),
+				'uuid'          => $song->getUuid()->jsonSerialize(),
+				'written_by'    => $song->getWrittenBy(),
+				'youtube'       => $song->getYoutube(),
 		];
 	}
 
@@ -141,5 +148,10 @@ class SongFormatter implements FormatterInterface
 		}
 
 		return $this->entityManager->getRepository('AppBundle:Favourite')->isFavourite($user, $song);
+	}
+
+	private function getCoverPhoto($baseUrl, Song $song)
+	{
+		return $baseUrl . 'uploads/songs/cover/' . $song->getUuid()->jsonSerialize();
 	}
 }

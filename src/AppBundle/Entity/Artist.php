@@ -4,9 +4,10 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
-use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Artist
  *
@@ -410,7 +411,7 @@ class Artist
 		if (!$this->profileLocal) {
 			$this->profileLocal = $this->placeholders[rand(0, 1)];
 		}
-		return 'http://muzyka.api/uploads/artist/profile/' . $this->profileLocal . '.jpg';
+		return 'http://api-muzyka.aio.kg/uploads/artist/profile/' . $this->profileLocal . '.jpg';
 	}
 
 	/**

@@ -36,7 +36,7 @@ class LoadSongData extends AbstractFixture implements FixtureInterface, OrderedF
 				 ->setDownloadable($s['downloadable'])
 				 ->setCountDownload($s['count_download'])
 				 ->setPublished($s['published'])
-				 ->setPublishedAt($s['published_at'])
+				 ->setReleasedAt($s['published_at'])
 				 ->setUuid($s['uuid']);
 
 			$this->addReference($s['uuid'], $song);

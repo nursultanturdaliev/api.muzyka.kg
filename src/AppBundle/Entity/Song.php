@@ -66,10 +66,10 @@ class Song
 	/**
 	 * @var \DateTime
 	 *
-	 * @ORM\Column(name="published_at", type="datetime", nullable=true)
+	 * @ORM\Column(name="released_at", type="datetime", nullable=true)
 	 * @Expose()
 	 */
-	private $publishedAt;
+	private $releasedAt;
 
 	/**
 	 * @var boolean
@@ -159,6 +159,18 @@ class Song
 	public $youtube;
 
 	/**
+	 * @var string
+	 * @ORM\Column(name="written_by", type="string", nullable=true)
+	 */
+	private $writtenBy;
+
+	/**
+	 * @var string
+	 * @ORM\Column(name="composed_by", type="string", nullable=true)
+	 */
+	private $composedBy;
+
+	/**
 	 * @var
 	 *
 	 * @ORM\OneToMany(targetEntity="AppBundle\Entity\Favourite", mappedBy="song")
@@ -225,13 +237,13 @@ class Song
 	/**
 	 * Set publishedAt
 	 *
-	 * @param \DateTime $publishedAt
+	 * @param \DateTime $releasedAt
 	 *
 	 * @return Song
 	 */
-	public function setPublishedAt($publishedAt)
+	public function setReleasedAt($releasedAt)
 	{
-		$this->publishedAt = $publishedAt;
+		$this->releasedAt = $releasedAt;
 
 		return $this;
 	}
@@ -241,9 +253,9 @@ class Song
 	 *
 	 * @return \DateTime
 	 */
-	public function getPublishedAt()
+	public function getReleasedAt()
 	{
-		return $this->publishedAt;
+		return $this->releasedAt;
 	}
 
 	/**
@@ -694,5 +706,43 @@ class Song
 	public function getYoutube()
 	{
 		return $this->youtube;
+	}
+
+	/**
+	 * @param string $writtenBy
+	 *
+	 * @return Song
+	 */
+	public function setWrittenBy($writtenBy)
+	{
+		$this->writtenBy = $writtenBy;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getWrittenBy()
+	{
+		return $this->writtenBy;
+	}
+
+	/**
+	 * @param string $composedBy
+	 *
+	 * @return Song
+	 */
+	public function setComposedBy($composedBy)
+	{
+		$this->composedBy = $composedBy;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getComposedBy()
+	{
+		return $this->composedBy;
 	}
 }

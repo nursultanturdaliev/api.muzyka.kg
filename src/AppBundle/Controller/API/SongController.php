@@ -159,11 +159,6 @@ class SongController extends ApiController
 	/**
 	 * @Route("/{uuid}", name="app_api_song_get")
 	 * @Method("GET")
-	 * @param $uuid
-	 *
-	 * @return JsonResponse
-	 * @internal param Song $song
-	 *
 	 * @ApiDoc(
 	 *     section="Song",
 	 *     resource=true,
@@ -173,11 +168,17 @@ class SongController extends ApiController
      *          unique identity"}
      *     }
 	 * )
+	 *
+	 * @param $uuid
+	 *
+	 * @return JsonResponse
+	 *
 	 */
 	public function getAction($uuid)
 	{
 		$song = $this->getDoctrine()->getRepository('AppBundle:Song')->findOneByUuid($uuid);
-		return $this->prepareJsonResponse($song);
+		$formattedSongs   = $this->get('app_formatter.song')->format($song);
+		return $this->prepareJsonResponse($formattedSongs);
 	}
 
 	/**
@@ -190,11 +191,10 @@ class SongController extends ApiController
 	 *     requirements={{"name"="page", "dataType"="integer", "required"=true, "requirement"="\d+", "description"="Limit"}}
 	 * )
 	 *
-	 * @return JsonResponse
-	 *
 	 * @param $page
 	 *
-	 * @return Response
+	 * @return JsonResponse
+	 *
 	 */
 	public function topAction($page)
 	{

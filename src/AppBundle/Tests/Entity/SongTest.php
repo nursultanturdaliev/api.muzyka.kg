@@ -37,7 +37,7 @@ class SongTest extends TestCase
 				   ->setCountDownload(100)
 				   ->setDownloadable(false)
 				   ->setPublished(true)
-				   ->setPublishedAt($this->createdAt)
+				   ->setReleasedAt($this->createdAt)
 				   ->setUuid('uuid');
 	}
 
@@ -55,7 +55,7 @@ class SongTest extends TestCase
 		$this->assertEquals($this->song->getCountDownload(), 100);
 		$this->assertEquals($this->song->getUuid(), 'uuid');
 		$this->assertTrue($this->song->getPublished());
-		$this->assertEquals($this->song->getPublishedAt(), $this->createdAt);
+		$this->assertEquals($this->song->getReleasedAt(), $this->createdAt);
 		$this->assertFalse($this->song->isDownloadable());
 	}
 

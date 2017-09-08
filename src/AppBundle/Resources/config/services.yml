@@ -8,7 +8,7 @@ services:
 
     app_formatter.song:
         class: AppBundle\Formatter\SongFormatter
-        arguments:  ['@security.token_storage','@doctrine.orm.default_entity_manager']
+        arguments:  ['@security.token_storage','@doctrine.orm.default_entity_manager', '@service_container']
     app_formatter.artist:
         class: AppBundle\Formatter\ArtistFormatter
         arguments:  ['@app_formatter.song']
