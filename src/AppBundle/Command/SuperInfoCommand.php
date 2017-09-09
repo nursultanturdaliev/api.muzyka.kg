@@ -14,127 +14,143 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class SuperInfoCommand extends ContainerAwareCommand
 {
-	const URL = 'http://www.super.kg/media/audio/';
+    const URL = 'http://www.super.kg/media/audio/';
 
-	const AUDIO_STREAM_BASE_URL = 'http://media.super.kg/media/audio/';
+    const AUDIO_STREAM_BASE_URL = 'http://media.super.kg/media/audio/';
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function configure()
-	{
-		$this
-			->setName('app:superinfo')
-			->setDefinition(array(
-				new InputArgument('from', InputArgument::REQUIRED, 'Page From'),
-				new InputArgument('to', InputArgument::REQUIRED, 'Page To'),
-			))
-			->setDescription('Downloads music from super info');
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('app:superinfo')
+            ->setDefinition(array(
+                new InputArgument('from', InputArgument::REQUIRED, 'Page From'),
+                new InputArgument('to', InputArgument::REQUIRED, 'Page To'),
+            ))
+            ->setDescription('Downloads music from super info');
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		$from = $input->getArgument('from');
-		$to   = $input->getArgument('to');
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $from = $input->getArgument('from');
+        $to = $input->getArgument('to');
 
-		libxml_use_internal_errors(true);
+        libxml_use_internal_errors(true);
 
-		while ($from <= $to) {
-			$html = file_get_contents(self::URL . '?pg=' . $from);
+        while ($from <= $to) {
+            $html = file_get_contents(self::URL . '?pg=' . $from);
 
-			/** @var Crawler $crawler */
-			$crawler = new Crawler($html);
+            /** @var Crawler $crawler */
+            $crawler = new Crawler($html);
 
 
-			$crawler->filter('.audio-block .audio-item')
-					->each(function ($element) use ($output) {
-						/** @var Crawler $element */
-						$fileName = $element->attr('data-file');
-						$title    = $element->filter('.audio-item-title a')->attr('title');
-						$duration = $element->filter('.info-item.length')->text();
-						$duration = substr($duration, 3, 5);
+            $crawler->filter('.audio-block .audio-item')
+                ->each(function ($element) use ($output) {
+                    /** @var Crawler $element */
+                    $fileName = $element->attr('data-file');
+                    $title = $element->filter('.audio-item-title a')->attr('title');
+                    $duration = $element->filter('.info-item.length')->text();
+                    $audioId = $element->filter('.audio-item')->attr('data-id');
+                    $duration = substr($duration, 3, 5);
+                    $lyrics = $this->getLyrics($audioId);
+                    $output->writeln($this->saveFile($fileName, $title, $duration, $lyrics));
+                });
+            $from += 1;
+        }
+    }
 
-						$output->writeln($this->saveFile($fileName, $title, $duration));
-					});
-			$from += 1;
-		}
-	}
+    private function getLyrics($id)
+    {
+        $html = file_get_contents(self::URL . $id);
 
-	private function saveFile($fileName, $musicAndTitle, $duration)
-	{
+        /** @var Crawler $crawler */
+        $crawler = new Crawler($html);
+        $lyrics = $crawler->filter('.video_desc_text')->text();
+        return $lyrics;
+    }
 
-		$fs         = new Filesystem();
-		$artistName = substr($musicAndTitle, 8, strpos($musicAndTitle, '</') - 8);
-		$songTitle  = substr($musicAndTitle, strpos($musicAndTitle, '"') + 1, strrpos($musicAndTitle, '"') - strpos($musicAndTitle, '"') - 1);
+    private function saveFile($fileName, $musicAndTitle, $duration, $lyrics)
+    {
 
-		$artistNames = explode(',', $artistName);
-		if (!$this->songAlreadyExists($songTitle, $artistNames)) {
-			$oldUrl = self::AUDIO_STREAM_BASE_URL . $fileName;
+        $fs = new Filesystem();
+        $artistName = substr($musicAndTitle, 8, strpos($musicAndTitle, '</') - 8);
+        $songTitle = substr($musicAndTitle, strpos($musicAndTitle, '"') + 1, strrpos($musicAndTitle, '"') - strpos($musicAndTitle, '"') - 1);
 
-			$song = new Song();
-			$song->setTitle($songTitle);
-			$song->setDuration($duration);
-			$this->save($song);
+        $artistNames = explode(',', $artistName);
 
-			foreach ($artistNames as $artistName) {
-				$artist = $this->getArtistOrCreate($artistName);
-				$artist->addSong($song);
-				$this->save($artist);
-			}
+        $song = $this->songAlreadyExists($songTitle, $artistNames);
 
-			$fs->copy($oldUrl, $this->getBaseMusicDir() . '/' . $song->getUuid());
-			if (sizeof($song->getArtists()) === 1) {
-				return $song->getTitle() . ' ' . $song->getArtists()[0]->getName();
-			} else {
-				return $song->getTitle();
-			}
-		} else {
-			return 'Already Exists: ' . $songTitle;
-		}
-	}
+        if (!sizeof($song) > 0) {
+            $oldUrl = self::AUDIO_STREAM_BASE_URL . $fileName;
+            $song = new Song();
+            $song->setTitle($songTitle);
+            $song->setDuration($duration);
+            $song->setLyrics($lyrics);
+            $this->save($song);
 
-	private function songAlreadyExists($title, $artistNames)
-	{
-		$data = $this->getContainer()->get('doctrine.orm.entity_manager')
-					 ->getRepository('AppBundle:Song')
-					 ->findBySongAndArtist($title, $artistNames);
+            foreach ($artistNames as $artistName) {
+                $artist = $this->getArtistOrCreate($artistName);
+                $artist->addSong($song);
+                $this->save($artist);
+            }
 
-		return sizeof($data) > 0;
-	}
+            $fs->copy($oldUrl, $this->getBaseMusicDir() . '/' . $song->getUuid());
+            if (sizeof($song->getArtists()) === 1) {
+                return $song->getTitle() . ' ' . $song->getArtists()[0]->getName();
+            } else {
+                return $song->getTitle();
+            }
+        } else {
+            $song->setLyrics($lyrics);
+            $this->save($song);
+            return 'Already Exists: ' . $songTitle;
+        }
+    }
 
-	private function getArtistOrCreate($artistName)
-	{
-		$artistName = trim($artistName);
+    private function songAlreadyExists($title, $artistNames)
+    {
+        $data = $this->getContainer()->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:Song')
+            ->findBySongAndArtist($title, $artistNames);
 
-		$manager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+        return $data;
+    }
 
-		$artist = $manager
-			->getRepository('AppBundle:Artist')
-			->findOneByName($artistName);
+    private function getArtistOrCreate($artistName)
+    {
+        $artistName = trim($artistName);
 
-		if ($artist instanceof Artist) {
-			return $artist;
-		} else {
-			$artist = new Artist();
-			$artist->setName($artistName);
-			return $this->save($artist);
-		}
-	}
+        $manager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
-	private function save(&$entity)
-	{
+        $artist = $manager
+            ->getRepository('AppBundle:Artist')
+            ->findOneByName($artistName);
 
-		$manager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-		$manager->persist($entity);
-		$manager->flush();
-		return $entity;
-	}
+        if ($artist instanceof Artist) {
+            return $artist;
+        } else {
+            $artist = new Artist();
+            $artist->setName($artistName);
+            return $this->save($artist);
+        }
+    }
 
-	private function getBaseMusicDir()
-	{
-		return $this->getContainer()->getParameter('music_path');
-	}
+    private function save(&$entity)
+    {
+
+        $manager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+        $manager->persist($entity);
+        $manager->flush();
+        return $entity;
+    }
+
+    private function getBaseMusicDir()
+    {
+        return $this->getContainer()->getParameter('music_path');
+    }
 }
