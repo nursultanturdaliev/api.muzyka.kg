@@ -44,7 +44,7 @@ class SuperInfoCommand extends ContainerAwareCommand
 
         while ($from <= $to) {
             $html = file_get_contents(self::URL . '?pg=' . $from);
-
+            dump($from);
             /** @var Crawler $crawler */
             $crawler = new Crawler($html);
 
@@ -57,8 +57,8 @@ class SuperInfoCommand extends ContainerAwareCommand
                     $duration = $element->filter('.info-item.length')->text();
                     $audioId = $element->filter('.audio-item')->attr('data-id');
                     $duration = substr($duration, 3, 5);
-                    $lyrics = $this->getLyrics($audioId);
-                    $output->writeln($this->saveFile($fileName, $title, $duration, $lyrics));
+                    $arr = $this->getLyrics($audioId);
+                    $output->writeln($this->saveFile($fileName, $title, $duration, $arr[0], $arr[1], $arr[2]));
                 });
             $from += 1;
         }
@@ -70,13 +70,24 @@ class SuperInfoCommand extends ContainerAwareCommand
 
         /** @var Crawler $crawler */
         $crawler = new Crawler($html);
+        $writer = $compositor = null;
         $lyrics = $crawler->filter('.video_desc_text')->text();
-        return $lyrics;
+        $writer = $crawler->filter('.media_mt')->parents()->children()->text();
+        if (strpos($writer,":") != false) {
+            $writer = explode(': ', $writer);
+            if(count($writer)>1) $writer = $writer[1];
+            $compositor = $crawler->filter('.media_mt')->parents()->children()->nextAll()->text();
+            if (strpos($compositor,":") != false) {
+                $compositor = explode(': ', $compositor);
+                if(count($compositor)>1) $compositor = $compositor[1];
+            }
+        }
+        else $writer=null;
+        return array($lyrics, $writer, $compositor);
     }
 
-    private function saveFile($fileName, $musicAndTitle, $duration, $lyrics)
+    private function saveFile($fileName, $musicAndTitle, $duration, $lyrics, $writer, $compositor)
     {
-
         $fs = new Filesystem();
         $artistName = substr($musicAndTitle, 8, strpos($musicAndTitle, '</') - 8);
         $songTitle = substr($musicAndTitle, strpos($musicAndTitle, '"') + 1, strrpos($musicAndTitle, '"') - strpos($musicAndTitle, '"') - 1);
@@ -91,6 +102,8 @@ class SuperInfoCommand extends ContainerAwareCommand
             $song->setTitle($songTitle);
             $song->setDuration($duration);
             $song->setLyrics($lyrics);
+            $song->setWrittenBy($writer);
+            $song->setComposedBy($compositor);
             $this->save($song);
 
             foreach ($artistNames as $artistName) {
@@ -107,6 +120,8 @@ class SuperInfoCommand extends ContainerAwareCommand
             }
         } else {
             $song->setLyrics($lyrics);
+            $song->setWrittenBy($writer);
+            $song->setComposedBy($compositor);
             $this->save($song);
             return 'Already Exists: ' . $songTitle;
         }
