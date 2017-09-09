@@ -81,6 +81,7 @@ class SuperInfoCommand extends ContainerAwareCommand
                 $compositor = explode(': ', $compositor);
                 if(count($compositor)>1) $compositor = $compositor[1];
             }
+            else $compositor=null;
         }
         else $writer=null;
         return array($lyrics, $writer, $compositor);
