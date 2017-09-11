@@ -90,7 +90,7 @@ class SongRepository extends EntityRepository
 		return $this->createQueryBuilder('song')
 					->where('song.isNew = :isNew')
 					->setParameter('isNew', true)
-					->orderBy('song.publishedAt')
+					->orderBy('song.releasedAt')
 					->getQuery()
 					->execute();
 	}
