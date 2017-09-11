@@ -72,18 +72,21 @@ class SuperInfoCommand extends ContainerAwareCommand
         $crawler = new Crawler($html);
         $writer = $compositor = null;
         $lyrics = $crawler->filter('.video_desc_text')->text();
+
         $writer = $crawler->filter('.media_mt')->parents()->children()->text();
         if (strpos($writer," : ") != false) {
             $writer = explode(': ', $writer);
-            if(count($writer)>1) $writer = $writer[1];
-            $compositor = $crawler->filter('.media_mt')->parents()->children()->nextAll()->text();
-            if (strpos($compositor," : ") != false) {
-                $compositor = explode(': ', $compositor);
-                if(count($compositor)>1) $compositor = $compositor[1];
+            if (count($writer) > 1 && strlen($writer[0])<10) {
+                $writer = $writer[1];
+                $compositor = $crawler->filter('.media_mt')->parents()->children()->nextAll()->text();
+                if (strpos($compositor, " : ") != false) {
+                    $compositor = explode(': ', $compositor);
+                    if (count($compositor) > 1) $compositor = $compositor[1];
+                } else $compositor = null;
             }
-            else $compositor=null;
-        }
-        else $writer=null;
+            else $writer = null;
+        } else $writer = null;
+
         return array($lyrics, $writer, $compositor);
     }
 
