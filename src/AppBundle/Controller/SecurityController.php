@@ -30,16 +30,20 @@ class SecurityController extends Controller
 		$user = $userRepository->findOneBy([$id => $data['id']]);
 
 		if ($user) {
+			if($provider == 'facebook' || $provider == 'google'){
+                copy($data['photo'], 'uploads/users/' .  $data['id'] . '.jpg');
+            }
 			return $this->renderToken($user);
 		}
 
 		$user = $userRepository->findOneBy(['email' => $data['email']]);
-
 		if ($user) {
 			if ($provider == 'facebook') {
+				copy($data['photo'], 'uploads/users/' .  $data['id'] . '.jpg');
 				$user->setFacebookId($data['id']);
 				$user->setFacebookAccessToken($data['accessToken']);
 			} else if ($provider == 'google') {
+                copy($data['photo'], 'uploads/users/' .  $data['id'] . '.jpg');
 				$user->setGoogleAccessToken($data['accessToken']);
 				$user->setGoogleId($data['id']);
 			}
@@ -52,10 +56,15 @@ class SecurityController extends Controller
 		if ($provider == 'facebook') {
 			$user->setFacebookId($data['id']);
 			$user->setFacebookAccessToken($data['accessToken']);
+            $user->setPhoto($data['id'] . '.jpg');
+			copy($data['photo'], 'uploads/users/' .  $data['id'] . '.jpg');
 		} else if ($provider == 'google') {
+            copy($data['photo'], 'uploads/users/' .  $data['id'] . '.jpg');
 			$user->setGoogleAccessToken($data['accessToken']);
 			$user->setGoogleId($data['id']);
+            $user->setPhoto($data['id'] . '.jpg');
 		}
+
 		$user->setPlainPassword($data['password']);
 		$user->setFirstName($data['firstName']);
 		$user->setLastName($data['lastName']);
@@ -81,8 +90,9 @@ class SecurityController extends Controller
 			'token'         => $this->container->get('lexik_jwt_authentication.jwt_manager')->create($user),
 			'refresh_token' => $this->attachRefreshToken($user),
 			'user'          => $user->getUsername(),
-			'firstName'     => $user->getFirstName(),
-			'lastName'      => $user->getLastName()
+			'first_name'    => $user->getFirstName(),
+			'last_name'     => $user->getLastName(),
+			'photo'         => $user->getPhoto()
 		];
 
 		return new JsonResponse($body, $statusCode);

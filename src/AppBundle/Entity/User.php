@@ -75,6 +75,14 @@ class User extends BaseUser
 	 */
 	private $histories;
 
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="photo", type="string", nullable=true)
+	 */
+	private $photo;
+
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -282,5 +290,21 @@ class User extends BaseUser
 	public function getGoogleAccessToken()
 	{
 		return $this->googleAccessToken;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPhoto()
+	{
+		return $this->photo;
+	}
+
+	/**
+	 * @param string $photo
+	 */
+	public function setPhoto($photo)
+	{
+		$this->photo = $photo;
 	}
 }
