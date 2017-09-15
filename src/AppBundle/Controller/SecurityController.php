@@ -90,8 +90,8 @@ class SecurityController extends Controller
 			'token'         => $this->container->get('lexik_jwt_authentication.jwt_manager')->create($user),
 			'refresh_token' => $this->attachRefreshToken($user),
 			'user'          => $user->getUsername(),
-			'first_name'    => $user->getFirstName(),
-			'last_name'     => $user->getLastName(),
+			'firstName'     => $user->getFirstName(),
+			'lastName'      => $user->getLastName(),
 			'photo'         => $user->getPhoto()
 		];
 
