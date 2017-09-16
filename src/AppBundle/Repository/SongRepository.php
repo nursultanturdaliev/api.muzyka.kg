@@ -106,6 +106,7 @@ class SongRepository extends EntityRepository
 	 */
 	public function search($text, $limit = 200)
 	{
+        $text = mb_strtolower($text);
 		$texts        = explode(' ', $text);
 		$queryBuilder = $this->createQueryBuilder('song')
 							 ->leftJoin('song.artists', 'artists')
@@ -119,7 +120,7 @@ class SongRepository extends EntityRepository
 		}
 		return $queryBuilder
 			->setMaxResults($limit)
-			->setParameter(':text', '%' . strtolower($text) . '%')
+			->setParameter(':text', '%' . mb_strtolower($text) . '%')
 			->getQuery()
 			->execute();
 	}
