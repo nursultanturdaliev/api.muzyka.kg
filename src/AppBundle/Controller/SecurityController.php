@@ -31,6 +31,9 @@ class SecurityController extends Controller
 
 		if ($user) {
 			if($provider == 'facebook' || $provider == 'google'){
+                if(!$user->getPhoto()){
+                    $user->setPhoto($data['id'] . '.jpg');
+                }
                 copy($data['photo'], 'uploads/users/' .  $data['id'] . '.jpg');
             }
 			return $this->renderToken($user);
@@ -39,10 +42,16 @@ class SecurityController extends Controller
 		$user = $userRepository->findOneBy(['email' => $data['email']]);
 		if ($user) {
 			if ($provider == 'facebook') {
+                if(!$user->getPhoto()){
+                    $user->setPhoto($data['id'] . '.jpg');
+                }
 				copy($data['photo'], 'uploads/users/' .  $data['id'] . '.jpg');
 				$user->setFacebookId($data['id']);
 				$user->setFacebookAccessToken($data['accessToken']);
 			} else if ($provider == 'google') {
+                if(!$user->getPhoto()){
+                    $user->setPhoto($data['id'] . '.jpg');
+                }
                 copy($data['photo'], 'uploads/users/' .  $data['id'] . '.jpg');
 				$user->setGoogleAccessToken($data['accessToken']);
 				$user->setGoogleId($data['id']);

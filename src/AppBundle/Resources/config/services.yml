@@ -6,6 +6,12 @@ services:
         class: RCH\JWTUserBundle\Services\CredentialFetcher
         arguments: ["@request_stack","@validator"]
 
+    app.lexik_jwt_authentication.handler.authentication_success:
+        class: AppBundle\Security\Http\Authentication\AuthenticationSuccessHandler
+        arguments: ["@lexik_jwt_authentication.jwt_manager", "@event_dispatcher"]
+        tags:
+            - { name: monolog.logger, channel: security }
+
     app_formatter.song:
         class: AppBundle\Formatter\SongFormatter
         arguments:  ['@security.token_storage','@doctrine.orm.default_entity_manager', '@service_container']

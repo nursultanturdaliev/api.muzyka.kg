@@ -59,4 +59,30 @@ class FavouriteController extends ApiController
 
 		return $this->prepareJsonResponse($formattedFavourite);
 	}
+
+    /**
+     * @Route("/remove/song/{uuid}")
+     * @ParamConverter("song", class="AppBundle:Song", options={"uuid"="uuid"})
+     * @Method("POST")
+     * @param Song $song
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeSongAction(Song $song)
+    {
+        /** @var User $user */
+        $user      = $this->getUser();
+        $em = $this->getDoctrine()->getEntityManager();
+        $favourite = $em->createQueryBuilder('AppBundle:Favorite')
+            ->findOneBy(array('user' => $user, 'song' => $song));
+
+        if ( !$favourite ){
+            return new JsonResponse(array(), Response::HTTP_NOT_FOUND);
+        }
+        $em->remove($favourite);
+
+        $formattedFavourite = $this->get('app_formatter.favourite')->format($favourite);
+
+        return $this->prepareJsonResponse($formattedFavourite);
+    }
 }

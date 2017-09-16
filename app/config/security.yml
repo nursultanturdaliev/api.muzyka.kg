@@ -25,7 +25,8 @@ security:
                 require_previous_session: false
                 username_parameter: email
                 password_parameter: password
-                success_handler: lexik_jwt_authentication.handler.authentication_success
+                #success_handler: lexik_jwt_authentication.handler.authentication_success
+                success_handler: app.lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
         # Signup
         register:
