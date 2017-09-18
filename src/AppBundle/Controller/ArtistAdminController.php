@@ -208,7 +208,11 @@ class ArtistAdminController extends CRUDController
                         $profileLocale = $this->slug($existingObject->getName() . $existingObject->getId());
                     }
 
+                    if(file_exists ( 'uploads/artist/profile/' . $profileLocale .'jpg')){
+                        unlink('uploads/artist/profile/' . $profileLocale . '.jpg');
+                    }
                     $profilePhoto = $submittedObject->getProfileLocal();
+
                     $profilePhoto->move(
                         'uploads/artist/profile/',
                         $profileLocale . '.jpg'
