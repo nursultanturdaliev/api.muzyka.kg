@@ -25,7 +25,6 @@ class SongFormatter implements FormatterInterface
 	private $entityManager;
 	private $container;
 
-    private $placeholders = ['placeholder_one', 'placeholder_two'];
 
 	public function __construct(TokenStorage $tokenStorage, EntityManager $entityManager, ContainerInterface $container)
 	{
@@ -101,7 +100,7 @@ class SongFormatter implements FormatterInterface
 				'id'           => $artist->getId(),
 				'lastname'     => $artist->getLastname(),
 				'name'         => $artist->getName(),
-				'profileLocal' => $this->profileLocal($artist->getProfileLocal())
+				'profileLocal' => $artist->getProfileLocal()
 			];
 		}
 
@@ -122,7 +121,7 @@ class SongFormatter implements FormatterInterface
 		/** @var Artist $artist */
 		foreach ($artists as $artist) {
 			if ($artist->getProfileLocal()) {
-				return $this->profileLocal($artist->getProfileLocal());
+				return $artist->getProfileLocal();
 			}
 		}
 	}
@@ -156,12 +155,4 @@ class SongFormatter implements FormatterInterface
 	{
 		return $baseUrl . 'uploads/songs/cover/' . $song->getUuid()->jsonSerialize();
 	}
-
-    private function profileLocal($profileLocal)
-    {
-        if (!$profileLocal) {
-            $profileLocal = $this->placeholders[rand(0, 1)];
-        }
-        return 'http://api-muzyka.aio.kg/uploads/artist/profile/' . $profileLocal . '.jpg';
-    }
 }

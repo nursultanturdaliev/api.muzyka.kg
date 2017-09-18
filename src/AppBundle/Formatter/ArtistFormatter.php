@@ -17,7 +17,6 @@ class ArtistFormatter implements FormatterInterface
 
 	/** @var  SongFormatter */
 	private $songFormatter;
-    private $placeholders = ['placeholder_one', 'placeholder_two'];
 
 	public function __construct(SongFormatter $songFormatter)
 	{
@@ -62,17 +61,9 @@ class ArtistFormatter implements FormatterInterface
 			'lastname'        => $value->getLastname(),
 			'instagram'       => $value->getInstagram(),
 			'profile'         => $value->getProfile(),
-			'profileLocal'    => $this->profileLocal($value->getProfileLocal()),
+			'profileLocal'    => $value->getProfileLocal(),
 			'hasProfileLocal' => $value->hasProfileLocal(),
 			'numberOfSongs'   => $value->getSongs()->count()
 		];
 	}
-
-    private function profileLocal($profileLocal)
-    {
-        if (!$profileLocal) {
-            $profileLocal = $this->placeholders[rand(0, 1)];
-        }
-        return 'http://api-muzyka.aio.kg/uploads/artist/profile/' . $profileLocal . '.jpg';
-    }
 }
