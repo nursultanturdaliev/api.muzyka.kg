@@ -206,6 +206,8 @@ class ArtistAdminController extends CRUDController
 
                     if (!$profileLocale){
                         $profileLocale = $this->slug($existingObject->getName() . $existingObject->getId());
+                    } else {
+                        $profileLocale = $profileLocale . $existingObject->getId();
                     }
 
                     if(file_exists ( 'uploads/artist/profile/' . $profileLocale .'jpg')){
