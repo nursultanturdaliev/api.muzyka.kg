@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Artist
@@ -18,7 +19,6 @@ use JMS\Serializer\Annotation\Expose;
  */
 class Artist
 {
-	private $placeholders = ['placeholder_one', 'placeholder_two'];
 
 	/**
 	 * @var int
@@ -117,6 +117,7 @@ class Artist
 
 	public function __construct()
 	{
+        $this->profileLocal = null;
 		$this->songs = new ArrayCollection();
 	}
 
@@ -408,10 +409,7 @@ class Artist
 	 */
 	public function getProfileLocal()
 	{
-		if (!$this->profileLocal) {
-			$this->profileLocal = $this->placeholders[rand(0, 1)];
-		}
-		return 'http://api-muzyka.aio.kg/uploads/artist/profile/' . $this->profileLocal . '.jpg';
+        return $this->profileLocal;
 	}
 
 	/**

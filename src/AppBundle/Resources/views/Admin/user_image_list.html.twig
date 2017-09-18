@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field %}
+	{% if value %}
+        <div style="width: 100%; text-align: center">
+            <img src="/uploads/users/{{ value }}" width="100">
+        </div>
+	{% endif %}
+{% endblock %}

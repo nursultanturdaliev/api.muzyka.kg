@@ -1,0 +1,17 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+{% block field %}
+
+    {% if value %}
+        <div>
+            {#  <img src="/uploads/artists/profile/{{ value }}jpg" width="150">#}
+            <img src="http://api-muzyka.aio.kg/uploads/artist/profile/{{ value }}.jpg" width="200">
+        </div>
+        {{ value }}
+    {% else %}
+        <div>
+            {#  <img src="/uploads/artists/profile/{{ value }}jpg" width="150">#}
+            <img src="http://api-muzyka.aio.kg/uploads/artist/profile/placeholder_one.jpg" width="200">
+        </div>
+    {% endif %}
+
+{% endblock %}

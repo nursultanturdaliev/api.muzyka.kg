@@ -34,3 +34,18 @@ security_refresh_token:
     defaults: { _controller: gesdinet.jwtrefreshtoken:refresh }
     requirements:
         methods: POST
+
+
+admin_area:
+    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
+    prefix: /muz-admin
+
+
+admin:
+    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+    prefix: /muz-admin
+
+_sonata_admin:
+    resource: .
+    type: sonata_admin
+    prefix: /muz-admin

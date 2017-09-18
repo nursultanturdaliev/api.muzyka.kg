@@ -26,3 +26,24 @@ services:
         arguments:  ['@app_formatter.song']
     app_formatter.user:
         class: AppBundle\Formatter\UserFormatter
+
+
+
+    app.admin.artist:
+        class: AppBundle\Admin\ArtistAdmin
+        arguments: [~, AppBundle\Entity\Artist, AppBundle:ArtistAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Ырчылар, label: Ырчылар, on_top : true, icon: '<i class="fa fa-user-circle-o"></i>' }
+
+    app.admin.song:
+        class: AppBundle\Admin\SongAdmin
+        arguments: [~, AppBundle\Entity\Song, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Ырлар, label: Ырлар, on_top : true, icon: '<i class="fa fa-music"></i>' }
+
+
+    app.admin.user:
+        class: AppBundle\Admin\UserAdmin
+        arguments: [~, AppBundle\Entity\User, SonataAdminBundle:CRUD]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Колдонуучулар, label: Колдонуучулар, on_top : true, icon: '<i class="fa fa-users"></i>'  }

@@ -186,7 +186,13 @@ class Song
 		$this->isNew     = false;
 	}
 
-	/**
+    public function __toString()
+    {
+        return $this->title;
+        // TODO: Implement __toString() method.
+    }
+
+    /**
 	 * Set title
 	 *
 	 * @param string $title

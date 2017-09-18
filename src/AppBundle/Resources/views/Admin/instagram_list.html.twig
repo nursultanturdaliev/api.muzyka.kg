@@ -1,0 +1,12 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field %}
+	{% if value %}
+        <a href="{{ value }}" style="font-size: 25px; color: red" target="_blank">
+            <i class="fa fa-instagram"></i>
+        </a>
+    {% else %}
+        <a  style="font-size: 25px; color: grey">
+            <i class="fa fa-instagram"></i>
+        </a>
+	{% endif %}
+{% endblock %}

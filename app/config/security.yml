@@ -44,8 +44,18 @@ security:
             stateless: true
             lexik_jwt: ~
 
+
+
     access_control:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/refresh_token, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/apis, role: IS_AUTHENTICATED_FULLY }
+
+
+        - { path: ^/muz-admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/muz-admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/muz-admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        - { path: ^/muz-admin/, role:[ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_USER ] }
+

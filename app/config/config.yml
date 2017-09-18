@@ -34,7 +34,7 @@ twig:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_pgsql
+        driver:   "%database_driver%"
         host:     "%database_host%"
         port:     "%database_port%"
         dbname:   "%database_name%"
@@ -116,3 +116,18 @@ snc_redis:
             alias: default
             dsn: redis://localhost
             logging: "%kernel.debug%"
+
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+
+
+sonata_admin:
+
+    title: Muzyka
+    title_logo: /public/img/logo.png
+    templates:
+        layout:              ApplicationSonataAdminBundle::standard_layout.html.twig
+        edit:                ApplicationSonataAdminBundle::base_edit.html.twig
