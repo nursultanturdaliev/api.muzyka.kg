@@ -2,14 +2,11 @@
 {% block field %}
 	{% if value %}
         <div style="width: 100%; text-align: center">
-           <img src="/uploads/artists/profile/{{ value }}.jpg" width="150">
-        {#    <img src="http://api-muzyka.aio.kg/uploads/artist/profile/{{ value }}.jpg" width="150">
-        #}
+           <img src="/uploads/artist/profile/{{ value }}.jpg" width="150">
         </div>
     {% else %}
         <div style="width: 100%; text-align: center">
-            {#  <img src="/uploads/artists/profile/{{ value }}jpg" width="150">#}
-            <img src="http://api-muzyka.aio.kg/uploads/artist/profile/placeholder_one.jpg" width="150">
+            <img src="/uploads/artist/profile/placeholder_one.jpg" width="150">
         </div>
 	{% endif %}
 {% endblock %}

@@ -86,7 +86,7 @@ class ArtistAdminController extends CRUDController
 
                     $profileLocale = $this->slug($newObject->getName() . $newObject->getId());
                     $profilePhoto->move(
-                        'uploads/artists/profile/',
+                        'uploads/artist/profile/',
                         $profileLocale . '.jpg'
                     );
                     $newObject->setProfileLocal($profileLocale);
@@ -210,7 +210,7 @@ class ArtistAdminController extends CRUDController
 
                     $profilePhoto = $submittedObject->getProfileLocal();
                     $profilePhoto->move(
-                        'uploads/artists/profile/',
+                        'uploads/artist/profile/',
                         $profileLocale . '.jpg'
                     );
 
