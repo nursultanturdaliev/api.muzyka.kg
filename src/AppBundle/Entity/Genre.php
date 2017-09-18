@@ -82,7 +82,13 @@ class Genre
 		$this->songs = new ArrayCollection();
 	}
 
-	/**
+    public function __toString()
+    {
+        return $this->name . "";
+        // TODO: Implement __toString() method.
+    }
+
+    /**
 	 * Add song
 	 *
 	 * @param Song $song

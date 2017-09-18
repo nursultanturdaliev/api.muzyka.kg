@@ -78,9 +78,41 @@ class SongAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
-            ->add('title', null, array('label' => 'Аталышы'))
-            ->add('youtube', null, array('label' => 'Ютуб'))
-            ->add('lyrics', null, array('label' => 'Текстти'))
+            ->with('Негизги маалыматтар', array('class' => 'col-md-6'))
+                ->add('title', null, array('label' => 'Аталышы'))
+                ->add('artists', null, array('label' => 'Аткаруучулар'))
+                ->add('writtenBy', null, array('label' => 'Автору'))
+                ->add('composedBy', null, array('label' => 'Композитору'))
+                ->add('youtube', null, array('label' => 'Ютуб'))
+                ->add('favourites', null, array('label' => 'Фаворит'))
+                ->add('genres', null, array('label' => 'Жанр'))
+            ->end()
+            ->with('Текстти', array('class' => 'col-md-6'))
+                ->add('lyrics', 'textarea', array(
+                    'label' => false,
+                    'attr' => array('rows' => '20', 'style' => 'height:505px')
+                    ))
+            ->end()
+
+            ->with('Кошумча маалыматтар', array('class' => 'col-md-6'))
+                ->add('uuid', null, array('label' => 'UUID'))
+                ->add('duration', null, array('label' => 'Убактысы'))
+                ->add('countPlay', null, array('label' => 'Ырдоо саны'))
+                ->add('likes', null, array('label' => 'Жакты'))
+                ->add('countDownload', null, array('label' => 'Саны'))
+                ->add('downloadable', null, array('label' => 'Көчүрүү'))
+                ->add('isNew', null, array('label' => 'Жаңы'))
+                ->add('published', null, array('label' => 'Жарыяланган'))
+            ->end()
+            ->with('Даталар', array('class' => 'col-md-6'))
+                ->add('createdAt', null, array('label' => 'Түзүлгөн датасы'))
+                ->add('releasedAt', null, array('label' => 'Released At'))
+                ->add('updatedAt', null, array('label' => 'Өзгөргөн датасы'))
+                ->add('deletedAt', null, array('label' => 'Өчүрүлгөн датасы'))
+                ->add('histories', null, array('label' => 'История'))
+            ->end()
+
+
         ;
     }
 
@@ -90,23 +122,35 @@ class SongAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $showMapper)
     {
         $showMapper
-            ->add('uuid', null, array('label' => 'UUID'))
-            ->add('id', null, array('label' => 'ID'))
-            ->add('title', null, array('label' => 'Аталышы'))
-            ->add('duration', null, array('label' => 'Убактысы'))
-            ->add('published', null, array('label' => 'Жарыяланган'))
-            ->add('downloadable', null, array('label' => 'Көчүрүү'))
-            ->add('countDownload', null, array('label' => 'Саны'))
-            ->add('countPlay', null, array('label' => 'Ырдоо саны'))
-            ->add('likes', null, array('label' => 'Жакты'))
-            ->add('isNew', null, array('label' => 'Жаңы'))
-            ->add('createdAt', null, array('label' => 'Түзүлгөн датасы'))
-            ->add('updatedAt', null, array('label' => 'Өзгөргөн датасы'))
-            ->add('deletedAt', null, array('label' => 'Өчүрүлгөн датасы'))
-            ->add('youtube', null, array('label' => 'Ютуб'))
-            ->add('writtenBy', null, array('label' => 'Автору'))
-            ->add('composedBy', null, array('label' => 'Композитору'))
-            ->add('lyrics', null, array('label' => 'Текстти'))
+            ->with('Негизги маалыматтар', array('class' => 'col-md-6'))
+                ->add('uuid', null, array('label' => 'UUID'))
+                ->add('id', null, array('label' => 'ID'))
+                ->add('title', null, array('label' => 'Аталышы'))
+                ->add('artists', null, array('label' => 'Аткаруучулар'))
+                ->add('writtenBy', null, array('label' => 'Автору'))
+                ->add('composedBy', null, array('label' => 'Композитору'))
+                ->add('youtube', null, array('label' => 'Ютуб'))
+                ->add('favourites', null, array('label' => 'Фаворит'))
+                ->add('genres', null, array('label' => 'Жанр'))
+                ->add('duration', null, array('label' => 'Убактысы'))
+                ->add('countPlay', null, array('label' => 'Ырдоо саны'))
+                ->add('likes', null, array('label' => 'Жакты'))
+                ->add('countDownload', null, array('label' => 'Саны'))
+                ->add('downloadable', null, array('label' => 'Көчүрүү'))
+                ->add('isNew', null, array('label' => 'Жаңы'))
+                ->add('published', null, array('label' => 'Жарыяланган'))
+                ->add('createdAt', null, array('label' => 'Түзүлгөн датасы'))
+                ->add('releasedAt', null, array('label' => 'Released At'))
+                ->add('updatedAt', null, array('label' => 'Өзгөргөн датасы'))
+                ->add('deletedAt', null, array('label' => 'Өчүрүлгөн датасы'))
+                ->add('histories', null, array('label' => 'История'))
+            ->end()
+            ->with('Текстти', array('class' => 'col-md-6'))
+            ->add('lyrics', 'textarea', array(
+                'label' => false,
+                'attr' => array('rows' => '20', 'style' => 'height:505px')
+            ))
+            ->end()
         ;
     }
 }
