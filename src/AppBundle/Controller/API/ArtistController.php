@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ArtistController extends ApiController
 {
-	const ARTIST_PER_RESPONSE_LIMIT = 300;
+	const ARTIST_PER_RESPONSE_LIMIT = 80;
 
 	/**
 	 * @Route("/page/{page}", name="app_api_artist_index", requirements={"page":"\d+"})
