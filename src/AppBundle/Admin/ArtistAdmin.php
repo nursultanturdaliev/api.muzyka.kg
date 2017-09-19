@@ -7,6 +7,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 class ArtistAdmin extends AbstractAdmin
@@ -89,7 +90,13 @@ class ArtistAdmin extends AbstractAdmin
 
             ->with('Кошумча маалыматтар', array('class' => 'col-md-12'))
 
-                ->add('gender', null, array('label' => 'Жынысы'))
+                ->add('gender', ChoiceType::class, array(
+                    'label' => 'Жынысы',
+                    'choices'  => array(
+                        'аял' => "f",
+                        'эркек' => "m",
+                    ),
+                ))
                 ->add('debut', null, array('label' => 'Дебют'))
                 ->add('email', null, array('label' => 'Email'))
                 ->add('biography', null, array('label' => 'Биография'))
