@@ -207,26 +207,17 @@ class ArtistAdminController extends CRUDController
                     $profilePhoto = $submittedObject->getProfileLocal();
 
                     if($profilePhoto){
+
                         $profileLocale = $this->slug($existingObject->getName() . $existingObject->getId());
 
-                        /*if (!$profileLocale){
-
-                        } else {
-                            $profileLocale = $profileLocale . $existingObject->getId();
-                        }*/
-
-                        /*if(file_exists ( 'uploads/artist/profile/' . $profileLocale .'jpg')){
-                            unlink('uploads/artist/profile/' . $profileLocale . '.jpg');
-                        }*/
 
                         $profilePhoto->move(
                             'uploads/artist/profile/',
                             $profileLocale . '.jpg'
                         );
-
-                        $submittedObject->setProfileLocal($profileLocale);
                     }
 
+                    $submittedObject->setProfileLocal($profileLocale);
 
                     $existingObject = $this->admin->update($submittedObject);
 
@@ -290,6 +281,7 @@ class ArtistAdminController extends CRUDController
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
+            'profileLocale' => $profileLocale
         ), null);
     }
 

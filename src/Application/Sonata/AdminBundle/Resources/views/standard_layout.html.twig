@@ -367,18 +367,46 @@ file that was distributed with this source code.
     {% endif %}
 
 
+    <img id="bug"  src="/public/bug.gif"
+          style="position: fixed;
+            display: none;
+            right: 15px;
+            bottom: 130px;
+            width: 250px;">
+
     <script src="{{ asset('public/js/fileinput.js') }}"></script>
     <script src="{{ asset('public/js/fileinput_locale_ru.js') }}"></script>
 
 
     <script>
-
+        var profileLocale;
+        {% if profileLocale is defined %}
+            profileLocale = '{{ profileLocale }}';
+        {% endif %}
+        profileLocale = profileLocale ? profileLocale + '.jpg' : 'placeholder_one.jpg';
         $(".file-input").fileinput({
+            language: 'ru',
             'showUpload':false,
+            'showRemove': false,
             'previewFileType':'any',
             'showPreview': true,
+            showCaption: false,
             allowedFileExtensions: ["jpg"],
-            overwriteInitial: true
+            overwriteInitial: true,
+
+            initialPreview: [
+                "<img style='height: 200px' src='/uploads/artist/profile/"+ profileLocale +"'>"
+            ]
+        });
+    </script>
+
+
+    <script>
+        $('.sidebar-menu').find('.fa-bug').parent().hover(function(){
+            $('#bug').show();
+        });
+        $('.sidebar-menu').find('.fa-bug').parent().live(function(){
+            $('#bug').hide();
         });
     </script>
     </body>

@@ -82,6 +82,7 @@ class ArtistAdmin extends AbstractAdmin
             ->with('Сүрөтү', array('class' => 'col-md-6'))
                 ->add('profileLocal', 'file', array(
                     'label' => false,
+                    'required' => false,
                     'attr' => array('class' => 'file-input')
                 ))
             ->end()
