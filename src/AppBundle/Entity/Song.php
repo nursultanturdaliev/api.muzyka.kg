@@ -579,7 +579,7 @@ class Song
 	public function getArtistAsOne()
 	{
 		return implode(', ', array_map(function (Artist $artist) {
-			return $artist->getName() . ' ' . $artist->getLastname();
+			return $artist->getName() . $artist->getLastname();
 		}, $this->getArtists()->toArray()));
 	}
 
