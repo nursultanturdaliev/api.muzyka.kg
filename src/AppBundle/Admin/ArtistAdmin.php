@@ -61,7 +61,6 @@ class ArtistAdmin extends AbstractAdmin
                 'actions' => array(
                     'edit' => array(),
                     'show' => array(),
-                    'delete' => array(),
                 )
             ))
         ;
@@ -92,9 +91,11 @@ class ArtistAdmin extends AbstractAdmin
 
                 ->add('gender', ChoiceType::class, array(
                     'label' => 'Жынысы',
+                    'required' => false,
                     'choices'  => array(
                         'аял' => "f",
                         'эркек' => "m",
+                        'жок' => null,
                     ),
                 ))
                 ->add('debut', null, array('label' => 'Дебют'))
