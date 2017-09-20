@@ -22,16 +22,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SearchController extends ApiController
 {
+
     /**
-     * @Route("/{text}", name="app_api_search", options={"expose"=true})
+     * @Route("/{text}", name="app_api_search", requirements={"text"="\d+"})
      * @Method("GET")
      * @ApiDoc(
-     *     resource=true,
      *     section="Search",
-     *     description="Get result Songs and Artists",
-     *     requirements={{"text"="sting",  "description"="text","required"=true,
-     *     "dataType"="string"}}
+     *     resource=true,
+     *     description="Gets result ",
+     *     requirements={
+     *          {"name"="text", "dataType"="text", "requirement"="\d+", "description"="text"}
+     *     }
      * )
+     * @param $text
      *
      * @return Response
      */
