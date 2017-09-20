@@ -27,6 +27,7 @@ class SongAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
+            ->add('artists', null, array('label' => 'Аткаруучулар'))
             ->add('uuid', null, array('label' => 'UUID'))
             ->add('id', null, array('label' => 'ID'))
             ->add('title', null, array('label' => 'Аталышы'))

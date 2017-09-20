@@ -46,12 +46,17 @@ class ArtistAdmin extends AbstractAdmin
                 'label' => 'Сүрөтү',
                 'template' => 'AppBundle:Admin:image_list.html.twig'
             ))
-
-/*            ->add('profileLocal', null, array(
-                'label' => 'Сүрөтү',
-                //'template' => 'AppBundle:Admin:image_list.html.twig'
-            ))*/
             ->add('name', null, array('label' => 'Аты-жөнү'))
+            ->add('gender', 'choice', array(
+                'label' => 'Жынысы',
+                'editable' => true,
+                'choices'  => array(
+                    'f' => "аял",
+                    'm' => "эркек",
+                    null => 'жок',
+
+                ),
+                ))
             ->add('instagram', 'string', array(
                 'label' => 'Instagram',
                 'template' => 'AppBundle:Admin:instagram_list.html.twig'
