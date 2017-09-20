@@ -24,17 +24,14 @@ class SearchController extends ApiController
 {
 
     /**
-     * @Route("/{text}", name="app_api_search", requirements={"text"="\d+"})
+     * @Route("/{text}", name="app_api_search")
      * @Method("GET")
      * @ApiDoc(
      *     section="Search",
      *     resource=true,
-     *     description="Gets result ",
-     *     requirements={
-     *          {"name"="text", "dataType"="text", "requirement"="\d+", "description"="text"}
-     *     }
+     *     description="Gets result "
      * )
-     * @param $text
+     * @param $text string
      *
      * @return Response
      */
@@ -57,8 +54,6 @@ class SearchController extends ApiController
             ->addSelect('song.title')
             ->addSelect('song.uuid')
             ->addSelect('song.duration')
-            ->join('song.artist', 'artist')
-            ->addSelect('artist.id artist_id')
             ->where('lower(song.title) LIKE lower(:text)')
             ->setParameter('text', '%' . $text . '%')
             ->getQuery()
