@@ -51,18 +51,16 @@ class SearchController extends ApiController
 
         $songs = $this->getDoctrine()->getRepository('AppBundle:Song')
             ->createQueryBuilder('song')
-            ->select('song.id')
-            ->addSelect('song.title')
-            ->addSelect('song.uuid')
-            ->addSelect('song.duration')
             ->where('lower(song.title) LIKE lower(:text)')
             ->setParameter('text', '%' . $text . '%')
             ->getQuery()
             ->execute(null, AbstractQuery::HYDRATE_SCALAR);
 
+        $formattedSongs = $this->get('app_formatter.song')->format($songs);
+
         return $this->prepareJsonResponse(array(
             'artists' => $artists,
-            'songs' => $songs
+            'songs' => $formattedSongs
         ));
     }
 
