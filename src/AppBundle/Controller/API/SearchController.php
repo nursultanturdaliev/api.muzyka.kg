@@ -51,6 +51,11 @@ class SearchController extends ApiController
 
         $songs = $this->getDoctrine()->getRepository('AppBundle:Song')
             ->createQueryBuilder('song')
+            ->select('song.id')
+            ->addSelect('song.title')
+            ->addSelect('song.uuid')
+            ->addSelect('song.duration')
+            ->addSelect('song.artists')
             ->where('lower(song.title) LIKE lower(:text)')
             ->setParameter('text', '%' . $text . '%')
             ->getQuery()
