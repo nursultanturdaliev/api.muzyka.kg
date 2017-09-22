@@ -42,6 +42,7 @@ class SearchController extends ApiController
             ->select('artist.id')
             ->addSelect('artist.name')
             ->addSelect('artist.lastname')
+            ->addSelect('artist.gender')
             ->where('lower(artist.name) LIKE lower(:text)')
             ->orWhere('lower(artist.lastname) LIKE lower(:text)')
             ->setParameter('text', '%' . $text . '%')
