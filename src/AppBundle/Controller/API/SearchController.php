@@ -49,17 +49,14 @@ class SearchController extends ApiController
             ->getQuery()
             ->execute(null, AbstractQuery::HYDRATE_SCALAR);
 
-        $songs = $this->getDoctrine()->getRepository('AppBundle:Song')
+        $songs = $this->get('doctrine.orm.default_entity_manager')
+            ->getRepository('AppBundle:Song')
             ->createQueryBuilder('song')
-            ->select('song.id')
-            ->addSelect('song.title')
-            ->addSelect('song.uuid')
-            ->addSelect('song.duration')
-            ->addSelect('song.artists')
             ->where('lower(song.title) LIKE lower(:text)')
             ->setParameter('text', '%' . $text . '%')
             ->getQuery()
-            ->execute(null, AbstractQuery::HYDRATE_SCALAR);
+            ->execute();
+
 
         $formattedSongs = $this->get('app_formatter.song')->format($songs);
 
