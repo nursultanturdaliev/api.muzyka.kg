@@ -46,6 +46,8 @@ class SearchController extends ApiController
             ->where('lower(artist.name) LIKE lower(:text)')
             ->orWhere('lower(artist.lastname) LIKE lower(:text)')
             ->setParameter('text', '%' . $text . '%')
+            ->setFirstResult(0)
+            ->setMaxResults(7)
             ->getQuery()
             ->execute(null, AbstractQuery::HYDRATE_SCALAR);
 
@@ -54,6 +56,8 @@ class SearchController extends ApiController
             ->createQueryBuilder('song')
             ->where('lower(song.title) LIKE lower(:text)')
             ->setParameter('text', '%' . $text . '%')
+            ->setFirstResult(0)
+            ->setMaxResults(7)
             ->getQuery()
             ->execute();
 
