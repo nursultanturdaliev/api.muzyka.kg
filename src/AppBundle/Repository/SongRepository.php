@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -123,6 +124,20 @@ class SongRepository extends EntityRepository
 			->setParameter(':text', '%' . mb_strtolower($text) . '%')
 			->getQuery()
 			->execute();
+	}
+
+	public function searchByAllProperties($text){
+
+		return $this->createQueryBuilder('song')
+				->select('song.id')
+				->addSelect('song.title')
+				->addSelect('song.uuid')
+				->addSelect('song.duration')
+				->addSelect('song.artists')
+				->where('lower(song.title) LIKE lower(:text)')
+				->setParameter('text', '%' . $text . '%')
+				->getQuery()
+				->execute(null, AbstractQuery::HYDRATE_SCALAR);
 	}
 
 	private function getSongsOfArtist($artistId)

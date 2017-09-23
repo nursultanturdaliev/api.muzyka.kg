@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -32,5 +33,20 @@ class ArtistRepository extends EntityRepository
 					 ->getQuery()
 					 ->execute();
 		return sizeof($data) > 0;
+	}
+
+	public function search($text)
+	{
+		return $this->createQueryBuilder('artist')
+					->select('artist.id')
+					->addSelect('artist.name')
+					->addGroupBy('artist.profileLocal')
+					->addSelect('artist.lastname')
+					->addSelect('artist.gender')
+					->where('lower(artist.name) LIKE lower(:text)')
+					->orWhere('lower(artist.lastname) LIKE lower(:text)')
+					->setParameter('text', '%' . $text . '%')
+					->getQuery()
+					->execute(null, AbstractQuery::HYDRATE_SCALAR);
 	}
 }
