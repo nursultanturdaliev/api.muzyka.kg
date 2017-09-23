@@ -129,15 +129,12 @@ class SongRepository extends EntityRepository
 	public function searchByAllProperties($text){
 
 		return $this->createQueryBuilder('song')
-				->select('song.id')
-				->addSelect('song.title')
-				->addSelect('song.uuid')
-				->addSelect('song.duration')
-				->addSelect('song.artists')
-				->where('lower(song.title) LIKE lower(:text)')
-				->setParameter('text', '%' . $text . '%')
-				->getQuery()
-				->execute(null, AbstractQuery::HYDRATE_SCALAR);
+					->where('lower(song.title) LIKE lower(:text)')
+					->setParameter('text', '%' . $text . '%')
+					->setFirstResult(0)
+					->setMaxResults(7)
+					->getQuery()
+					->execute();
 	}
 
 	private function getSongsOfArtist($artistId)

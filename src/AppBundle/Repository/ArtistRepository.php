@@ -38,15 +38,16 @@ class ArtistRepository extends EntityRepository
 	public function search($text)
 	{
 		return $this->createQueryBuilder('artist')
-					->select('artist.id')
-					->addSelect('artist.name')
-					->addGroupBy('artist.profileLocal')
-					->addSelect('artist.lastname')
-					->addSelect('artist.gender')
-					->where('lower(artist.name) LIKE lower(:text)')
-					->orWhere('lower(artist.lastname) LIKE lower(:text)')
-					->setParameter('text', '%' . $text . '%')
-					->getQuery()
-					->execute(null, AbstractQuery::HYDRATE_SCALAR);
+			->select('artist.id')
+			->addSelect('artist.name')
+			->addSelect('artist.lastname')
+			->addSelect('artist.gender')
+			->where('lower(artist.name) LIKE lower(:text)')
+			->orWhere('lower(artist.lastname) LIKE lower(:text)')
+			->setParameter('text', '%' . $text . '%')
+			->setFirstResult(0)
+			->setMaxResults(7)
+			->getQuery()
+			->execute(null, AbstractQuery::HYDRATE_SCALAR);
 	}
 }

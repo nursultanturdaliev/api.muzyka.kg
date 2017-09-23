@@ -12,8 +12,6 @@ use Doctrine\ORM\AbstractQuery;
 use FOS\RestBundle\Controller\Annotations\Route;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -37,30 +35,8 @@ class SearchController extends ApiController
      */
     public function resultsAction($text)
     {
-        $artists = $this->getDoctrine()->getRepository('AppBundle:Artist')
-            ->createQueryBuilder('artist')
-            ->select('artist.id')
-            ->addSelect('artist.name')
-            ->addSelect('artist.lastname')
-            ->addSelect('artist.gender')
-            ->where('lower(artist.name) LIKE lower(:text)')
-            ->orWhere('lower(artist.lastname) LIKE lower(:text)')
-            ->setParameter('text', '%' . $text . '%')
-            ->setFirstResult(0)
-            ->setMaxResults(7)
-            ->getQuery()
-            ->execute(null, AbstractQuery::HYDRATE_SCALAR);
-
-        $songs = $this->get('doctrine.orm.default_entity_manager')
-            ->getRepository('AppBundle:Song')
-            ->createQueryBuilder('song')
-            ->where('lower(song.title) LIKE lower(:text)')
-            ->setParameter('text', '%' . $text . '%')
-            ->setFirstResult(0)
-            ->setMaxResults(7)
-            ->getQuery()
-            ->execute();
-
+        $artists = $this->getDoctrine()->getRepository('AppBundle:Artist')->search($text);
+        $songs = $this->getDoctrine()->getRepository('AppBundle:Song')->searchByAllProperties($text);
 
         $formattedSongs = $this->get('app_formatter.song')->format($songs);
 
