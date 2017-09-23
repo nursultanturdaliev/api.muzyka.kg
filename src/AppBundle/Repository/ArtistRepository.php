@@ -40,6 +40,7 @@ class ArtistRepository extends EntityRepository
 		return $this->createQueryBuilder('artist')
 			->select('artist.id')
 			->addSelect('artist.name')
+			->addSelect('artist.profileLocal')
 			->addSelect('artist.lastname')
 			->addSelect('artist.gender')
 			->where('lower(artist.name) LIKE lower(:text)')
