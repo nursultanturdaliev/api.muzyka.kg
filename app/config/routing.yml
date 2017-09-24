@@ -35,6 +35,17 @@ security_refresh_token:
     requirements:
         methods: POST
 
+fos_user_security_login:
+    path:  /muz-admin/login/
+    defaults: { _controller: FOSUserBundle:Security:login }
+
+fos_user_security_check:
+    path:  /muz-admin/login_check
+    defaults: { _controller: FOSUserBundle:Security:check }
+
+fos_user_security_logout:
+    path:  /muz-admin/logout
+    defaults: { _controller: FOSUserBundle:Security:logout }
 
 admin_area:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"

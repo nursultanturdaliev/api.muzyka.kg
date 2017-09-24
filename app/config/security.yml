@@ -44,7 +44,19 @@ security:
             stateless: true
             lexik_jwt: ~
 
-
+        admin:
+            pattern:            /muz-admin(.*)
+            context:            user
+            form_login:
+                provider:       fos_userbundle
+                login_path:     /muz-admin/login/
+                use_forward:    false
+                check_path:     /muz-admin/login_check
+                failure_path:   null
+                default_target_path:            /muz-admin/dashboard
+            logout:
+                path:           /muz-admin/logout
+            anonymous:          true
 
     access_control:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
@@ -53,9 +65,8 @@ security:
         - { path: ^/apis, role: IS_AUTHENTICATED_FULLY }
 
 
-        - { path: ^/muz-admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/muz-admin/login/, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/muz-admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/muz-admin/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-
-        - { path: ^/muz-admin/, role:[ROLE_ADMIN, ROLE_SONATA_ADMIN, ROLE_USER ] }
+        - { path: ^/muz-admin/, role:[ROLE_SUPER_ADMIN] }
 
