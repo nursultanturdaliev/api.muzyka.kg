@@ -45,6 +45,7 @@ class History
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
 	 * @var User
 	 */
 	private $user;
