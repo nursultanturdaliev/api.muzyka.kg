@@ -30,4 +30,16 @@ class FavouriteRepository extends EntityRepository
 		}
 		return true;
 	}
+
+    public function getFavourite(User $user, Song $song)
+    {
+        return $this->createQueryBuilder('favourite')
+            ->where('favourite.user = :user')
+            ->andWhere('favourite.song = :song')
+            ->setParameter('user', $user)
+            ->setParameter('song', $song)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 }

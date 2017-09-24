@@ -73,15 +73,26 @@ class FavouriteController extends ApiController
         /** @var User $user */
         $user      = $this->getUser();
         $em = $this->getDoctrine()->getEntityManager();
-        $favourite = $em->createQueryBuilder('AppBundle:Favorite')
-            ->findOneBy(array('user' => $user, 'song' => $song));
 
-        if ( !$favourite ){
+        $isFavourite = $em->getRepository('AppBundle:Favourite')
+            ->isFavourite($user, $song);
+
+        if ( !$isFavourite ){
             return new JsonResponse(array(), Response::HTTP_NOT_FOUND);
         }
 
+        $favourite = $em->getRepository('AppBundle:Favourite')
+            ->getFavourite($user, $song);
+
+
         $formattedFavourite = $this->get('app_formatter.favourite')->format($favourite);
+
+        $user->removeFavourite($favourite);
+        $song->removeFavourites($favourite);
         $em->remove($favourite);
+        $em->persist($user);
+        $em->persist($song);
+        $em->flush();
 
         return $this->prepareJsonResponse($formattedFavourite);
     }

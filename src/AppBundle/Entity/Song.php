@@ -182,6 +182,7 @@ class Song
 		$this->artists   = new ArrayCollection();
 		$this->genres    = new ArrayCollection();
 		$this->playlists = new ArrayCollection();
+        $this->favourites = new ArrayCollection();
 		$this->uuid      = Uuid::uuid4();
 		$this->isNew     = false;
 	}
@@ -694,6 +695,19 @@ class Song
 	{
 		return $this->favourites;
 	}
+
+    public function addFavourites(Favourite $favourite)
+    {
+        $this->favourites[] = $favourite;
+
+        return $this;
+    }
+
+    public function removeFavourites(Favourite $favourite)
+    {
+        $this->favourites->removeElement($favourite);
+    }
+
 
 	/**
 	 * @param string $youtube
