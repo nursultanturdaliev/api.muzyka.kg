@@ -31,7 +31,16 @@ class ArtistAdmin extends AbstractAdmin
             ->add('id', null, array('label' => 'ID'))
             ->add('name', null, array('label' => 'Аты-жөнү'))
             ->add('instagram', null, array('label' => 'Instagram'))
-            ->add('profileLocal', null, array('label' => 'Сүрөтү'))
+            ->add('profileLocal', 'doctrine_orm_string', array('label' => 'Сүрөтү'))
+
+            ->add('gender', 'doctrine_orm_string', array(
+                'label' => 'Жынысы'
+                ),
+                'choice',
+                array('choices' => array('эркек' => 'm', 'аял' => 'f')
+                )
+            );
+
         ;
     }
 

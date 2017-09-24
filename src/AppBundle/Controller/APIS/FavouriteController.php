@@ -79,9 +79,9 @@ class FavouriteController extends ApiController
         if ( !$favourite ){
             return new JsonResponse(array(), Response::HTTP_NOT_FOUND);
         }
-        $em->remove($favourite);
 
         $formattedFavourite = $this->get('app_formatter.favourite')->format($favourite);
+        $em->remove($favourite);
 
         return $this->prepareJsonResponse($formattedFavourite);
     }

@@ -45,13 +45,13 @@ services:
         class: AppBundle\Admin\FavouriteAdmin
         arguments: [~, AppBundle\Entity\Favourite, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Тренд, label: Тренд, on_top : true, icon: '<i class="fa fa-heart"></i>'  }
+            - { name: sonata.admin, manager_type: orm, group: Тренд, label: Тренд, on_top : true, icon: '<i class="fa fa-line-chart"></i>'  }
 
     app.admin.genre:
         class: AppBundle\Admin\GenreAdmin
         arguments: [~, AppBundle\Entity\Genre, SonataAdminBundle:CRUD]
         tags:
-            - { name: sonata.admin, manager_type: orm, group: Жанр, label: Жанр, on_top : true, icon: '<i class="fa fa-bug"></i>'  }
+            - { name: sonata.admin, manager_type: orm, group: Жанр, label: Жанр, on_top : true, icon: '<i class="fa  fa-heart"></i>'  }
 
 
     app.admin.user:
