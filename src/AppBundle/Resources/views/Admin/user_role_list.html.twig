@@ -1,0 +1,21 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field %}
+	{% if value %}
+        {% set super = 0 %}
+        {% set user = 0 %}
+        {% for role in value %}
+            {% if role == 'ROLE_SUPER_ADMIN' %}
+                {% set super = 1 %}
+            {% endif %}
+            {% if role == 'ROLE_USER' %}
+                {% set user = 1 %}
+            {% endif %}
+        {% endfor %}
+
+        {% if super == 1 %}
+            Super Admin
+        {% elseif user == 1 %}
+            User
+        {% endif %}
+	{% endif %}
+{% endblock %}
