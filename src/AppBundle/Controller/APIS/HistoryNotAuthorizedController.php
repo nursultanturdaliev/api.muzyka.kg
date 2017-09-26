@@ -17,27 +17,15 @@ use FOS\RestBundle\Controller\Annotations\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("/apis/history")
+ * @Route("aapis/history")
  */
-class HistoryController extends ApiController
+class HistoryNotAuthorizedController extends ApiController
 {
 
-
-	/**
-	 * @Route("/")
-	 */
-	public function allAction()
-	{
-		/** @var User $user */
-		$user = $this->getUser();
-
-		$formattedHistory = $this->get('app_formatter.history')->format($user->getHistories());
-
-		return $this->prepareJsonResponse($formattedHistory);
-	}
 
 	/**
 	 * @Route("/start/{uuid}")
@@ -47,31 +35,32 @@ class HistoryController extends ApiController
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function startAction(Song $song)
-	{
+	public function startAction(Request $request, Song $song)
+    {
+
 		$this->get('logger')->addDebug('START', ['uuid' => $song->getUuid()]);
 		$em    = $this->get('doctrine.orm.default_entity_manager');
-		$redis = $this->container->get('snc_redis.default');
 
-		$historyId = $redis->get($song->getRedisKey($this->getUser()));
+		$redis = $this->container->get('snc_redis.default');
+        $session = $request->cookies->get('PHPSESSID');
+        $redisKey = $session.':'.$song->getUuid();
+        $historyId = $redis->get($redisKey);
+
 		if ($historyId) {
 			$history = $em->getRepository('AppBundle:History')->find($historyId);
 			$em->remove($history);
 			$em->flush();
-			$redis->del($song->getRedisKey($this->getUser()));
+			$redis->del($redisKey);
 		}
 
 		$history = new History();
 		$history->setSong($song);
-		$history->setUser($this->getUser());
 		$history->setStartedAt(new \DateTime('now'));
-
 		$em->persist($history);
 		$em->flush();
 
 		$formattedHistory = $this->get('app_formatter.history')->format($history);
-
-		$redis->set($song->getRedisKey($this->getUser()), $history->getId());
+        $redis->set($redisKey, $history->getId());
 
 		return $this->prepareJsonResponse($formattedHistory);
 	}
@@ -84,19 +73,20 @@ class HistoryController extends ApiController
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function stopAction(Song $song)
+	public function stopAction(Request $request, Song $song)
 	{
 		$this->get('logger')->addDebug('STOP', ['uuid' => $song->getUuid()]);
 		$em = $this->get('doctrine.orm.default_entity_manager');
-
 		$redis     = $this->container->get('snc_redis.default');
-		$historyId = $redis->get($song->getRedisKey($this->getUser()));
-
+        $session = $request->cookies->get('PHPSESSID');
+        $redisKey = $session.':'.$song->getUuid();
+        $historyId = $redis->get($redisKey);
 		if (!$historyId) {
 			return new JsonResponse([], Response::HTTP_NOT_FOUND);
 		}
 
 		$history = $em->getRepository('AppBundle:History')->find($historyId);
+
 
 		if (!$history || !$history->getSong()->equals($song)) {
 			return new JsonResponse([], Response::HTTP_NOT_FOUND);
@@ -110,7 +100,7 @@ class HistoryController extends ApiController
 		}
 		$em->flush();
 
-		$redis->del($song->getRedisKey($this->getUser()));
+		$redis->del($redisKey);
 
 		return new JsonResponse();
 	}
