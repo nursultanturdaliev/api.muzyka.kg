@@ -43,6 +43,7 @@ class HistoryNotAuthorizedController extends ApiController
 
 		$redis = $this->container->get('snc_redis.default');
         $session = $request->cookies->get('PHPSESSID');
+        $clientIp = $request->getClientIp();
         $redisKey = $session.':'.$song->getUuid();
         $historyId = $redis->get($redisKey);
 
@@ -55,6 +56,7 @@ class HistoryNotAuthorizedController extends ApiController
 
 		$history = new History();
 		$history->setSong($song);
+		$history->setClientIp($clientIp);
 		$history->setStartedAt(new \DateTime('now'));
 		$em->persist($history);
 		$em->flush();

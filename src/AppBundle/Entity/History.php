@@ -50,7 +50,14 @@ class History
 	 */
 	private $user;
 
-	public function __construct()
+    /**
+     * @var string
+     * @ORM\Column(name="client_ip", type="string", nullable=true)
+     */
+    private $clientIp;
+
+
+    public function __construct()
 	{
 		$this->id = Uuid::uuid4();
 	}
@@ -174,5 +181,21 @@ class History
         $this->id = $id;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientIp()
+    {
+        return $this->clientIp;
+    }
+
+    /**
+     * @param string $clientIp
+     */
+    public function setClientIp($clientIp)
+    {
+        $this->clientIp = $clientIp;
     }
 }

@@ -17,6 +17,7 @@ use FOS\RestBundle\Controller\Annotations\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -47,12 +48,12 @@ class HistoryController extends ApiController
 	 *
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
-	public function startAction(Song $song)
+	public function startAction(Request $request, Song $song)
 	{
 		$this->get('logger')->addDebug('START', ['uuid' => $song->getUuid()]);
 		$em    = $this->get('doctrine.orm.default_entity_manager');
 		$redis = $this->container->get('snc_redis.default');
-
+        $clientIp = $request->getClientIp();
 		$historyId = $redis->get($song->getRedisKey($this->getUser()));
 		if ($historyId) {
 			$history = $em->getRepository('AppBundle:History')->find($historyId);
@@ -63,6 +64,7 @@ class HistoryController extends ApiController
 
 		$history = new History();
 		$history->setSong($song);
+        $history->setClientIp($clientIp);
 		$history->setUser($this->getUser());
 		$history->setStartedAt(new \DateTime('now'));
 
