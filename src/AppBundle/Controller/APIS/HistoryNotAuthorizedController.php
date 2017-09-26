@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @Route("aapis/history")
+ * @Route("/aapis/history")
  */
 class HistoryNotAuthorizedController extends ApiController
 {
