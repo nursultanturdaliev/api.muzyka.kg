@@ -177,11 +177,11 @@ class Song
 	 */
 	private $favourites;
 
+
 	public function __construct()
 	{
 		$this->artists   = new ArrayCollection();
 		$this->genres    = new ArrayCollection();
-		$this->playlists = new ArrayCollection();
         $this->favourites = new ArrayCollection();
 		$this->uuid      = Uuid::uuid4();
 		$this->isNew     = false;
