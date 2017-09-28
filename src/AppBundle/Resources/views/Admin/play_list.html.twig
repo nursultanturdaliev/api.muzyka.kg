@@ -1,0 +1,8 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+{% block field %}
+	{% if value %}
+        <audio controls controlsList="nodownload">
+            <source src="/uploads/musics/{{ value }}">
+        </audio>
+    {% endif %}
+{% endblock %}
