@@ -50,12 +50,13 @@ class SongAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id', null, array('label' => 'ID'))
-            ->add('uuid', 'string', array(
+            /*->add('uuid', 'string', array(
                 'label' => 'Play',
                 'template' => 'AppBundle:Admin:play_list.html.twig'
             ))
+            */
             ->add('title', null, array('label' => 'Аталышы'))
-            //->add('duration', null, array('label' => 'Убактысы'))
+            ->add('duration', null, array('label' => 'Убактысы'))
             ->add('artists')
             //->add('countPlay', null, array('label' => 'Ырдоо саны'))
             ->add('published', null, array(

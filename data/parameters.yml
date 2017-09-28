@@ -1,0 +1,21 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_pgsql
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: muzyka.kg
+    database_user: muzyka
+    database_password: 'UXnsF&\9b*sEg-F2kdUE'
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    secret: efj2lk34jrgw23sdfgwtSpADslfv0gtusj
+    music_path: /home/aioadmuser/www/symfony/muzyka.kg/data
+    locale: ru
+    base_url_api: 'http://api-muzyka.aio.kg/api/'
+    base_url: 'http://api-muzyka.aio.kg/'
+    jwt_private_key_path: var/jwt/private.pem
+    jwt_public_key_path: var/jwt/public.pem
+    jwt_key_pass_phrase: ''
+    jwt_token_ttl: 3600
+    mailer_user: aio.group.test@gmail.com
+    mailer_password: 123321AioGroup

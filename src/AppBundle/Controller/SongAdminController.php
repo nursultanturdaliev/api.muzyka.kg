@@ -83,7 +83,7 @@ class SongAdminController extends CRUDController
                     $audioFile = $submittedObject->getAudioFile();
                     if ( $audioFile ){
                         $audioFile->move(
-                            'uploads/musics',
+                            $this->getParameter('music_path'),
                             $submittedObject->getUuid()
                         );
                     }
@@ -93,10 +93,13 @@ class SongAdminController extends CRUDController
                     $newObject = $this->admin->create($submittedObject);
 
                     $coverPhotoTitle = $this->slug($newObject->getTitle() . $newObject->getId());
-                    $coverPhoto->move(
-                        'uploads/song/cover-photo/',
-                        $coverPhotoTitle . '.jpg'
-                    );
+
+                    if($coverPhoto) {
+                        $coverPhoto->move(
+                            'uploads/song/cover-photo/',
+                            $coverPhotoTitle . '.jpg'
+                        );
+                    }
 
 
 
@@ -218,7 +221,7 @@ class SongAdminController extends CRUDController
                     $audioFile = $submittedObject->getAudioFile();
                     if ( $audioFile ){
                         $audioFile->move(
-                            'uploads/musics',
+                            $this->getParameter('music_path'),
                             $submittedObject->getUuid()
                         );
                     }
