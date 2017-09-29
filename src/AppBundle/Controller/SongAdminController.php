@@ -102,10 +102,12 @@ class SongAdminController extends CRUDController
                     }
 
 
-
                     $newObject->setCoverPhoto($coverPhotoTitle);
-                    $this->admin->update($newObject);
 
+                    foreach($newObject->getArtists() as $artist){
+                        $artist->addSong($newObject);
+                    }
+                    $this->admin->update($newObject);
 
 
                     if ($this->isXmlHttpRequest()) {
@@ -182,6 +184,11 @@ class SongAdminController extends CRUDController
         $id = $request->get($this->admin->getIdParameter());
         $existingObject = $this->admin->getObject($id);
 
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $song = $em->getRepository('AppBundle:Song')->find($id);
+
+
         if (!$existingObject) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
@@ -237,9 +244,20 @@ class SongAdminController extends CRUDController
                         );
                     }
 
-                    $submittedObject->setCoverPhoto($coverPhotoTitle);
 
+                    $sql = "DELETE FROM app_artist_song WHERE song_id = " .$id;
+                    $stmt = $em->getConnection()->prepare($sql);
+                    $stmt->execute();
+                    foreach($submittedObject->getArtists() as $artist){
+                        $artist->addSong($submittedObject);
+                    }
+
+
+
+                    $submittedObject->setCoverPhoto($coverPhotoTitle);
                     $existingObject = $this->admin->update($submittedObject);
+
+
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(

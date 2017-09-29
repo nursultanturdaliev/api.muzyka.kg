@@ -85,10 +85,14 @@ class ArtistAdminController extends CRUDController
                     $newObject = $this->admin->create($submittedObject);
 
                     $profileLocale = $this->slug($newObject->getName() . $newObject->getId());
-                    $profilePhoto->move(
-                        'uploads/artist/profile/',
-                        $profileLocale . '.jpg'
-                    );
+
+                    if($profilePhoto) {
+                        $profilePhoto->move(
+                            'uploads/artist/profile/',
+                            $profileLocale . '.jpg'
+                        );
+                    }
+
                     $newObject->setProfileLocal($profileLocale);
                     $this->admin->update($newObject);
 
