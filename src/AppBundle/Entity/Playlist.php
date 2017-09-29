@@ -275,7 +275,7 @@ class Playlist
 		foreach ($this->getSongs() as $song) {
 			/** @var Artist $artist */
 			foreach ($song->getArtists() as $artist) {
-				$hash[$artist->getId()];
+				$hash[$artist->getId()] = $artist->getId();
 			}
 		}
 
