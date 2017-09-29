@@ -23,13 +23,8 @@ class PlaylistController extends ApiController
 {
 	const PLAYLIST_PER_PAGE = 50;
 	/**
-	 * @Route("/page/{page}", name="app_api_artist_index", requirements={"page":"\d+"})
+	 * @Route("/page/{page}", requirements={"page":"\d+"})
 	 * @Method("GET")
-	 * @ApiDoc(
-	 *     resource=true,
-	 *     section="Artist",
-	 *     description="Get all artists"
-	 * )
 	 * @param $page integer
 	 *
 	 * @return Response
