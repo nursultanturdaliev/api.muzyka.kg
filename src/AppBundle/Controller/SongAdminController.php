@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use Sonata\AdminBundle\Controller\CRUDController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormView;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class ArtistAdminController extends CRUDController
+class SongAdminController extends CRUDController
 {
     /**
      * Create action.
@@ -50,7 +51,6 @@ class ArtistAdminController extends CRUDController
 
 
         $newObject = $this->admin->getNewInstance();
-        $newObject->setProfileLocal(null);
         $preResponse = $this->preCreate($request, $newObject);
         if ($preResponse !== null) {
             return $preResponse;
@@ -80,22 +80,34 @@ class ArtistAdminController extends CRUDController
 
                 try {
 
-                    $profilePhoto = $submittedObject->getProfileLocal();
-                    $submittedObject->setProfileLocal(null);
-                    $newObject = $this->admin->create($submittedObject);
-
-                    $profileLocale = $this->slug($newObject->getName() . $newObject->getId());
-
-                    if($profilePhoto) {
-                        $profilePhoto->move(
-                            'uploads/artist/profile/',
-                            $profileLocale . '.jpg'
+                    $audioFile = $submittedObject->getAudioFile();
+                    if ( $audioFile ){
+                        $audioFile->move(
+                            $this->getParameter('music_path'),
+                            $submittedObject->getUuid()
                         );
                     }
 
-                    $newObject->setProfileLocal($profileLocale);
-                    $this->admin->update($newObject);
+                    $coverPhoto = $submittedObject->getCoverPhoto();
+                    $submittedObject->setCoverPhoto(null);
+                    $newObject = $this->admin->create($submittedObject);
 
+                    $coverPhotoTitle = $this->slug($newObject->getTitle() . $newObject->getId());
+
+                    if($coverPhoto) {
+                        $coverPhoto->move(
+                            'uploads/song/cover-photo/',
+                            $coverPhotoTitle . '.jpg'
+                        );
+                    }
+
+
+                    $newObject->setCoverPhoto($coverPhotoTitle);
+
+                    foreach($newObject->getArtists() as $artist){
+                        $artist->addSong($newObject);
+                    }
+                    $this->admin->update($newObject);
 
 
                     if ($this->isXmlHttpRequest()) {
@@ -172,12 +184,17 @@ class ArtistAdminController extends CRUDController
         $id = $request->get($this->admin->getIdParameter());
         $existingObject = $this->admin->getObject($id);
 
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $song = $em->getRepository('AppBundle:Song')->find($id);
+
+
         if (!$existingObject) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
-        $profileLocale = $existingObject->getProfileLocal();
-        $existingObject->setProfileLocal(null);
+        $coverPhotoTitle = $existingObject->getCoverPhoto();
+        $existingObject->setCoverPhoto(null);
 
         $this->admin->checkAccess('edit', $existingObject);
 
@@ -208,22 +225,39 @@ class ArtistAdminController extends CRUDController
 
                 try {
 
-                    $profilePhoto = $submittedObject->getProfileLocal();
+                    $audioFile = $submittedObject->getAudioFile();
+                    if ( $audioFile ){
+                        $audioFile->move(
+                            $this->getParameter('music_path'),
+                            $submittedObject->getUuid()
+                        );
+                    }
+                    $coverPhoto = $submittedObject->getCoverPhoto();
 
-                    if($profilePhoto){
+                    if($coverPhoto){
 
-                        $profileLocale = $this->slug($existingObject->getName() . $existingObject->getId());
+                        $coverPhotoTitle = $this->slug($existingObject->getTitle() . $existingObject->getId());
 
-
-                        $profilePhoto->move(
-                            'uploads/artist/profile/',
-                            $profileLocale . '.jpg'
+                        $coverPhoto->move(
+                            'uploads/song/cover-photo/',
+                            $coverPhotoTitle . '.jpg'
                         );
                     }
 
-                    $submittedObject->setProfileLocal($profileLocale);
 
+                    $sql = "DELETE FROM app_artist_song WHERE song_id = " .$id;
+                    $stmt = $em->getConnection()->prepare($sql);
+                    $stmt->execute();
+                    foreach($submittedObject->getArtists() as $artist){
+                        $artist->addSong($submittedObject);
+                    }
+
+
+
+                    $submittedObject->setCoverPhoto($coverPhotoTitle);
                     $existingObject = $this->admin->update($submittedObject);
+
+
 
                     if ($this->isXmlHttpRequest()) {
                         return $this->renderJson(array(
@@ -285,7 +319,7 @@ class ArtistAdminController extends CRUDController
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
-            'profileLocale' => $profileLocale
+            'coverPhoto' => $coverPhotoTitle
         ), null);
     }
 
@@ -339,5 +373,4 @@ class ArtistAdminController extends CRUDController
 
         return $text;
     }
-
 }

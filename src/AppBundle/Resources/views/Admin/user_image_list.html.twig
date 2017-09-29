@@ -4,5 +4,9 @@
         <div style="width: 100%; text-align: center">
             <img src="/uploads/users/{{ value }}" width="100">
         </div>
+    {% else %}
+        <div style="width: 100%; text-align: center">
+            <img src="{{ asset('public/no-img.jpg') }}" width="100">
+        </div>
 	{% endif %}
 {% endblock %}

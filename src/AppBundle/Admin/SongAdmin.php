@@ -50,6 +50,11 @@ class SongAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id', null, array('label' => 'ID'))
+            /*->add('uuid', 'string', array(
+                'label' => 'Play',
+                'template' => 'AppBundle:Admin:play_list.html.twig'
+            ))
+            */
             ->add('title', null, array('label' => 'Аталышы'))
             ->add('duration', null, array('label' => 'Убактысы'))
             ->add('artists')
@@ -85,14 +90,33 @@ class SongAdmin extends AbstractAdmin
                 ->add('writtenBy', null, array('label' => 'Автору'))
                 ->add('composedBy', null, array('label' => 'Композитору'))
                 ->add('youtube', null, array('label' => 'Ютуб'))
-                ->add('favourites', null, array('label' => 'Фаворит'))
+                //->add('favourites', null, array('label' => 'Фаворит'))
                 ->add('genres', null, array('label' => 'Жанр'))
             ->end()
             ->with('Текстти', array('class' => 'col-md-6'))
                 ->add('lyrics', 'textarea', array(
                     'label' => false,
-                    'attr' => array('rows' => '20', 'style' => 'height:505px')
+                    'required' => false,
+                    'attr' => array('rows' => '20', 'style' => 'height:430px')
                     ))
+            ->end()
+
+
+            ->with('Audio', array('class' => 'col-md-6'))
+            ->add('audioFile', 'file', array(
+                'label' => false,
+                'required' => false,
+                'attr' => array('class' => 'file-input-audio')
+            ))
+            ->end()
+
+
+            ->with('Сүрөтү', array('class' => 'col-md-6'))
+                ->add('coverPhoto', 'file', array(
+                    'label' => false,
+                    'required' => false,
+                    'attr' => array('class' => 'file-input-cover-photo')
+                ))
             ->end()
 
             ->with('Кошумча маалыматтар', array('class' => 'col-md-6'))
@@ -100,17 +124,17 @@ class SongAdmin extends AbstractAdmin
                 ->add('duration', null, array('label' => 'Убактысы'))
                 ->add('countPlay', null, array('label' => 'Ырдоо саны'))
                 ->add('likes', null, array('label' => 'Жакты'))
-                ->add('countDownload', null, array('label' => 'Саны'))
+            ->end()
+            ->with('Даталар', array('class' => 'col-md-6'))
+                ->add('countDownload', null, array('label' => 'Көчүрүүнүн саны'))
                 ->add('downloadable', null, array('label' => 'Көчүрүү'))
                 ->add('isNew', null, array('label' => 'Жаңы'))
                 ->add('published', null, array('label' => 'Жарыяланган'))
-            ->end()
-            ->with('Даталар', array('class' => 'col-md-6'))
                 ->add('createdAt', null, array('label' => 'Түзүлгөн датасы'))
                 ->add('releasedAt', null, array('label' => 'Released At'))
                 ->add('updatedAt', null, array('label' => 'Өзгөргөн датасы'))
                 ->add('deletedAt', null, array('label' => 'Өчүрүлгөн датасы'))
-                ->add('histories', null, array('label' => 'История'))
+                //->add('histories', null, array('label' => 'История'))
             ->end()
 
 
@@ -131,7 +155,7 @@ class SongAdmin extends AbstractAdmin
                 ->add('writtenBy', null, array('label' => 'Автору'))
                 ->add('composedBy', null, array('label' => 'Композитору'))
                 ->add('youtube', null, array('label' => 'Ютуб'))
-                ->add('favourites', null, array('label' => 'Фаворит'))
+                //->add('favourites', null, array('label' => 'Фаворит'))
                 ->add('genres', null, array('label' => 'Жанр'))
                 ->add('duration', null, array('label' => 'Убактысы'))
                 ->add('countPlay', null, array('label' => 'Ырдоо саны'))
@@ -144,7 +168,7 @@ class SongAdmin extends AbstractAdmin
                 ->add('releasedAt', null, array('label' => 'Released At'))
                 ->add('updatedAt', null, array('label' => 'Өзгөргөн датасы'))
                 ->add('deletedAt', null, array('label' => 'Өчүрүлгөн датасы'))
-                ->add('histories', null, array('label' => 'История'))
+                //->add('histories', null, array('label' => 'История'))
             ->end()
             ->with('Текстти', array('class' => 'col-md-6'))
             ->add('lyrics', 'textarea', array(

@@ -39,7 +39,7 @@ services:
 
     app.admin.song:
         class: AppBundle\Admin\SongAdmin
-        arguments: [~, AppBundle\Entity\Song, SonataAdminBundle:CRUD]
+        arguments: [~, AppBundle\Entity\Song, AppBundle:SongAdmin]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Ырлар, label: Ырлар, on_top : true, icon: '<i class="fa fa-music"></i>' }
 

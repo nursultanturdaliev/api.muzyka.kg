@@ -41,18 +41,26 @@ class UserAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id', null, array('label' => 'ID'))
-            ->add('username', null, array('label' => 'Username'))
-            ->add('email', null, array('label' => 'Email'))
-            ->add('firstName', null, array('label' => 'Аты'))
-            ->add('lastName', null, array('label' => 'Фамилиясы'))
-            ->add('roles', 'string', array(
-                'label' => 'Фамилиясы',
-                'template' => 'AppBundle:Admin:user_role_list.html.twig'
-                ))
             ->add('photo', 'string', array(
                 'label' => 'Сүрөтү',
                 'template' => 'AppBundle:Admin:user_image_list.html.twig',
             ))
+            ->add('username', null, array('label' => 'Username'))
+            ->add('firstName', null, array('label' => 'Аты'))
+            ->add('lastName', null, array('label' => 'Фамилиясы'))
+            ->add('roles', 'string', array(
+                'label' => 'Role',
+                'template' => 'AppBundle:Admin:user_role_list.html.twig'
+                ))
+
+/*            ->add('_action', null, array(
+                'label' => 'Башкаруу',
+                'actions' => array(
+                    'edit' => array(),
+                    'show' => array(),
+                    'delete' => array(),
+                )
+            ))*/
         ;
     }
 

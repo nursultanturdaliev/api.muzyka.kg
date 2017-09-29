@@ -178,6 +178,15 @@ class Song
 	private $favourites;
 
 
+    /**
+     * @var string
+     * @ORM\Column(name="cover_photo", type="string", nullable=true)
+     */
+    private $coverPhoto;
+
+    private $audioFile;
+
+
 	public function __construct()
 	{
 		$this->artists   = new ArrayCollection();
@@ -765,4 +774,36 @@ class Song
 	{
 		return $this->composedBy;
 	}
+
+    /**
+     * @return string
+     */
+    public function getCoverPhoto()
+    {
+        return $this->coverPhoto;
+    }
+
+    /**
+     * @param string $coverPhoto
+     */
+    public function setCoverPhoto($coverPhoto)
+    {
+        $this->coverPhoto = $coverPhoto;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAudioFile()
+    {
+        return $this->audioFile;
+    }
+
+    /**
+     * @param string $audioFile
+     */
+    public function setAudioFile($audioFile)
+    {
+        $this->audioFile = $audioFile;
+    }
 }
