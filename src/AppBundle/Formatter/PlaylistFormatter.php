@@ -44,10 +44,12 @@ class PlaylistFormatter implements FormatterInterface
 	private function formatPlaylist(Playlist $playlist)
 	{
 		return [
-			'id'            => $playlist->getId(),
-			'name'          => $playlist->getName(),
-			'cover_photo'   => $playlist->getCoverPhoto(),
-			'profile_photo' => $playlist->getProfilePhoto()
+			'id'              => $playlist->getId(),
+			'name'            => $playlist->getName(),
+			'cover_photo'     => $playlist->getCoverPhoto(),
+			'profile_photo'   => $playlist->getProfilePhoto(),
+			'numberOfSongs'   => count($playlist->getSongs()),
+			'numberOfArtists' => $playlist->getNumberOfArtists()
 		];
 	}
 }

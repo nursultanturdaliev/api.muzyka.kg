@@ -14,257 +14,271 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Playlist
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+	/**
+	 * @var int
+	 *
+	 * @ORM\Column(name="id", type="integer")
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="AUTO")
+	 */
+	private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="string", length=100, unique=true)
-     */
-    private $name;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="name", type="string", length=100, unique=true)
+	 */
+	private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="cover_photo", type="string", length=255, nullable=true, unique=true)
-     */
-    private $coverPhoto;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="cover_photo", type="string", length=255, nullable=true, unique=true)
+	 */
+	private $coverPhoto;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="profile_photo", type="string", length=255, nullable=true, unique=true)
-     */
-    private $profilePhoto;
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="profile_photo", type="string", length=255, nullable=true, unique=true)
+	 */
+	private $profilePhoto;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="created_at", type="datetime")
+	 */
+	private $createdAt;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="updated_at", type="datetime", nullable=true)
-     */
-    private $updatedAt;
+	/**
+	 * @var \DateTime
+	 *
+	 * @ORM\Column(name="updated_at", type="datetime", nullable=true)
+	 */
+	private $updatedAt;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Song")
-     * @ORM\JoinTable(name="app_playlists_songs",
-     *      joinColumns={@ORM\JoinColumn(name="playlist_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="song_id", referencedColumnName="id")}
-     *      )
-     **/
-    private $songs;
+	/**
+	 * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Song")
+	 * @ORM\JoinTable(name="app_playlists_songs",
+	 *      joinColumns={@ORM\JoinColumn(name="playlist_id", referencedColumnName="id")},
+	 *      inverseJoinColumns={@ORM\JoinColumn(name="song_id", referencedColumnName="id")}
+	 *      )
+	 **/
+	private $songs;
 
-    public function __construct()
-    {
-        $this->songs = new ArrayCollection();
-    }
+	public function __construct()
+	{
+		$this->songs = new ArrayCollection();
+	}
 
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+	/**
+	 * Get id
+	 *
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
 
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Playlist
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
+	/**
+	 * Set name
+	 *
+	 * @param string $name
+	 *
+	 * @return Playlist
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
+	/**
+	 * Get name
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
 
-    /**
-     * Set coverPhoto
-     *
-     * @param string $coverPhoto
-     *
-     * @return Playlist
-     */
-    public function setCoverPhoto($coverPhoto)
-    {
-        $this->coverPhoto = $coverPhoto;
+	/**
+	 * Set coverPhoto
+	 *
+	 * @param string $coverPhoto
+	 *
+	 * @return Playlist
+	 */
+	public function setCoverPhoto($coverPhoto)
+	{
+		$this->coverPhoto = $coverPhoto;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get coverPhoto
-     *
-     * @return string
-     */
-    public function getCoverPhoto()
-    {
-        return $this->coverPhoto;
-    }
+	/**
+	 * Get coverPhoto
+	 *
+	 * @return string
+	 */
+	public function getCoverPhoto()
+	{
+		return $this->coverPhoto;
+	}
 
-    /**
-     * Set profilePhoto
-     *
-     * @param string $profilePhoto
-     *
-     * @return Playlist
-     */
-    public function setProfilePhoto($profilePhoto)
-    {
-        $this->profilePhoto = $profilePhoto;
+	/**
+	 * Set profilePhoto
+	 *
+	 * @param string $profilePhoto
+	 *
+	 * @return Playlist
+	 */
+	public function setProfilePhoto($profilePhoto)
+	{
+		$this->profilePhoto = $profilePhoto;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get profilePhoto
-     *
-     * @return string
-     */
-    public function getProfilePhoto()
-    {
-        return $this->profilePhoto;
-    }
+	/**
+	 * Get profilePhoto
+	 *
+	 * @return string
+	 */
+	public function getProfilePhoto()
+	{
+		return $this->profilePhoto;
+	}
 
-    /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Playlist
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
+	/**
+	 * Set createdAt
+	 *
+	 * @param \DateTime $createdAt
+	 *
+	 * @return Playlist
+	 */
+	public function setCreatedAt($createdAt)
+	{
+		$this->createdAt = $createdAt;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
+	/**
+	 * Get createdAt
+	 *
+	 * @return \DateTime
+	 */
+	public function getCreatedAt()
+	{
+		return $this->createdAt;
+	}
 
-    /**
-     * Set updatedAt
-     *
-     * @param \DateTime $updatedAt
-     *
-     * @return Playlist
-     */
-    public function setUpdatedAt($updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
+	/**
+	 * Set updatedAt
+	 *
+	 * @param \DateTime $updatedAt
+	 *
+	 * @return Playlist
+	 */
+	public function setUpdatedAt($updatedAt)
+	{
+		$this->updatedAt = $updatedAt;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Get updatedAt
-     *
-     * @return \DateTime
-     */
-    public function getUpdatedAt()
-    {
-        return $this->updatedAt;
-    }
+	/**
+	 * Get updatedAt
+	 *
+	 * @return \DateTime
+	 */
+	public function getUpdatedAt()
+	{
+		return $this->updatedAt;
+	}
 
-    /**
-     *
-     * @codeCoverageIgnore
-     *
-     * @ORM\PrePersist
-     */
-    public function prePersist()
-    {
-        $this->createdAt = new \DateTime();
-    }
+	/**
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @ORM\PrePersist
+	 */
+	public function prePersist()
+	{
+		$this->createdAt = new \DateTime();
+	}
 
-    /**
-     *
-     * @codeCoverageIgnore
-     *
-     * @ORM\PreUpdate
-     */
-    public function preUpdate()
-    {
-        $this->updatedAt = new \DateTime();
-    }
+	/**
+	 *
+	 * @codeCoverageIgnore
+	 *
+	 * @ORM\PreUpdate
+	 */
+	public function preUpdate()
+	{
+		$this->updatedAt = new \DateTime();
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getSongs()
-    {
-        return $this->songs;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getSongs()
+	{
+		return $this->songs;
+	}
 
-    /**
-     * @param mixed $songs
-     *
-     * @return $this
-     */
-    public function setSongs($songs)
-    {
-        $this->songs = $songs;
-        return $this;
-    }
+	/**
+	 * @param mixed $songs
+	 *
+	 * @return $this
+	 */
+	public function setSongs($songs)
+	{
+		$this->songs = $songs;
+		return $this;
+	}
 
-    /**
-     * Add song
-     *
-     * @param Song $song
-     *
-     * @return Playlist
-     */
-    public function addSong(Song $song)
-    {
-        $this->songs[] = $song;
+	/**
+	 * Add song
+	 *
+	 * @param Song $song
+	 *
+	 * @return Playlist
+	 */
+	public function addSong(Song $song)
+	{
+		$this->songs[] = $song;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Remove song
-     *
-     * @param Song $song
-     */
-    public function removeSong(Song $song)
-    {
-        $this->songs->removeElement($song);
-    }
+	/**
+	 * Remove song
+	 *
+	 * @param Song $song
+	 */
+	public function removeSong(Song $song)
+	{
+		$this->songs->removeElement($song);
+	}
+
+	public function getNumberOfArtists()
+	{
+		$hash = [];
+		/** @var Song $song */
+		foreach ($this->getSongs() as $song) {
+			/** @var Artist $artist */
+			foreach ($song->getArtists() as $artist) {
+				$hash[$artist->getId()];
+			}
+		}
+
+		return count(array_keys($hash));
+	}
 }
