@@ -319,4 +319,27 @@ class Playlist
     {
         $this->description = $description;
     }
+	/**
+	 * Remove song
+	 *
+	 * @param Song $song
+	 */
+	public function removeSong(Song $song)
+	{
+		$this->songs->removeElement($song);
+	}
+
+	public function getNumberOfArtists()
+	{
+		$hash = [];
+		/** @var Song $song */
+		foreach ($this->getSongs() as $song) {
+			/** @var Artist $artist */
+			foreach ($song->getArtists() as $artist) {
+				$hash[$artist->getId()] = $artist->getId();
+			}
+		}
+
+		return count(array_keys($hash));
+	}
 }

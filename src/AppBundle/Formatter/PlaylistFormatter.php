@@ -21,10 +21,16 @@ class PlaylistFormatter implements FormatterInterface
 	}
 
 
+	/**
+	 * @param Playlist|Playlist[] $value
+	 *
+	 * @return array
+	 */
 	public function format($value)
 	{
 		if ($value instanceof Playlist) {
-			$formatted = $this->formatPlaylist($value);
+			$formatted          = $this->formatPlaylist($value);
+			$formatted['songs'] = $this->songFormatter->format($value->getSongs());
 			return $formatted;
 		}
 		$formatted = [];
@@ -38,11 +44,12 @@ class PlaylistFormatter implements FormatterInterface
 	private function formatPlaylist(Playlist $playlist)
 	{
 		return [
-			'id'            => $playlist->getId(),
-			'name'          => $playlist->getName(),
-			'cover_photo'   => $playlist->getCoverPhoto(),
-			'profile_photo' => $playlist->getProfilePhoto(),
-			'songs'         => $this->songFormatter->format($playlist->getSongs())
+			'id'              => $playlist->getId(),
+			'name'            => $playlist->getName(),
+			'cover_photo'     => $playlist->getCoverPhoto(),
+			'profile_photo'   => $playlist->getProfilePhoto(),
+			'numberOfSongs'   => count($playlist->getSongs()),
+			'numberOfArtists' => $playlist->getNumberOfArtists()
 		];
 	}
 }
