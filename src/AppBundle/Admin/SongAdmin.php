@@ -50,13 +50,13 @@ class SongAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id', null, array('label' => 'ID'))
-            /*->add('uuid', 'string', array(
+            ->add('uuid', 'string', array(
                 'label' => 'Play',
                 'template' => 'AppBundle:Admin:play_list.html.twig'
             ))
-            */
+
             ->add('title', null, array('label' => 'Аталышы'))
-            ->add('duration', null, array('label' => 'Убактысы'))
+            //->add('duration', null, array('label' => 'Убактысы'))
             ->add('artists')
             //->add('countPlay', null, array('label' => 'Ырдоо саны'))
             ->add('published', null, array(
@@ -87,8 +87,8 @@ class SongAdmin extends AbstractAdmin
             ->with('Негизги маалыматтар', array('class' => 'col-md-6'))
                 ->add('title', null, array('label' => 'Аталышы'))
                 ->add('artists', null, array('label' => 'Аткаруучулар'))
-                ->add('writtenBy', null, array('label' => 'Автору'))
-                ->add('composedBy', null, array('label' => 'Композитору'))
+                ->add('writtenBy', null, array('label' => 'Сөзү'))
+                ->add('composedBy', null, array('label' => 'Обону'))
                 ->add('youtube', null, array('label' => 'Ютуб'))
                 //->add('favourites', null, array('label' => 'Фаворит'))
                 ->add('genres', null, array('label' => 'Жанр'))
@@ -124,6 +124,10 @@ class SongAdmin extends AbstractAdmin
                 ->add('duration', null, array('label' => 'Убактысы'))
                 ->add('countPlay', null, array('label' => 'Ырдоо саны'))
                 ->add('likes', null, array('label' => 'Жакты'))
+
+                ->add('keywords', null, array())
+                ->add('description', null, array())
+
             ->end()
             ->with('Даталар', array('class' => 'col-md-6'))
                 ->add('countDownload', null, array('label' => 'Көчүрүүнүн саны'))
@@ -152,8 +156,8 @@ class SongAdmin extends AbstractAdmin
                 ->add('id', null, array('label' => 'ID'))
                 ->add('title', null, array('label' => 'Аталышы'))
                 ->add('artists', null, array('label' => 'Аткаруучулар'))
-                ->add('writtenBy', null, array('label' => 'Автору'))
-                ->add('composedBy', null, array('label' => 'Композитору'))
+                ->add('writtenBy', null, array('label' => 'Сөзү'))
+                ->add('composedBy', null, array('label' => 'Обону'))
                 ->add('youtube', null, array('label' => 'Ютуб'))
                 //->add('favourites', null, array('label' => 'Фаворит'))
                 ->add('genres', null, array('label' => 'Жанр'))

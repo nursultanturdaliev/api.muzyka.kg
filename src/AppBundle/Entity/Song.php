@@ -187,6 +187,21 @@ class Song
     private $audioFile;
 
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="keywords", type="text", unique=false, nullable=true)
+     */
+    private $keywords;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", unique=false, nullable=true)
+     */
+    private $description;
+
+
 	public function __construct()
 	{
 		$this->artists   = new ArrayCollection();
@@ -805,5 +820,37 @@ class Song
     public function setAudioFile($audioFile)
     {
         $this->audioFile = $audioFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * @param string $keywords
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 }

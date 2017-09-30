@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
-class SongAdminController extends CRUDController
+class PlaylistAdminController extends CRUDController
 {
     /**
      * Create action.
@@ -80,33 +80,34 @@ class SongAdminController extends CRUDController
 
                 try {
 
-                    $audioFile = $submittedObject->getAudioFile();
-                    if ( $audioFile ){
-                        $audioFile->move(
-                            $this->getParameter('music_path'),
-                            $submittedObject->getUuid()
-                        );
-                    }
 
                     $coverPhoto = $submittedObject->getCoverPhoto();
                     $submittedObject->setCoverPhoto(null);
+
+                    $profilePhoto = $submittedObject->getProfilePhoto();
+                    $submittedObject->setProfilePhoto(null);
+
                     $newObject = $this->admin->create($submittedObject);
 
-                    $coverPhotoTitle = $this->slug($newObject->getTitle() . $newObject->getId());
+                    $coverPhotoTitle = $this->slug($newObject->getName() . '_cover');
+                    $profilePhotoTitle = $this->slug($newObject->getName() . '_profile');
 
                     if($coverPhoto) {
                         $coverPhoto->move(
-                            'uploads/song/cover-photo/',
+                            'uploads/playlist/photo/',
                             $coverPhotoTitle . '.jpg'
                         );
                     }
-
+                    if($profilePhoto) {
+                        $profilePhoto->move(
+                            'uploads/playlist/photo/',
+                            $profilePhotoTitle . '.jpg'
+                        );
+                    }
 
                     $newObject->setCoverPhoto($coverPhotoTitle);
+                    $newObject->setProfilePhoto($profilePhotoTitle);
 
-                    foreach($newObject->getArtists() as $artist){
-                        $artist->addSong($newObject);
-                    }
                     $this->admin->update($newObject);
 
 
@@ -184,17 +185,16 @@ class SongAdminController extends CRUDController
         $id = $request->get($this->admin->getIdParameter());
         $existingObject = $this->admin->getObject($id);
 
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $song = $em->getRepository('AppBundle:Song')->find($id);
-
-
         if (!$existingObject) {
             throw $this->createNotFoundException(sprintf('unable to find the object with id: %s', $id));
         }
 
         $coverPhotoTitle = $existingObject->getCoverPhoto();
         $existingObject->setCoverPhoto(null);
+
+        $profilePhotoTitle = $existingObject->getProfilePhoto();
+        $existingObject->setProfilePhoto(null);
+
 
         $this->admin->checkAccess('edit', $existingObject);
 
@@ -225,36 +225,33 @@ class SongAdminController extends CRUDController
 
                 try {
 
-                    $audioFile = $submittedObject->getAudioFile();
-                    if ( $audioFile ){
-                        $audioFile->move(
-                            $this->getParameter('music_path'),
-                            $submittedObject->getUuid()
-                        );
-                    }
                     $coverPhoto = $submittedObject->getCoverPhoto();
 
                     if($coverPhoto){
 
-                        $coverPhotoTitle = $this->slug($existingObject->getTitle() . $existingObject->getId());
+                        $coverPhotoTitle = $this->slug($existingObject->getName() . '_cover');
 
                         $coverPhoto->move(
-                            'uploads/song/cover-photo/',
+                            'uploads/playlist/photo/',
                             $coverPhotoTitle . '.jpg'
                         );
                     }
 
+                    $profilePhoto = $submittedObject->getProfilePhoto();
 
-                    $sql = "DELETE FROM app_artist_song WHERE song_id = " .$id;
-                    $stmt = $em->getConnection()->prepare($sql);
-                    $stmt->execute();
-                    foreach($submittedObject->getArtists() as $artist){
-                        $artist->addSong($submittedObject);
+                    if($profilePhoto){
+
+                        $profilePhotoTitle = $this->slug($existingObject->getName() . '_profile');
+
+                        $coverPhoto->move(
+                            'uploads/playlist/photo/',
+                            $profilePhotoTitle . '.jpg'
+                        );
                     }
 
 
-
                     $submittedObject->setCoverPhoto($coverPhotoTitle);
+                    $submittedObject->setProfilePhoto($profilePhotoTitle);
                     $existingObject = $this->admin->update($submittedObject);
 
 
@@ -319,7 +316,8 @@ class SongAdminController extends CRUDController
             'form' => $formView,
             'object' => $existingObject,
             'objectId' => $objectId,
-            'coverPhoto' => $coverPhotoTitle,
+            'playlistProfilePhoto' => $profilePhotoTitle,
+            'playlistCoverPhoto'   => $coverPhotoTitle
         ), null);
     }
 

@@ -106,6 +106,8 @@ class HistoryController extends ApiController
 		$history->setStoppedAt(new \DateTime('now'));
 
 		if ($history->acceptAsListened()) {
+            $song->setCountPlay($song->getCountPlay() + 1);
+            $em->persist($song);
 			$em->persist($history);
 		} else {
 			$em->remove($history);

@@ -373,16 +373,31 @@ file that was distributed with this source code.
 
     <script>
         var profileLocale;
+        var coverPhoto;
+        var playlistCoverPhoto;
+        var playlistProfilePhoto;
+
         {% if profileLocale is defined %}
             profileLocale = '{{ profileLocale }}';
+            profileLocale = profileLocale ? profileLocale + '.jpg' : 'placeholder_one.jpg';
         {% endif %}
-        profileLocale = profileLocale ? profileLocale + '.jpg' : 'placeholder_one.jpg';
 
-        var coverPhoto;
         {% if coverPhoto is defined %}
-        coverPhoto = '{{ coverPhoto }}';
+            coverPhoto = '{{ coverPhoto }}';
+            coverPhoto = coverPhoto ? coverPhoto + '.jpg' : 'placeholder_one.jpg';
         {% endif %}
-        coverPhoto = coverPhoto ? coverPhoto + '.jpg' : 'placeholder_one.jpg';
+
+        {% if playlistCoverPhoto is defined and playlistCoverPhoto  %}
+            playlistCoverPhoto = '/uploads/playlist/photo/{{ playlistCoverPhoto }}.jpg';
+        {% else %}
+            playlistCoverPhoto = 'https://storage.googleapis.com/muzykakg/placeholder_one.jpg';
+        {% endif %}
+
+        {% if playlistProfilePhoto is defined and playlistProfilePhoto  %}
+            playlistProfilePhoto = '/uploads/playlist/photo/{{ playlistProfilePhoto }}.jpg';
+        {% else %}
+            playlistProfilePhoto = 'https://storage.googleapis.com/muzykakg/placeholder_one.jpg';
+        {% endif %}
 
 
         $(".file-input").fileinput({
@@ -416,17 +431,62 @@ file that was distributed with this source code.
         });
 
         $(".file-input-audio").fileinput({
+            showRemove: false,
+            showUpload:false,
+            language: 'ru',
+            overwriteInitial: true,
+            previewFileType:'any',
+            {% if object.uuid is defined %}
+            initialPreviewAsData: true,
+            initialPreviewDownloadUrl: 'http://api-muzyka.aio.kg/api/song/stream/{{ object.uuid }}',
+            initialPreview: [
+            'http://api-muzyka.aio.kg/api/song/stream/{{ object.uuid }}'
+            ],
+            initialPreviewConfig: [
+                {
+                    type: "audio",
+                    filetype: "audio/mp3",
+                    caption: "{{ object.title }}",
+                    key: 1
+                }
+            ],
+            {% else %}
+
+            initialPreview: [
+                "<img style='height: 200px' src='https://storage.googleapis.com/muzykakg/placeholder_one.jpg'>"
+            ]
+            {% endif %}
+        });
+
+
+        $(".playlist-profile-photo").fileinput({
             language: 'ru',
             'showUpload':false,
             'showRemove': false,
             'previewFileType':'any',
             'showPreview': true,
             showCaption: false,
-            allowedFileExtensions: ["mp3"],
+            allowedFileExtensions: ["jpg"],
             overwriteInitial: true,
 
             initialPreview: [
-                "<img style='height: 200px' src='/uploads/artist/profile/"+ profileLocale +"'>"
+                "<img style='height: 200px' src='"+ playlistProfilePhoto +"'>"
+            ]
+        });
+
+
+        $(".playlist-cover-photo").fileinput({
+            language: 'ru',
+            'showUpload':false,
+            'showRemove': false,
+            'previewFileType':'any',
+            'showPreview': true,
+            showCaption: false,
+            allowedFileExtensions: ["jpg"],
+            overwriteInitial: true,
+
+            initialPreview: [
+                "<img style='height: 200px' src='"+ playlistCoverPhoto +"'>"
             ]
         });
     </script>

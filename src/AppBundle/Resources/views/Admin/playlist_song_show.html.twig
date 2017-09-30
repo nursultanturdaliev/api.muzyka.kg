@@ -1,0 +1,16 @@
+{% extends 'SonataAdminBundle:CRUD:base_show_field.html.twig' %}
+{% block field %}
+    <ul class="sonata-ba-show-many-to-many">
+        {% for song in value %}
+        <li class="col-md-12">
+            <a href="{{ path('admin_app_song_edit', { id : song.id }) }}" class="col-md-6">
+                {{ song.title }}
+            </a>
+            <audio controls controlsList="nodownload" class="col-md-6">
+                <source src="http://api-muzyka.aio.kg/api/song/stream/{{ song.uuid }}">
+            </audio>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

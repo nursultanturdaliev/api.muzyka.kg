@@ -67,11 +67,31 @@ class Playlist
      **/
     private $songs;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="keywords", type="text", unique=false, nullable=true)
+     */
+    private $keywords;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", unique=false, nullable=true)
+     */
+    private $description;
+
+
     public function __construct()
     {
         $this->songs = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->name . "";
+        // TODO: Implement __toString() method.
+    }
 
     /**
      * Get id
@@ -266,5 +286,37 @@ class Playlist
     public function removeSong(Song $song)
     {
         $this->songs->removeElement($song);
+    }
+
+    /**
+     * @return string
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * @param string $keywords
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 }

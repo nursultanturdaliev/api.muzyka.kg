@@ -43,6 +43,13 @@ services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: Ырлар, label: Ырлар, on_top : true, icon: '<i class="fa fa-music"></i>' }
 
+    app.admin.playlist:
+        class: AppBundle\Admin\PlaylistAdmin
+        arguments: [~, AppBundle\Entity\Playlist, AppBundle:PlaylistAdmin]
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: Плейлист, label: Плейлист, on_top : true, icon: '<i class="fa fa-list"></i>' }
+
+
     app.admin.favourite:
         class: AppBundle\Admin\FavouriteAdmin
         arguments: [~, AppBundle\Entity\Favourite, SonataAdminBundle:CRUD]

@@ -48,7 +48,9 @@ class FavouriteController extends ApiController
 		$favourite->setUser($user);
 		$favourite->setSong($song);
 		$em = $this->get('doctrine.orm.default_entity_manager');
+        $song->setLikes($song->getLikes() + 1);
 		$em->persist($favourite);
+        $em->persist($song);
 		try {
 			$em->flush($favourite);
 		} catch (UniqueConstraintViolationException $ignore) {
@@ -91,6 +93,8 @@ class FavouriteController extends ApiController
         $song->removeFavourites($favourite);
         $em->remove($favourite);
         $em->persist($user);
+
+        $song->setLikes(max(0, $song->getLikes() - 1));
         $em->persist($song);
         $em->flush();
 

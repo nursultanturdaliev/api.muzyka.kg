@@ -2,7 +2,7 @@
 {% block field %}
 	{% if value %}
         <audio controls controlsList="nodownload">
-            <source src="/uploads/musics/{{ value }}">
+            <source src="http://api-muzyka.aio.kg/api/song/stream/{{ value }}">
         </audio>
     {% endif %}
 {% endblock %}
