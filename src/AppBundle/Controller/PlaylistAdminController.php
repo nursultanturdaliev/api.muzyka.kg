@@ -245,7 +245,7 @@ class PlaylistAdminController extends CRUDController
 
                         $profilePhoto->move(
                             'uploads/playlist/photo/',
-                            $profilePhoto . '.jpg'
+                            $profilePhotoTitle . '.jpg'
                         );
                     }
 
