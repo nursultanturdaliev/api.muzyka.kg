@@ -243,7 +243,7 @@ class PlaylistAdminController extends CRUDController
 
                         $profilePhotoTitle = $this->slug($existingObject->getName() . '_profile');
 
-                        $coverPhoto->move(
+                        $profilePhotoTitle->move(
                             'uploads/playlist/photo/',
                             $profilePhotoTitle . '.jpg'
                         );
