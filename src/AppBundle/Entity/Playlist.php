@@ -319,15 +319,7 @@ class Playlist
     {
         $this->description = $description;
     }
-	/**
-	 * Remove song
-	 *
-	 * @param Song $song
-	 */
-	public function removeSong(Song $song)
-	{
-		$this->songs->removeElement($song);
-	}
+
 
 	public function getNumberOfArtists()
 	{
