@@ -40,23 +40,29 @@ class PlaylistController extends ApiController
 	}
 
 	/**
-	 * @Route("/{id}", requirements={"id"="\d+"}, options={"expose"=true})
+	 * @Route("/{slug}", options={"expose"=true})
 	 * @ParamConverter("artist", class="AppBundle:Playlist")
 	 * @Method("GET")
 	 * @ApiDoc(
 	 *     resource=true,
 	 *     section="Playlist",
-	 *     description="Get playlist by id",
-	 *     requirements={{"name"="id", "requirement"="\d+", "description"="Playlist ID","required"=true,
-	 *     "dataType"="integer"}}
+	 *     description="Get playlist by slug",
+	 *     requirements={{"name"="slug", "description"="Playlist Slug","required"=true,
+	 *     "dataType"="string"}}
 	 * )
 	 *
 	 * @param Playlist $playlist
 	 *
 	 * @return JsonResponse
 	 */
-	public function getAction(Playlist $playlist)
+	public function getAction($slug)
 	{
+
+        $em = $this->getDoctrine()->getManager();
+        $playlist = $em->getRepository('AppBundle:Playlist')
+            ->findOneBy(array('slug' => $slug));
+
+
 		$playlistFormatted = $this->get('app_formatter.playlist')->format($playlist);
 		return $this->prepareJsonResponse($playlistFormatted);
 	}

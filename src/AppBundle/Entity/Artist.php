@@ -38,6 +38,14 @@ class Artist
 	 */
 	private $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=100, unique=false, nullable=true)
+     */
+    private $slug;
+
+
 	/**
 	 * @var string
 	 *
@@ -430,4 +438,20 @@ class Artist
 	{
 		return $this->deletedAt;
 	}
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
 }

@@ -57,6 +57,7 @@ class ArtistFormatter implements FormatterInterface
 
 		return [
 			'id'              => $value->getId(),
+			'slug'            => $value->getSlug(),
 			'name'            => $value->getName(),
 			'lastname'        => $value->getLastname(),
 			'instagram'       => $value->getInstagram(),

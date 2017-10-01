@@ -96,22 +96,26 @@ class ArtistController extends ApiController
 
 
 	/**
-	 * @Route("/{id}", name="app_api_artist_get", requirements={"id"="\d+"}, options={"expose"=true})
+	 * @Route("/{slug}", name="app_api_artist_get", options={"expose"=true})
 	 * @ParamConverter("artist", class="AppBundle:Artist")
 	 * @Method("GET")
 	 * @ApiDoc(
 	 *     resource=true,
 	 *     section="Artist",
-	 *     description="Get artist by id",
-	 *     requirements={{"name"="id", "requirement"="\d+", "description"="Artist ID","required"=true,
-	 *     "dataType"="integer"}}
+	 *     description="Get artist by slug",
+	 *     requirements={{"name"="slug", "description"="Artist Slug","required"=true,
+	 *     "dataType"="string"}}
 	 * )
 	 * @param Artist $artist
 	 *
 	 * @return JsonResponse
 	 */
-	public function getAction(Artist $artist)
+	public function getAction($slug)
 	{
+        $em = $this->getDoctrine()->getManager();
+        $artist = $em->getRepository('AppBundle:Artist')
+            ->findOneBy(array('slug' => $slug));
+
 		return $this->prepareJsonResponse($this->get('app_formatter.artist')->format($artist));
 	}
 

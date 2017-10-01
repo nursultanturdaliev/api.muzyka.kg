@@ -52,6 +52,11 @@ class PlaylistAdmin extends AbstractAdmin
                 ->add('name', null, array(
                     'label' =>'Аталышы'
                 ))
+                ->add('slug', null, array(
+                    'label' =>'Slug',
+                    'help' => '<p style="color: red">playlisttin-atalyshy-kichine-tamga-tire-menen</p>'
+                ))
+
                 ->add('songs', 'sonata_type_model' , array(
                     'label' => 'Ырлар',
                     'required' => false,

@@ -45,6 +45,7 @@ class PlaylistFormatter implements FormatterInterface
 	{
 		return [
 			'id'              => $playlist->getId(),
+			'slug'            => $playlist->getSlug(),
 			'name'            => $playlist->getName(),
 			'cover_photo'     => $playlist->getCoverPhoto(),
 			'profile_photo'   => $playlist->getProfilePhoto(),

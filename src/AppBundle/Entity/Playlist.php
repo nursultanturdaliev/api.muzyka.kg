@@ -33,6 +33,13 @@ class Playlist
     /**
      * @var string
      *
+     * @ORM\Column(name="slug", type="string", length=100, unique=false, nullable=true)
+     */
+    private $slug;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="cover_photo", type="string", length=255, nullable=true, unique=true)
      */
     private $coverPhoto;
@@ -334,4 +341,20 @@ class Playlist
 
 		return count(array_keys($hash));
 	}
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+    }
 }

@@ -87,9 +87,12 @@ class ArtistAdmin extends AbstractAdmin
     {
         $formMapper
 
-
             ->with('Негизги маалыматтар', array('class' => 'col-md-6'))
                 ->add('name', null, array('label' => 'Аты-жөнү'))
+                ->add('slug', null, array(
+                    'label' => 'Slug',
+                    'help' => '<p style="color: red">yrchynyn-aty-zhonu-kichine-tamga-tire-menen</p>'
+                ))
                 ->add('instagram', null, array('label' => 'Instagram'))
                 ->add('profile', null, array('label' => 'Профил'))
             ->end()
@@ -132,6 +135,7 @@ class ArtistAdmin extends AbstractAdmin
                 'template' => 'AppBundle:Admin:image_show.html.twig'
             ))
             ->add('name', null, array('label' => 'Аты-жөнү'))
+            ->add('slug', null, array('label' => 'Slug'))
             ->add('instagram', null, array('label' => 'Instagram'))
             ->add('profile', null, array('label' => 'Профил'))
             ->add('gender', null, array('label' => 'Жынысы'))
