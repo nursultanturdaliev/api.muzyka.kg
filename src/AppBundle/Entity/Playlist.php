@@ -33,7 +33,7 @@ class Playlist
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=100, unique=false, nullable=true)
+     * @ORM\Column(name="slug", type="string", length=100, unique=true)
      */
     private $slug;
 
