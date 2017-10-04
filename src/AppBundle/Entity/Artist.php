@@ -123,6 +123,15 @@ class Artist
 	 */
 	private $deletedAt;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="text", nullable=true)
+     */
+    private $comment;
+
+
 	public function __construct()
 	{
         $this->profileLocal = null;
@@ -453,5 +462,21 @@ class Artist
     public function setSlug($slug)
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
     }
 }

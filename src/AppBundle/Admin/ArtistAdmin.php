@@ -56,7 +56,7 @@ class ArtistAdmin extends AbstractAdmin
                 'template' => 'AppBundle:Admin:image_list.html.twig'
             ))
             ->add('name', null, array('label' => 'Аты-жөнү'))
-            ->add('gender', 'choice', array(
+/*            ->add('gender', 'choice', array(
                 'label' => 'Жынысы',
                 'editable' => true,
                 'choices'  => array(
@@ -65,11 +65,16 @@ class ArtistAdmin extends AbstractAdmin
                     null => 'жок',
 
                 ),
-                ))
+                ))*/
             ->add('instagram', 'string', array(
                 'label' => 'Instagram',
                 'template' => 'AppBundle:Admin:instagram_list.html.twig'
             ))
+            ->add('comment', null, array(
+                'label' => 'Комментарий',
+                'editable' => true
+            ))
+
             ->add('_action', null, array(
                 'label' => 'Башкаруу',
                 'actions' => array(
