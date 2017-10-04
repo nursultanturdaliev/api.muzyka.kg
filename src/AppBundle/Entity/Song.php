@@ -50,7 +50,17 @@ class Song
 	 */
 	private $title;
 
-	/**
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="slug", type="string", length=250, unique=true, nullable=false)
+     */
+    private $slug;
+
+
+
+    /**
 	 * @var string
 	 *
 	 * @ORM\Column(name="duration", type="string", length=255, nullable=true)
@@ -852,5 +862,21 @@ class Song
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
     }
 }

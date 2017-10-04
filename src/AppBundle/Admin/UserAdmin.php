@@ -48,6 +48,11 @@ class UserAdmin extends AbstractAdmin
             ->add('username', null, array('label' => 'Username'))
             ->add('firstName', null, array('label' => 'Аты'))
             ->add('lastName', null, array('label' => 'Фамилиясы'))
+            ->add('favourites', 'string', array(
+                'template' => 'AppBundle:Admin:playlist_songs_list.html.twig',
+                'label'   => 'Ырлар'
+            ))
+
             ->add('roles', 'string', array(
                 'label' => 'Role',
                 'template' => 'AppBundle:Admin:user_role_list.html.twig'

@@ -31,6 +31,10 @@ class PlaylistAdmin extends AbstractAdmin
                 'template' => 'AppBundle:Admin:playlist_profile_list.html.twig'
                 ))
             ->add('name', null, array('label' => 'Аталышы'))
+            ->add('songs', 'string', array(
+                'template' => 'AppBundle:Admin:playlist_songs_list.html.twig',
+                'label'   => 'Ырлар'
+            ))
             ->add('_action', null, array(
                 'label' => 'Башкаруу',
                 'actions' => array(

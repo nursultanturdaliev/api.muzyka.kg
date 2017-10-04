@@ -157,26 +157,26 @@ class SongController extends ApiController
 	}
 
 	/**
-	 * @Route("/{uuid}", name="app_api_song_get")
+	 * @Route("/{slug}", name="app_api_song_get")
 	 * @Method("GET")
 	 * @ApiDoc(
 	 *     section="Song",
 	 *     resource=true,
-	 *     description="Get song by uuid",
+	 *     description="Get song by slug",
 	 *     requirements={
-	 *          {"name"="uuid", "dataType"="string", "requirement"="\w+", "required"=true, "description"="Universal
+	 *          {"name"="slug", "dataType"="string", "requirement"="\w+", "required"=true, "description"="Universal
      *          unique identity"}
      *     }
 	 * )
 	 *
-	 * @param $uuid
+	 * @param $slug
 	 *
 	 * @return JsonResponse
 	 *
 	 */
-	public function getAction($uuid)
+	public function getAction($slug)
 	{
-		$song = $this->getDoctrine()->getRepository('AppBundle:Song')->findOneByUuid($uuid);
+		$song = $this->getDoctrine()->getRepository('AppBundle:Song')->findOneBySlug($slug);
 		$formattedSongs   = $this->get('app_formatter.song')->format($song);
 		return $this->prepareJsonResponse($formattedSongs);
 	}
@@ -208,4 +208,50 @@ class SongController extends ApiController
 		$formattedSongs = $this->get('app_formatter.song')->formatTop($songs);
 		return $this->prepareJsonResponse($formattedSongs);
 	}
+
+
+
+    private function slug($text)
+    {
+
+        //$text = strtolower($text);
+        // replace non letter or digits by -
+        $text = preg_replace('#[^\\pL\d]+#u', '-', $text);
+
+        // trim
+        $text = trim($text, '-');
+
+        $text = mb_strtolower($text);
+
+
+        $code = [
+            '246', '351', '629', '1072', '1073', '1074', '1075', '1076',
+            '1077', '1078', '1079', '1080', '1081', '1082', '1083', '1084', '1085',
+            '1086', '1087', '1088', '1089', '1090', '1091', '1092', '1093', '1094',
+            '1095', '1096', '1097', '1098', '1099', '1100', '1101', '1102', '1103',
+            '1105', '1110', '1187', '1199', '1226', '1257',
+        ];
+        $cyr = [
+            'ö', 'ş', 'ɵ', 'а', 'б', 'в', 'г', 'д', 'е', 'ж', 'з', 'и', 'й',
+            'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш',
+            'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я', 'ё', 'і', 'ң', 'ү', 'ӊ', 'ө',
+        ];
+
+
+        $lat = [
+            'o', 'sh', 'o', 'a', 'b', 'v', 'g', 'd', 'e', 'zh', 'z', 'i', 'i',
+            'k', 'l', 'm', 'n', 'o', 'p', 'r', 's', 't', 'u', 'f', 'h', 'ts', 'ch', 'sh',
+            'sh', '-', 'y', '-', 'e', 'yu', 'ya', 'yo', 'i', 'n', 'u', 'n', 'o',
+        ];
+
+
+        $text = str_replace($cyr, $lat, $text);
+
+        // remove unwanted characters
+        $text = preg_replace('#[^-\w]+#', '', $text);
+        // lowercase
+
+
+        return $text;
+    }
 }

@@ -81,6 +81,7 @@ class SongFormatter implements FormatterInterface
 				],
 				'title'         => $song->getTitle(),
 				'uuid'          => $song->getUuid()->jsonSerialize(),
+                'slug'          => $song->getSlug(),
 				'written_by'    => $song->getWrittenBy(),
 				'youtube'       => $song->getYoutube(),
 		];
@@ -98,6 +99,7 @@ class SongFormatter implements FormatterInterface
 		foreach ($artists as $artist) {
 			$formattedArray[] = [
 				'id'           => $artist->getId(),
+                'slug'         => $artist->getSlug(),
 				'lastname'     => $artist->getLastname(),
 				'name'         => $artist->getName(),
 				'profileLocal' => $artist->getProfileLocal()

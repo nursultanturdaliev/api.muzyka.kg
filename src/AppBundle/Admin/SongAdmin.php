@@ -31,6 +31,7 @@ class SongAdmin extends AbstractAdmin
             ->add('uuid', null, array('label' => 'UUID'))
             ->add('id', null, array('label' => 'ID'))
             ->add('title', null, array('label' => 'Аталышы'))
+            ->add('slug', null, array('label' => 'Slug'))
             ->add('duration', null, array('label' => 'Убактысы'))
             ->add('published', null, array('label' => 'Жарыяланган'))
             ->add('downloadable', null, array('label' => 'Көчүрүү'))
@@ -50,13 +51,14 @@ class SongAdmin extends AbstractAdmin
     {
         $listMapper
             ->add('id', null, array('label' => 'ID'))
-            ->add('uuid', 'string', array(
+            /*->add('uuid', 'string', array(
                 'label' => 'Play',
                 'template' => 'AppBundle:Admin:play_list.html.twig'
-            ))
+            ))*/
 
+            //->add('slug', null, array('label' => 'Аталышы'))
             ->add('title', null, array('label' => 'Аталышы'))
-            //->add('duration', null, array('label' => 'Убактысы'))
+            ->add('duration', null, array('label' => 'Убактысы'))
             ->add('artists')
             //->add('countPlay', null, array('label' => 'Ырдоо саны'))
             ->add('published', null, array(
@@ -67,6 +69,9 @@ class SongAdmin extends AbstractAdmin
                 'label' => 'Жаны',
                 'editable' => true
             ))
+            ->add('countPlay', null, array('label' => 'Play'))
+            ->add('likes', null, array('label' => 'Жакты'))
+
             ->add('_action', null, array(
                 'label' => 'Башкаруу',
                 'actions' => array(
@@ -86,6 +91,11 @@ class SongAdmin extends AbstractAdmin
         $formMapper
             ->with('Негизги маалыматтар', array('class' => 'col-md-6'))
                 ->add('title', null, array('label' => 'Аталышы'))
+                ->add('slug', null, array(
+                    'label' => 'Slug',
+
+                    'help' => '<p style="color: red">yrdyn-aty-kichine-tamga-tire-menen.<br>Эгер андай аталыш бар болсо ырчынын аты кошо жазылат</p>'
+                ))
                 ->add('artists', null, array('label' => 'Аткаруучулар'))
                 ->add('writtenBy', null, array('label' => 'Сөзү'))
                 ->add('composedBy', null, array('label' => 'Обону'))
@@ -97,7 +107,7 @@ class SongAdmin extends AbstractAdmin
                 ->add('lyrics', 'textarea', array(
                     'label' => false,
                     'required' => false,
-                    'attr' => array('rows' => '20', 'style' => 'height:430px')
+                    'attr' => array('rows' => '20', 'style' => 'height:548px')
                     ))
             ->end()
 
@@ -155,6 +165,7 @@ class SongAdmin extends AbstractAdmin
                 ->add('uuid', null, array('label' => 'UUID'))
                 ->add('id', null, array('label' => 'ID'))
                 ->add('title', null, array('label' => 'Аталышы'))
+                ->add('slug', null, array('label' => 'Slug'))
                 ->add('artists', null, array('label' => 'Аткаруучулар'))
                 ->add('writtenBy', null, array('label' => 'Сөзү'))
                 ->add('composedBy', null, array('label' => 'Обону'))
