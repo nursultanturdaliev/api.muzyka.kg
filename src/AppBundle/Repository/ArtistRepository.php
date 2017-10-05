@@ -38,7 +38,7 @@ class ArtistRepository extends EntityRepository
 	public function search($text)
 	{
 		return $this->createQueryBuilder('artist')
-			->select('artist.id')
+			->select('artist.slug')
 			->addSelect('artist.name')
 			->addSelect('artist.profileLocal')
 			->addSelect('artist.lastname')
