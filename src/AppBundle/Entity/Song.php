@@ -211,14 +211,20 @@ class Song
      */
     private $description;
 
+    /**
+     * @ORM\Column(name="is_parsed", type="boolean", nullable=true)
+     */
+    private $isParsed;
 
-	public function __construct()
+
+    public function __construct()
 	{
 		$this->artists   = new ArrayCollection();
 		$this->genres    = new ArrayCollection();
         $this->favourites = new ArrayCollection();
 		$this->uuid      = Uuid::uuid4();
 		$this->isNew     = false;
+		$this->isParsed     = false;
 	}
 
     public function __toString()
@@ -878,5 +884,21 @@ class Song
     public function setSlug($slug)
     {
         $this->slug = $slug;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getisParsed()
+    {
+        return $this->isParsed;
+    }
+
+    /**
+     * @param mixed $isParsed
+     */
+    public function setIsParsed($isParsed)
+    {
+        $this->isParsed = $isParsed;
     }
 }

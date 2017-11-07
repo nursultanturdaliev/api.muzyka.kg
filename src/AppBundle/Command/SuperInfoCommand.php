@@ -16,7 +16,7 @@ class SuperInfoCommand extends ContainerAwareCommand
 {
     const URL = 'http://www.super.kg/media/audio/';
 
-    const AUDIO_STREAM_BASE_URL = 'http://media.super.kg/media/audio/';
+    const AUDIO_STREAM_BASE_URL = 'http://audio.super.kg/media/audio/';
 
     /**
      * {@inheritdoc}
@@ -108,6 +108,8 @@ class SuperInfoCommand extends ContainerAwareCommand
             $song->setLyrics($lyrics);
             $song->setWrittenBy($writer);
             $song->setComposedBy($compositor);
+            $song->setPublished(false);
+            $song->setIsParsed(true);
             $this->save($song);
 
             foreach ($artistNames as $artistName) {
@@ -126,6 +128,8 @@ class SuperInfoCommand extends ContainerAwareCommand
             $song->setLyrics($lyrics);
             $song->setWrittenBy($writer);
             $song->setComposedBy($compositor);
+            $song->setPublished(false);
+            $song->setIsParsed(true);
             $this->save($song);
             return 'Already Exists: ' . $songTitle;
         }

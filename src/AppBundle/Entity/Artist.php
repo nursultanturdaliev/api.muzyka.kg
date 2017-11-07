@@ -41,7 +41,7 @@ class Artist
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=100, unique=true,)
+     * @ORM\Column(name="slug", type="string", length=100, unique=true, nullable=false)
      */
     private $slug;
 

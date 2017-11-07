@@ -69,6 +69,7 @@ class SongAdmin extends AbstractAdmin
                 'label' => 'Жаны',
                 'editable' => true
             ))
+            ->add('isParsed')
             ->add('countPlay', null, array('label' => 'Play'))
             ->add('likes', null, array('label' => 'Жакты'))
 
