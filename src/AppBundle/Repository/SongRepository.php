@@ -111,6 +111,7 @@ class SongRepository extends EntityRepository
 		$texts        = explode(' ', $text);
 		$queryBuilder = $this->createQueryBuilder('song')
 							 ->leftJoin('song.artists', 'artists')
+                             ->where('song.published = true')
         ;
 		foreach ($texts as $text) {
 			$queryBuilder->orWhere('lower(song.title) LIKE :text')
@@ -130,6 +131,7 @@ class SongRepository extends EntityRepository
 
 		return $this->createQueryBuilder('song')
 					->where('lower(song.title) LIKE lower(:text)')
+                    ->andWhere('song.published = true')
 					->setParameter('text', '%' . $text . '%')
 					->setFirstResult(0)
 					->setMaxResults(7)
