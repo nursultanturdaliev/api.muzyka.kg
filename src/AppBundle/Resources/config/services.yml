@@ -68,3 +68,7 @@ services:
         arguments: [~, AppBundle\Entity\User, SonataAdminBundle:CRUD]
         tags:
             - { name: sonata.admin, manager_type: orm, group: Колдонуучулар, label: Колдонуучулар, on_top : true, icon: '<i class="fa fa-users"></i>'  }
+
+    app.service:
+        class: AppBundle\Services\AppService
+        arguments: []

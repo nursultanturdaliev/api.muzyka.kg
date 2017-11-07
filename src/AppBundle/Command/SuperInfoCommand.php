@@ -95,7 +95,7 @@ class SuperInfoCommand extends ContainerAwareCommand
         $fs = new Filesystem();
         $artistName = substr($musicAndTitle, 8, strpos($musicAndTitle, '</') - 8);
         $songTitle = substr($musicAndTitle, strpos($musicAndTitle, '"') + 1, strrpos($musicAndTitle, '"') - strpos($musicAndTitle, '"') - 1);
-
+        $slug = $this->getContainer()->get('service_container')->get('app.service')->slug($songTitle);
         $artistNames = explode(',', $artistName);
 
         $song = $this->songAlreadyExists($songTitle, $artistNames);
@@ -109,6 +109,7 @@ class SuperInfoCommand extends ContainerAwareCommand
             $song->setWrittenBy($writer);
             $song->setComposedBy($compositor);
             $song->setPublished(false);
+            $song->setSlug($slug);
             $song->setIsParsed(true);
             $this->save($song);
 
@@ -130,6 +131,7 @@ class SuperInfoCommand extends ContainerAwareCommand
             $song->setComposedBy($compositor);
             $song->setPublished(false);
             $song->setIsParsed(true);
+            $song->setSlug($slug);
             $this->save($song);
             return 'Already Exists: ' . $songTitle;
         }
@@ -147,6 +149,7 @@ class SuperInfoCommand extends ContainerAwareCommand
     private function getArtistOrCreate($artistName)
     {
         $artistName = trim($artistName);
+        $slugArtist = $this->getContainer()->get('service_container')->get('app.service')->slug($artistName);
 
         $manager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
@@ -159,6 +162,7 @@ class SuperInfoCommand extends ContainerAwareCommand
         } else {
             $artist = new Artist();
             $artist->setName($artistName);
+            $artist->setSlug($slugArtist);
             return $this->save($artist);
         }
     }
