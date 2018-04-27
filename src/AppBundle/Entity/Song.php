@@ -225,6 +225,7 @@ class Song
 		$this->uuid      = Uuid::uuid4();
 		$this->isNew     = false;
 		$this->isParsed     = false;
+		$this->releasedAt = new \DateTime();
 	}
 
     public function __toString()
