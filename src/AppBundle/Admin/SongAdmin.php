@@ -146,7 +146,10 @@ class SongAdmin extends AbstractAdmin
                 ->add('isNew', null, array('label' => 'Жаңы'))
                 ->add('published', null, array('label' => 'Жарыяланган'))
                 ->add('createdAt', null, array('label' => 'Түзүлгөн датасы'))
-                ->add('releasedAt', null, array('label' => 'Released At'))
+                ->add('releasedAt', null, array(
+                    'label' => 'Released At',
+                    'data' => new \DateTime()
+                    ))
                 ->add('updatedAt', null, array('label' => 'Өзгөргөн датасы'))
                 ->add('deletedAt', null, array('label' => 'Өчүрүлгөн датасы'))
                 //->add('histories', null, array('label' => 'История'))
