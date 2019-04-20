@@ -14,11 +14,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApiController extends Controller
 {
-	protected function prepareJsonResponse($object)
+	protected function prepareJsonResponse($object, $cacheMaxAge = 3600)
 	{
-		return new Response($this->get('jms_serializer')->serialize($object, 'json'), 200, array(
-			'Content-Type' => 'application/json'
+		 $response = new Response($this->get('jms_serializer')->serialize($object, 'json'), 200, array(
+			'Content-Type' => 'application/json',
+            ''
 		));
+
+		 $response->setMaxAge($cacheMaxAge);
+		 return $response;
 	}
 
 

@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ArtistController extends ApiController
 {
 	const ARTIST_PER_RESPONSE_LIMIT = 80;
+	const CACHE_MAX_AGE = 3600;
 
 	/**
 	 * @Route("/page/{page}", name="app_api_artist_index", requirements={"page":"\d+"})
@@ -44,7 +45,7 @@ class ArtistController extends ApiController
 						->getQuery()->execute();
 
 		$artists = $this->get('app_formatter.artist')->format($artists);
-		return $this->prepareJsonResponse($artists);
+		return $this->prepareJsonResponse($artists, self::CACHE_MAX_AGE);
 	}
 
 	/**
@@ -59,7 +60,9 @@ class ArtistController extends ApiController
 	public function infoAction()
 	{
 		$info = $this->getDoctrine()->getRepository('AppBundle:Artist')->getInfo();
-		return new JsonResponse($info);
+		$response = new JsonResponse($info);
+		$response->setMaxAge(self::CACHE_MAX_AGE);
+		return $response;
 	}
 
 	/**
@@ -91,7 +94,7 @@ class ArtistController extends ApiController
 						->setMaxResults($limit)
 						->getQuery()
 						->execute(null, AbstractQuery::HYDRATE_SCALAR);
-		return $this->prepareJsonResponse($artists);
+		return $this->prepareJsonResponse($artists, self::CACHE_MAX_AGE);
 	}
 
 
@@ -116,7 +119,7 @@ class ArtistController extends ApiController
         $artist = $em->getRepository('AppBundle:Artist')
             ->findOneBy(array('slug' => $slug));
 
-		return $this->prepareJsonResponse($this->get('app_formatter.artist')->format($artist));
+		return $this->prepareJsonResponse($this->get('app_formatter.artist')->format($artist), self::CACHE_MAX_AGE);
 	}
 
 	/**
@@ -136,6 +139,6 @@ class ArtistController extends ApiController
 	 */
 	public function artistSongsAction(Artist $artist)
 	{
-		return $this->prepareJsonResponse($artist->getSongs());
+		return $this->prepareJsonResponse($artist->getSongs(), self::CACHE_MAX_AGE);
 	}
 }
